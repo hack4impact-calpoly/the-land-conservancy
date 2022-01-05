@@ -8,7 +8,7 @@ if (ww === 'production') {
   console.log('Another one');     
 } else {   
     console.log('test')
-}
+}  
 
 function App() {
   return (
