@@ -1,12 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
+
+import logo from './logo.svg';
 
 console.log('one');
 var ww = process.env.NODE_ENV.trim.toLowerCase();
 if (ww === 'production') {
-  console.log('Another one');
-} else {      
-  console.log('test')
+  console.log('Another one');     
+} else {
+    console.log('test')
 }
 
 function App() {
