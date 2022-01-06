@@ -1,6 +1,6 @@
 const express = require('express'); // 1. includes Express
 
-const app = express(); // 2. initializes Express
+const app = express();  // 2. initializes Express
 
 /*
  * other code here :)
