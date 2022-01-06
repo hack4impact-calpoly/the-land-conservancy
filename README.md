@@ -22,19 +22,19 @@ This will ensure that your code follows a standard style and will be easier for 
 ### Clone the repository
 ``` git clone https://github.com/hack4impact-calpoly/the-land-conservancy.git ```  
   
-set pre-commit hook for linting  
+- #### Set pre-commit hook for linting  
 ```git config --local core.hooksPath .githooks/```  
   
-download npm packages for the frontend and backend  
+- #### Download npm packages for the frontend and backend  
 ```cd frontend```  
 ```npm i```  
 ```cd ../backend```  
 ```npm i```  
 
-#### Running the frontend
+### Running the frontend
 1. ```npm start ``` (if its your first time, you might need to run ```npm i```)  
 
-#### Running the backend
+### Running the backend
 1. ```npm run dev ``` (if its your first time, you might need to run ```npm i```)
 
 ## Contributing 
