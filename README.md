@@ -54,6 +54,7 @@ This will ensure that your code follows a standard style and will be easier for 
 1. Go to the Pull Requests tab
 2. Find your PR
 3. (If applicable, provide a screenshot of your work in the comment area)
-4. Request a reviewer to check your code.
-5. Once approved, your code is ready to be merged in.
+4. Link your PR to the corresponding **Issue**  
+5. Request a reviewer to check your code
+6. Once approved, your code is ready to be merged in 🎉
 
