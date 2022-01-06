@@ -1,0 +1,42 @@
+{
+  "env": {
+      "browser": true,
+      "es2021": true,
+      "es6": true,
+      "node": true
+  },
+  "extends": [
+      "airbnb",
+      "plugin:prettier/recommended",
+      "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+      "ecmaVersion": 13,
+      "sourceType": "module"
+  },
+  "plugins": [
+      "@typescript-eslint"
+  ],
+  "rules": {
+    "prettier/prettier": "warn",
+    "semi": ["warn", "always"],
+    "no-trailing-spaces":"warn",
+    "indent": "warn",
+    "react/react/in/jsx/scope":0,
+    "max-len": [
+      "warn",
+      {
+          "code": 80,
+          "tabWidth": 2,
+          "comments": 80,
+          "ignoreComments": false,
+          "ignoreTrailingComments": true,
+          "ignoreUrls": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true,
+          "ignoreRegExpLiterals": true
+      }
+    ]   
+  }
+}
