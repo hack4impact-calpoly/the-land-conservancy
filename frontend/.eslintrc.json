@@ -3,8 +3,17 @@
     "airbnb",
     "plugin:prettier/recommended",
     "plugin:react/jsx-runtime",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
     "prettier"
   ],
+  "plugins": ["@typescript-eslint", "react"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
   "env": {
     "browser": true,
     "commonjs": true,
@@ -24,8 +33,10 @@
     "react/jsx-filename-extension": 0,
     "no-alert": 0,
     "react/prop-types": 0,
-    "import/no-named-as-default": 0,
-    "import/no-named-as-default-member": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
+    // "import/no-named-as-default": 0,
+    // "import/no-named-as-default-member": 0,
     "max-len": [
       "warn",
       {

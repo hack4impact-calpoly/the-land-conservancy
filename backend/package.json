@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "lint": "eslint --ext .js,.jsx . && prettier --check .",
-    "lint-fix": "eslint --ext .js,.jsx . --fix && prettier --write ."
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx . && prettier --check .",
+    "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix && prettier --write ."
   },
   "keywords": [],
   "author": "",
