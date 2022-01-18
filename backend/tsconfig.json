@@ -9,13 +9,9 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "outDir": "dist"
   },
-  "include": ["src", "custom.d.ts"]
+  "include": ["server.ts"]
 }

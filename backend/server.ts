@@ -6,7 +6,7 @@ const app = express(); // 2. initializes Express
  * other code here :)
  */
 
-app.get('/', (req, res) => {
+app.get('/', (req: any, res: any) => {
   res.send('Hello world!');
 });
 

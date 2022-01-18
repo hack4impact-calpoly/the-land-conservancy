@@ -51,5 +51,10 @@
         "ignoreRegExpLiterals": true
       }
     ]
+  },
+  "settings": {
+    "react": {
+      "version": "latest"
+    }
   }
 }
