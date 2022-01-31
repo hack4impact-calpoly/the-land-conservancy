@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import CreateAccount from './components/authentication/createAccount';
 
 function App() {
   return (
