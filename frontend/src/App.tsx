@@ -1,12 +1,25 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import './App.css';
+import Home from './components/Home';
+import Login from './components/authentication/login';
+import CreateAccount from './components/authentication/createAccount';
+import ForgotPasword from './components/authentication/forgotPassword';
+import ResetPassword from './components/authentication/resetPassword';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>This is the beginning of The Land Conservancy project.</p>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/forgot-password" element={<ForgotPasword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
