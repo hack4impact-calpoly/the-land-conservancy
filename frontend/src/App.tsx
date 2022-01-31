@@ -1,14 +1,21 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
+import LoginPage from './components/componentName/LoginPage'
+// import { Button } from './components/componentName/styles/Button.styled'
+// import { FormControl, Input } from '@mui/material'
 
-function App() {
+function App () {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>This is the beginning of The Land Conservancy project.</p>
-      </header>
+      <LoginPage />
+      {/* <p> Testing testing </p>
+      <FormControl>
+        <Input type="email" value="username" name="uname" />
+        <Input type="password" value="password" name="passwd" />
+        <Input type="submit" value="Login" />
+      </FormControl> */}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
