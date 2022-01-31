@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
+import {BiArrowBack} from 'react-icons/bi';
+
+const StyledArrow = styled(BiArrowBack)`
+  margin-top: 10px;
+  color: black;
+  
+`
 
 const StyledContainer = styled(Container)`
   text-align: left;
-
   background: #E5E5E5;
   border-radius: 7px;
   font-family: Poppins;
-  
   margin: 5px;
-  padding: 5px;
+  padding: 20px;
 `
 
 const StyledHeader = styled.p`
@@ -41,7 +46,6 @@ const StyledInput = styled.input`
 
   font-family: Poppins;
   font-size: 20px;
-  
   text-align: left;
 
   margin-top: 11px;
@@ -57,12 +61,10 @@ const StyledInput = styled.input`
 
 const StyledSubmit = styled.input`
   background: #5F8F3E;
-
   color: white;
 
   font-family: Poppins;
   font-size: 20px;
-  
   text-align: center;
 
   border-radius: 6px;
@@ -80,7 +82,6 @@ const ErrorMsg = styled.p`
   color: red;
   font-size: 10px;
   font-style: normal;
-  
   text-align: left;
   margin-top: -20px;
 `
@@ -103,7 +104,7 @@ export default function ResetPassword() {
   }
 
   const finalValidation = () =>{
-    // not sure if we want to do anything herre yet since no backend or redux
+    // no actual functionality here yet since no backend
     validatePass()
     if(badPassMsg !== ''){
       console.log('pass NOT changed')
@@ -116,6 +117,7 @@ export default function ResetPassword() {
   return ( 
     <div>
       <StyledContainer maxWidth="xl">
+        <StyledArrow size='40'/>
         <StyledHeader>Reset Password</StyledHeader>
         <StyledForm onSubmit={(e) => e.preventDefault()}>
           <Styledlabel htmlFor='np1'>
@@ -132,14 +134,14 @@ export default function ResetPassword() {
               type='password'
               id='np2'
               onChange={(e) => setPass2(e.target.value)}
-              onBlur={(e) => validatePass()}
+              onBlur={validatePass}
             />
           </Styledlabel>
           <ErrorMsg>{badPassMsg}</ErrorMsg>
           <StyledSubmit 
             type='submit' 
-            onClick={(e) => validatePass()} 
-            onSubmit={() => finalValidation()} 
+            onClick={validatePass} 
+            onSubmit={finalValidation} 
             value='Confirm'
           />
         </StyledForm>
