@@ -71,7 +71,7 @@ export default function LoginPage () {
                     <FlexContainer>
                         <Flex dir='row'>
                           <Button wid='176.67px' h='46.95px' l='33px' top='523px' c='#5F8F3E'> Create Account </Button>
-                          <Button type="submit" wid='149.61px' h='47px' l='36px' top='371px' bc='#5F8F3E' c='#ffffff' onClick={retrieveUser}> Submit </Button>
+                          <Button type="submit" wid='149.61px' h='47px' l='36px' top='371px' bc='#5F8F3E' c='#ffffff' onClick={retrieveUser}> Sign in </Button>
                         </Flex>
                     </FlexContainer>
                 </Flex>
