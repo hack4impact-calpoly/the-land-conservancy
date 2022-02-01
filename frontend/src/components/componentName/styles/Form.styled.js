@@ -1,14 +1,12 @@
 import styled from 'styled-components'
-import { FormControl } from '@mui/material'
+// import { FormControl } from '@mui/material'
 
-export const Form = styled(FormControl)`
+export const Form = styled.form`
   input[type='button'],
   input[type='submit'],
   input[type='reset'] {
     width: 149.61px;
     height: 46.95px;
-    left: 230.36px;
-    top: 523px;
 
     background: #000;
     border-radius: 12px;
@@ -19,10 +17,8 @@ export const Form = styled(FormControl)`
   input[type='email'] {
     width: 347px;
     height: 47px;
-    left: 36px;
-    top: 371px;
     
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
 
     border: 1px solid #8f8f8f;
     box-sizing: border-box;
