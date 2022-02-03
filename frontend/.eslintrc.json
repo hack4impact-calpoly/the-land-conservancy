@@ -1,60 +1,60 @@
 {
-    "extends": [
-      "airbnb",
-      "plugin:prettier/recommended",
-      "plugin:react/jsx-runtime",
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended",
-      "prettier"
-    ],
-    "plugins": ["@typescript-eslint", "react"],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": 12,
-      "sourceType": "module"
-    },
-    "env": {
-      "browser": true,
-      "commonjs": true,
-      "es6": true,
-      "jest": true,
-      "node": true
-    },
-    "rules": {
-      "jsx-a11y/href-no-hash": ["off"],
-      "prettier/prettier": "warn",
-      "semi": ["warn", "always"],
-      "no-trailing-spaces": "warn",
-      "no-console": "off",
-      "indent": "warn",
-      "react/react/in/jsx/scope": 0,
-      "linebreak-style": 0,
-      "react/jsx-filename-extension": 0,
-      "no-alert": 0,
-      "react/prop-types": 0,
-      "import/no-unresolved": 0,
-      "import/extensions": 0,
-      // "import/no-named-as-default": 0,
-      // "import/no-named-as-default-member": 0,
-      "max-len": [
-        "warn",
-        {
-          "code": 80,
-          "tabWidth": 2,
-          "comments": 80,
-          "ignoreComments": false,
-          "ignoreTrailingComments": true,
-          "ignoreUrls": true,
-          "ignoreStrings": true,
-          "ignoreTemplateLiterals": true,
-          "ignoreRegExpLiterals": true
-        }
-      ]
-    },
-    "settings": {
-      "react": {
-        "version": "latest"
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended",
+    "plugin:react/jsx-runtime",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint", "react"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "rules": {
+    "jsx-a11y/href-no-hash": ["off"],
+    "prettier/prettier": "warn",
+    "semi": ["warn", "always"],
+    "no-trailing-spaces": "warn",
+    "no-console": "off",
+    "indent": "warn",
+    "react/react/in/jsx/scope": 0,
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": 0,
+    "no-alert": 0,
+    "react/prop-types": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
+    // "import/no-named-as-default": 0,
+    // "import/no-named-as-default-member": 0,
+    "max-len": [
+      "warn",
+      {
+        "code": 80,
+        "tabWidth": 2,
+        "comments": 80,
+        "ignoreComments": false,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
       }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "latest"
     }
   }
+}

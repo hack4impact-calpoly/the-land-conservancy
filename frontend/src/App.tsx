@@ -1,15 +1,27 @@
-import React from 'react'
-import './App.css'
-import LoginPage from './components/authentication/LoginPage'
-// import { Button } from './components/componentName/styles/Button.styled'
-// import { FormControl, Input } from '@mui/material'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-function App () {
+import './App.css';
+import Home from './components/Home';
+import Login from './components/authentication/login';
+import CreateAccount from './components/authentication/createAccount';
+import ForgotPasword from './components/authentication/forgotPassword';
+import ResetPassword from './components/authentication/resetPassword';
+
+function App() {
   return (
     <div className="App">
-      <LoginPage />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/forgot-password" element={<ForgotPasword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Routes>
+      </BrowserRouter>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

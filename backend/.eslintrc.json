@@ -22,6 +22,7 @@
     "prettier/prettier": "warn",
     "semi": ["warn", "always"],
     "no-trailing-spaces":"warn",
+    "no-console": "off",
     "indent": "warn",
     "react/react/in/jsx/scope":0,
     "max-len": [
