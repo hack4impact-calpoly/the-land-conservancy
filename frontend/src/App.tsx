@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import LoginPage from './components/componentName/LoginPage'
+import LoginPage from './components/authentication/LoginPage'
 // import { Button } from './components/componentName/styles/Button.styled'
 // import { FormControl, Input } from '@mui/material'
 
