@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { BiArrowBack } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
-const BackArrow = styled(ArrowBackIcon)`
+const BackArrow = styled(BiArrowBack)`
   padding: 31px;
   float: left;
 `;
@@ -104,7 +105,9 @@ export default function CreateAccount() {
   return (
     <Card>
       <TopBar>
-        <BackArrow />
+        <Link to="/login">
+          <BackArrow />
+        </Link>
       </TopBar>
       <Header>Create an account</Header>
       <Label>Name</Label>

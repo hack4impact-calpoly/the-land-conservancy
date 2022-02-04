@@ -5,9 +5,10 @@ import CreateAccount from './components/authentication/createAccount';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <p>This is the beginning of The Land Conservancy project.</p>
-      </header>
+      </header> */}
+      <CreateAccount />
     </div>
   );
 }
