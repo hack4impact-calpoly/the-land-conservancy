@@ -1,45 +1,44 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import {BiArrowBack} from 'react-icons/bi';
+import { BiArrowBack } from 'react-icons/bi';
 
 const StyledArrow = styled(BiArrowBack)`
   margin-top: 10px;
   color: black;
-  
-`
+`;
 
 const StyledContainer = styled(Container)`
   text-align: left;
-  background: #E5E5E5;
+  background: #e5e5e5;
   border-radius: 7px;
   font-family: Poppins;
   margin: 5px;
   padding: 20px;
-`
+`;
 
 const StyledHeader = styled.p`
   color: black;
   font-size: 20px;
   font-weight: 500;
-`
+`;
 
 const StyledForm = styled.form`
   display: flex;
-  flex-direction: column; 
-`
+  flex-direction: column;
+`;
 
 const Styledlabel = styled.label`
   display: block;
   font-family: Poppins;
   font-size: 13px;
-  font-color: #5B5A5A;
+  font-color: #5b5a5a;
   font-weight: 600;
-`
+`;
 
 const StyledInput = styled.input`
   display: block;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   border-radius: 6px;
   height: 33px;
   padding-left: 6px;
@@ -50,17 +49,17 @@ const StyledInput = styled.input`
 
   margin-top: 11px;
   margin-bottom: 22px;
-  
-  @media (min-width: 600px){
+
+  @media (min-width: 600px) {
     width: 500px;
   }
-  @media (max-width: 599px){
+  @media (max-width: 599px) {
     width: 90vw;
   }
-`
+`;
 
 const StyledSubmit = styled.input`
-  background: #5F8F3E;
+  background: #5f8f3e;
   color: white;
 
   font-family: Poppins;
@@ -68,7 +67,7 @@ const StyledSubmit = styled.input`
   text-align: center;
 
   border-radius: 6px;
-  border-color: #5F8F3E;
+  border-color: #5f8f3e;
   border-style: solid;
 
   margin-top: 6px;
@@ -76,7 +75,7 @@ const StyledSubmit = styled.input`
   width: 100%;
   height: 36px;
   align-self: center;
-`
+`;
 
 const ErrorMsg = styled.p`
   color: red;
@@ -84,7 +83,7 @@ const ErrorMsg = styled.p`
   font-style: normal;
   text-align: left;
   margin-top: -20px;
-`
+`;
 
 export default function ResetPassword() {
   const [pass1, setPass1] = useState('');
@@ -92,61 +91,57 @@ export default function ResetPassword() {
   const [badPassMsg, setBatpassMsg] = useState('');
 
   const validatePass = () => {
-    if(pass1 !== pass2){
-      setBatpassMsg('Passwords must match')
+    if (pass1 !== pass2) {
+      setBatpassMsg('Passwords must match');
+    } else if (pass1.length < 6) {
+      setBatpassMsg('Passwords must be at least 6 characters');
+    } else {
+      setBatpassMsg('');
     }
-    else if(pass1.length < 6){
-      setBatpassMsg('Passwords must be at least 6 characters')
-    }
-    else{
-      setBatpassMsg('')
-    }
-  }
+  };
 
-  const finalValidation = () =>{
+  const finalValidation = () => {
     // no actual functionality here yet since no backend
-    validatePass()
-    if(badPassMsg !== ''){
-      console.log('pass NOT changed')
+    validatePass();
+    if (badPassMsg !== '') {
+      console.log('pass NOT changed');
+    } else {
+      console.log('pass changed');
     }
-    else{
-      console.log('pass changed')
-    }
-  }
+  };
 
-  return ( 
+  return (
     <div>
       <StyledContainer maxWidth="xl">
-        <StyledArrow size='40'/>
+        <StyledArrow size="40" />
         <StyledHeader>Reset Password</StyledHeader>
         <StyledForm onSubmit={(e) => e.preventDefault()}>
-          <Styledlabel htmlFor='np1'>
+          <Styledlabel htmlFor="np1">
             New password
-            <StyledInput 
-              type='password' 
-              id='np1' 
+            <StyledInput
+              type="password"
+              id="np1"
               onChange={(e) => setPass1(e.target.value)}
             />
           </Styledlabel>
-          <Styledlabel htmlFor='np2'>
+          <Styledlabel htmlFor="np2">
             Re-enter new password
             <StyledInput
-              type='password'
-              id='np2'
+              type="password"
+              id="np2"
               onChange={(e) => setPass2(e.target.value)}
               onBlur={validatePass}
             />
           </Styledlabel>
           <ErrorMsg>{badPassMsg}</ErrorMsg>
-          <StyledSubmit 
-            type='submit' 
-            onClick={validatePass} 
-            onSubmit={finalValidation} 
-            value='Confirm'
+          <StyledSubmit
+            type="submit"
+            onClick={validatePass}
+            onSubmit={finalValidation}
+            value="Confirm"
           />
         </StyledForm>
       </StyledContainer>
     </div>
   );
 }
-
