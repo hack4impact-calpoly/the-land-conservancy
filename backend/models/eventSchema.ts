@@ -6,7 +6,7 @@ export interface IEvent extends mongoose.Document {
     end: Date,
     location: String,
     notes: String,
-    shifts: Array<String>,
+    shifts: [],
 };
 
 export const EventSchema = new mongoose.Schema(
