@@ -1,0 +1,25 @@
+import * as mongoose from 'mongoose';
+
+export interface IEvent extends mongoose.Document {
+    title: String,
+    start: Date,
+    end: Date,
+    location: String,
+    notes: String,
+    shifts: Array<String>,
+};
+
+export const EventSchema = new mongoose.Schema(
+  {
+    title: String,
+    start: Date,
+    end: Date,
+    location: String,
+    notes: String,
+    shifts: Array,
+  },
+  { collection: "Events" }
+);
+
+const Event = mongoose.model<IEvent>('Event', EventSchema);
+export default Event;
