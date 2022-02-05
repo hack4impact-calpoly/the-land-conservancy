@@ -1,14 +1,5 @@
 import * as mongoose from 'mongoose';
 
-// export interface IEvent extends mongoose.Document {
-//     title: String,
-//     start: Date,
-//     end: Date,
-//     location: String,
-//     notes: String,
-//     shifts: [],
-// };
-
 export const EventSchema = new mongoose.Schema(
   {
     title: String,

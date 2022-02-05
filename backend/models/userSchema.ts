@@ -1,15 +1,5 @@
 import * as mongoose from 'mongoose';
 
-export interface IUser extends mongoose.Document {
-    isAdmin: Boolean,
-    firstName: String,
-    lastName: String,
-    email: String,
-    phone: String,
-    pastShifts: [],
-    totalHours: Number,
-  };
-
 const UserSchema = new mongoose.Schema(
   {
     isAdmin: Boolean,
@@ -24,5 +14,5 @@ const UserSchema = new mongoose.Schema(
 );
 
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 export default User;
