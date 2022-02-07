@@ -15,13 +15,12 @@ const StyledDiv = styled.div`
 
 const StyledContainer = styled(Container)`
   text-align: left;
-  background: #FFFDFD;
+  background: #fffdfd;
   border-radius: 7px;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   font-family: Poppins;
   margin: 5px;
   padding: 20px;
-  
 `;
 
 const StyledHeader = styled.p`
@@ -56,7 +55,7 @@ const StyledInput = styled.input`
   margin-top: 11px;
   margin-bottom: 22px;
 
-  width: 98%
+  width: 98%;
 `;
 
 const StyledSubmit = styled.input`
@@ -118,33 +117,33 @@ export default function ResetPassword() {
           <StyledArrow size="40" />
         </Link>
         <StyledDiv>
-        <StyledHeader>Reset Password</StyledHeader>
-        <StyledForm onSubmit={(e) => e.preventDefault()}>
-          <Styledlabel htmlFor="np1">
-            New password
-            <StyledInput
-              type="password"
-              id="np1"
-              onChange={(e) => setPass1(e.target.value)}
+          <StyledHeader>Reset Password</StyledHeader>
+          <StyledForm onSubmit={(e) => e.preventDefault()}>
+            <Styledlabel htmlFor="np1">
+              New password
+              <StyledInput
+                type="password"
+                id="np1"
+                onChange={(e) => setPass1(e.target.value)}
+              />
+            </Styledlabel>
+            <Styledlabel htmlFor="np2">
+              Re-enter new password
+              <StyledInput
+                type="password"
+                id="np2"
+                onChange={(e) => setPass2(e.target.value)}
+                onBlur={validatePass}
+              />
+            </Styledlabel>
+            <ErrorMsg>{badPassMsg}</ErrorMsg>
+            <StyledSubmit
+              type="submit"
+              onClick={validatePass}
+              onSubmit={finalValidation}
+              value="Confirm"
             />
-          </Styledlabel>
-          <Styledlabel htmlFor="np2">
-            Re-enter new password
-            <StyledInput
-              type="password"
-              id="np2"
-              onChange={(e) => setPass2(e.target.value)}
-              onBlur={validatePass}
-            />
-          </Styledlabel>
-          <ErrorMsg>{badPassMsg}</ErrorMsg>
-          <StyledSubmit
-            type="submit"
-            onClick={validatePass}
-            onSubmit={finalValidation}
-            value="Confirm"
-          />
-        </StyledForm>
+          </StyledForm>
         </StyledDiv>
       </StyledContainer>
     </div>
