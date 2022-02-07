@@ -22,7 +22,7 @@ type EventCardProps = {
   location: string;
 };
 
-/*  for sime reason background color fo card would not chnage without inline css    */
+/*  for some reason background color for card would not chnage without inline css    */
 
 export default function EventCard({ title, location }: EventCardProps) {
   return (

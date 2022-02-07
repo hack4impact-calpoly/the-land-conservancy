@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 import EventCard from './eventCard';
 
 const StyledArrow = styled(BiArrowBack)`
@@ -9,6 +10,7 @@ const StyledArrow = styled(BiArrowBack)`
   color: black;
   text-align: left;
   display: block;
+  font-size: 25px;
 `;
 
 const StyledHeader = styled.p`
@@ -46,6 +48,8 @@ const StyledButton = styled.button`
   align-self: center;
 `;
 
+/*  just dummy test data for displaying events :) */
+
 const testEvents = [
   {
     title: "Ben's party",
@@ -74,19 +78,18 @@ const testEvents = [
 ];
 
 export default function Events() {
-  console.log(testEvents);
-
   const eventCards = testEvents.map((event) => {
     return (
       <EventCard key={event.id} title={event.title} location={event.location} />
     );
   });
 
-  console.log(eventCards);
   return (
     <div>
       <StyledContainer maxWidth="sm">
-        <StyledArrow />
+        <Link to="/">
+          <StyledArrow />
+        </Link>
         <StyledHeader>Events</StyledHeader>
         {eventCards}
         <StyledButton>Select</StyledButton>
