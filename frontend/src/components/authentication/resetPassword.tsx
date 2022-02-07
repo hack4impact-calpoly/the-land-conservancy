@@ -2,19 +2,26 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
 const StyledArrow = styled(BiArrowBack)`
   margin-top: 10px;
   color: black;
 `;
 
+const StyledDiv = styled.div`
+  padding: 40px;
+`;
+
 const StyledContainer = styled(Container)`
   text-align: left;
-  background: #e5e5e5;
+  background: #FFFDFD;
   border-radius: 7px;
+  border: 1px solid #C4C4C4;
   font-family: Poppins;
   margin: 5px;
   padding: 20px;
+  
 `;
 
 const StyledHeader = styled.p`
@@ -24,7 +31,6 @@ const StyledHeader = styled.p`
 `;
 
 const StyledForm = styled.form`
-  display: flex;
   flex-direction: column;
 `;
 
@@ -50,12 +56,7 @@ const StyledInput = styled.input`
   margin-top: 11px;
   margin-bottom: 22px;
 
-  @media (min-width: 600px) {
-    width: 500px;
-  }
-  @media (max-width: 599px) {
-    width: 90vw;
-  }
+  width: 98%
 `;
 
 const StyledSubmit = styled.input`
@@ -112,8 +113,11 @@ export default function ResetPassword() {
 
   return (
     <div>
-      <StyledContainer maxWidth="xl">
-        <StyledArrow size="40" />
+      <StyledContainer maxWidth="sm">
+        <Link to="/forgot-password">
+          <StyledArrow size="40" />
+        </Link>
+        <StyledDiv>
         <StyledHeader>Reset Password</StyledHeader>
         <StyledForm onSubmit={(e) => e.preventDefault()}>
           <Styledlabel htmlFor="np1">
@@ -141,6 +145,7 @@ export default function ResetPassword() {
             value="Confirm"
           />
         </StyledForm>
+        </StyledDiv>
       </StyledContainer>
     </div>
   );
