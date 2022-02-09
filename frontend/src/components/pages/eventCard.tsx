@@ -1,20 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Card } from '@mui/material';
+import { Container } from '@mui/material';
+import { RiArrowRightSLine } from 'react-icons/ri';
 
-const StyledCard = styled(Card)`
+const StyledContainer = styled(Container)`
+  background-color: #f1f1f1;
   border-radius: 6px;
   padding: 14px;
   padding-left: 25px;
 
   margin-bottom: 10px;
-  text-align: left;
 `;
 
 const EventTitle = styled.p`
   font-weight: bold;
-  font-size: 14px;
+  font-size: 20px;
   color: black;
+`;
+
+const EventLocation = styled.p`
+  font-size: 15px;
+  color: black;
+`;
+
+const StyledArrow = styled(RiArrowRightSLine)`
+  color: #6c6b6b;
+`;
+
+const TextDiv = styled.div`
+  text-align: left;
+`;
+
+const ArrowDiv = styled.div`
+  text-align: right;
+`;
+
+const LayoutDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 type EventCardProps = {
@@ -22,15 +46,20 @@ type EventCardProps = {
   location: string;
 };
 
-/*  for some reason background color for card would not chnage without inline css    */
-
 export default function EventCard({ title, location }: EventCardProps) {
   return (
     <div>
-      <StyledCard style={{ backgroundColor: '#F1F1F1' }}>
-        <EventTitle>{title}</EventTitle>
-        <p>{location}</p>
-      </StyledCard>
+      <StyledContainer>
+        <LayoutDiv>
+          <TextDiv>
+            <EventTitle>{title}</EventTitle>
+            <EventLocation>{location}</EventLocation>
+          </TextDiv>
+          <ArrowDiv>
+            <StyledArrow size="60" />
+          </ArrowDiv>
+        </LayoutDiv>
+      </StyledContainer>
     </div>
   );
 }

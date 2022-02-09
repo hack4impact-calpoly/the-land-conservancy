@@ -86,13 +86,12 @@ export default function Events() {
 
   return (
     <div>
-      <StyledContainer maxWidth="sm">
+      <StyledContainer maxWidth="md">
         <Link to="/">
           <StyledArrow />
         </Link>
         <StyledHeader>Events</StyledHeader>
         {eventCards}
-        <StyledButton>Select</StyledButton>
       </StyledContainer>
     </div>
   );
