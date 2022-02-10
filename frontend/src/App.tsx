@@ -7,6 +7,7 @@ import Login from './components/authentication/login';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
+import Events from './components/pages/events';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/events" element={<Events />} />
         </Routes>
       </BrowserRouter>
     </div>
