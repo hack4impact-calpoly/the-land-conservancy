@@ -18,7 +18,7 @@ const EventTitle = styled.p`
   color: black;
 `;
 
-const EventLocation = styled.p`
+const EventDate = styled.p`
   font-size: 15px;
   color: black;
 `;
@@ -43,17 +43,17 @@ const LayoutDiv = styled.div`
 
 type EventCardProps = {
   title: string;
-  location: string;
+  date: string;
 };
 
-export default function EventCard({ title, location }: EventCardProps) {
+export default function EventCard({ title, date }: EventCardProps) {
   return (
     <div>
       <StyledContainer>
         <LayoutDiv>
           <TextDiv>
             <EventTitle>{title}</EventTitle>
-            <EventLocation>{location}</EventLocation>
+            <EventDate>{date}</EventDate>
           </TextDiv>
           <ArrowDiv>
             <StyledArrow size="60" />

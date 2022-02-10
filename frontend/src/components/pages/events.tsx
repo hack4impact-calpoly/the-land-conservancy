@@ -32,28 +32,12 @@ const StyledContainer = styled(Container)`
   justify-content: left;
 `;
 
-const StyledButton = styled.button`
-  background: #5f8f3e;
-  color: white;
-  font-family: Poppins;
-  font-size: 15px;
-  text-align: center;
-  border-radius: 6px;
-  border-color: #5f8f3e;
-  border-style: solid;
-  margin-top: 6px;
-  margin-bottom: 10px;
-  width: 100%;
-  height: 36px;
-  align-self: center;
-`;
-
 /*  just dummy test data for displaying events :) */
 
 const testEvents = [
   {
     title: "Ben's party",
-    start: new Date(121170),
+    start: new Date(121170000),
     end: new Date(),
     location: '35.30254888400675, -120.69751392967409',
     notes: 'very fun',
@@ -77,10 +61,31 @@ const testEvents = [
   },
 ];
 
+const convertDate = (date: {
+  getDay: () => number;
+  toLocaleDateString: () => string;
+}) => {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  return `${days[date.getDay()]} ${date.toLocaleDateString()}`;
+};
+
 export default function Events() {
   const eventCards = testEvents.map((event) => {
     return (
-      <EventCard key={event.id} title={event.title} location={event.location} />
+      <EventCard
+        key={event.id}
+        title={event.title}
+        date={convertDate(event.start)}
+      />
     );
   });
 
