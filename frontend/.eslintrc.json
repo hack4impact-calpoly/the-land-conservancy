@@ -21,7 +21,7 @@
     "jest": true,
     "node": true
   },
-  "ignorePatterns": ["**/custom.d.ts"],
+  "ignorePatterns": ["**/custom.d.ts", "**/amplify"],
   "rules": {
     "jsx-a11y/href-no-hash": ["off"],
     "prettier/prettier": "warn",

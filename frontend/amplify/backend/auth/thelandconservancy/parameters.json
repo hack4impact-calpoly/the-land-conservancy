@@ -1,0 +1,24 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "thelandconservancy",
+  "serviceType": "imported",
+  "region": "us-west-2",
+  "usernameAttributes": [
+    "email"
+  ],
+  "requiredAttributes": [
+    "name",
+    "phone_number"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers"
+  ],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaTypes": []
+}

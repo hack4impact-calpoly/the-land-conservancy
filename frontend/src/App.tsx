@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Amplify from 'aws-amplify';
 
 import './App.css';
 import Home from './components/Home';
@@ -8,6 +9,21 @@ import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
 import Events from './components/pages/events';
+import awsconfig from './aws-exports';
+
+Amplify.configure(awsconfig);
+Amplify.configure({
+  Auth: {
+    // REQUIRED - Amazon Cognito Region
+    region: 'us-west-2',
+    // OPTIONAL - Amazon Cognito User Pool ID
+    userPoolId: 'us-west-2_GsGspX3dl',
+    // OPTIONAL - Amazon Cognito Web Client ID
+    userPoolWebClientId: '56nsvt3lp1gmb3ou6t63ldj72m',
+    // OPTIONAL - Enforce user authentication prior to accessing AWS resources
+    mandatorySignIn: false,
+  },
+});
 
 function App() {
   return (
