@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { AiOutlineMenu } from 'react-icons/ai';
 import EventSlot from './eventSlot';
 
 const StyledContainer = styled(Container)`
@@ -9,14 +8,6 @@ const StyledContainer = styled(Container)`
 
   margin: 5px;
   padding: 10px;
-`;
-
-const StyledMenu = styled.button`
-  display: block;
-  border: none;
-  text-align: left;
-  background: white;
-  font-size: 25px;
 `;
 
 const StyledHeader = styled.h1`
@@ -67,9 +58,6 @@ export default function PastShifts() {
   return (
     <div>
       <StyledContainer>
-        <StyledMenu>
-          <AiOutlineMenu />
-        </StyledMenu>
         <StyledHeader>Past Shifts</StyledHeader>
         {eventSlots}
       </StyledContainer>

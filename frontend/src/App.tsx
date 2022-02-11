@@ -19,7 +19,7 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/past-shift" element={<PastShifts />} />
+          <Route path="/past-shifts" element={<PastShifts />} />
         </Routes>
       </BrowserRouter>
     </div>
