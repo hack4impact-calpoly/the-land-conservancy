@@ -8,6 +8,7 @@ import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
 import PastShifts from './components/pages/pastShifts';
+import Events from './components/pages/events';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/past-shifts" element={<PastShifts />} />
+          <Route path="/events" element={<Events />} />
         </Routes>
       </BrowserRouter>
     </div>
