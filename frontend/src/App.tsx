@@ -14,13 +14,13 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
-    // REQUIRED - Amazon Cognito Region
+    // Amazon Cognito Region
     region: 'us-west-2',
-    // OPTIONAL - Amazon Cognito User Pool ID
+    // Amazon Cognito User Pool ID
     userPoolId: 'us-west-2_GsGspX3dl',
-    // OPTIONAL - Amazon Cognito Web Client ID
+    // Amazon Cognito Web Client ID
     userPoolWebClientId: '56nsvt3lp1gmb3ou6t63ldj72m',
-    // OPTIONAL - Enforce user authentication prior to accessing AWS resources
+    // Enforce user authentication prior to accessing AWS resources
     mandatorySignIn: false,
   },
 });
