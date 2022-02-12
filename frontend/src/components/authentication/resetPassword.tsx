@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-
-const StyledArrow = styled(BiArrowBack)`
-  margin-top: 10px;
-  color: black;
-`;
+import StyledBack from '../styledComponents';
 
 const StyledDiv = styled.div`
   padding: 40px;
@@ -114,7 +109,7 @@ export default function ResetPassword() {
     <div>
       <StyledContainer maxWidth="sm">
         <Link to="/forgot-password">
-          <StyledArrow size="40" />
+          <StyledBack size="30" />
         </Link>
         <StyledDiv>
           <StyledHeader>Reset Password</StyledHeader>

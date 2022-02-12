@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BiArrowBack } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import StyledBack from '../styledComponents';
 
-const BackArrow = styled(BiArrowBack)`
-  padding: 31px;
-  float: left;
-`;
+// TODO: change to containr later and text-aling left
+// but that will probably go into styledComponenets as well
 
 const TopBar = styled.div`
   box-sizing: border-box;
   height: 144px;
+  text-align: left;
 `;
 
 const Card = styled.div`
@@ -106,7 +105,7 @@ export default function CreateAccount() {
     <Card>
       <TopBar>
         <Link to="/login">
-          <BackArrow />
+          <StyledBack size="30" />
         </Link>
       </TopBar>
       <Header>Create an account</Header>

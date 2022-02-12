@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
+import StyledBack from '../styledComponents';
 
 const StyledContainer = styled(Container)`
   text-align: left;
@@ -11,21 +11,7 @@ const StyledContainer = styled(Container)`
   padding: 10px;
 `;
 
-const StyledBack = styled.button`
-  display: block;
-  border: none;
-  text-align: left;
-  background: white;
-  font-size: 25px;
 
-  @media (max-width: 600px) {
-    width: 25px;
-  }
-
-  @media (max-width: 599px) {
-    width: 90vw;
-  }
-`;
 
 const StyledHeader = styled.h1`
   font-family: Poppins;
@@ -147,10 +133,7 @@ export default function ForgotPassword() {
       <StyledContainer>
         <a href="/login">
           {' '}
-          <StyledBack>
-            {' '}
-            <BiArrowBack />{' '}
-          </StyledBack>{' '}
+          <StyledBack size="30" />
         </a>
         <StyledHeader>Forgot Password</StyledHeader>
         <StyledParagraph>
