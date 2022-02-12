@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
-import StyledBack from '../styledComponents';
+import { StyledBack, AuthHeader } from '../styledComponents';
 
 const StyledDiv = styled.div`
   padding: 40px;
@@ -18,12 +18,6 @@ const StyledContainer = styled(Container)`
   padding: 20px;
 `;
 
-const StyledHeader = styled.p`
-  color: black;
-  font-size: 20px;
-  font-weight: 500;
-`;
-
 const StyledForm = styled.form`
   flex-direction: column;
 `;
@@ -31,15 +25,14 @@ const StyledForm = styled.form`
 const Styledlabel = styled.label`
   display: block;
   font-family: Poppins;
-  font-size: 13px;
-  font-color: #5b5a5a;
-  font-weight: 600;
+  font-size: 20px;
+  color: #5b5a5a;
 `;
 
 const StyledInput = styled.input`
   display: block;
   border: 1px solid #c4c4c4;
-  border-radius: 6px;
+  border-radius: 10px;
   height: 33px;
   padding-left: 6px;
 
@@ -61,7 +54,7 @@ const StyledSubmit = styled.input`
   font-size: 20px;
   text-align: center;
 
-  border-radius: 6px;
+  border-radius: 10px;
   border-color: #5f8f3e;
   border-style: solid;
 
@@ -74,7 +67,7 @@ const StyledSubmit = styled.input`
 
 const ErrorMsg = styled.p`
   color: red;
-  font-size: 10px;
+  font-size: 15px;
   font-style: normal;
   text-align: left;
   margin-top: -20px;
@@ -112,7 +105,7 @@ export default function ResetPassword() {
           <StyledBack size="30" />
         </Link>
         <StyledDiv>
-          <StyledHeader>Reset Password</StyledHeader>
+          <AuthHeader>Reset Password</AuthHeader>
           <StyledForm onSubmit={(e) => e.preventDefault()}>
             <Styledlabel htmlFor="np1">
               New password

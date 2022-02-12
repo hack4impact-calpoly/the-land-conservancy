@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import StyledBack from '../styledComponents';
+import { StyledBack, AuthHeader } from '../styledComponents';
 
 // TODO: change to containr later and text-aling left
 // but that will probably go into styledComponenets as well
@@ -17,17 +17,6 @@ const Card = styled.div`
   margin: 0 auto;
 `;
 
-const Header = styled.h1`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 30px;
-  padding-left: 53px;
-  text-align: left;
-
-  color: #000000;
-`;
 
 const Label = styled.h3`
   font-family: Poppins;
@@ -108,7 +97,7 @@ export default function CreateAccount() {
           <StyledBack size="30" />
         </Link>
       </TopBar>
-      <Header>Create an account</Header>
+      <AuthHeader>Create an account</AuthHeader>
       <Label>Name</Label>
       <Input onChange={(e) => setName(e.target.value)} />
       <Label>Email</Label>

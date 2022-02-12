@@ -6,4 +6,11 @@ const StyledBack = styled(BiArrowBack)`
   color: black;
 `;
 
-export default StyledBack;
+const AuthHeader = styled.h1`
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 27px;
+  color: black;
+`;
+
+export { StyledBack, AuthHeader };

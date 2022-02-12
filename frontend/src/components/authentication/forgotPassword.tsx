@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import StyledBack from '../styledComponents';
+import { StyledBack, AuthHeader } from '../styledComponents';
 
 const StyledContainer = styled(Container)`
   text-align: left;
@@ -12,21 +12,11 @@ const StyledContainer = styled(Container)`
 `;
 
 
-
-const StyledHeader = styled.h1`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 30px;
-  color: #000000;
-`;
-
 const StyledParagraph = styled.p`
   font-family: Poppins;
   font-style: normal;
   font-weight: normal;
-  font-size: 15px;
+  font-size: 20px;
   line-height: 27px;
   color: #000d26;
 `;
@@ -135,7 +125,7 @@ export default function ForgotPassword() {
           {' '}
           <StyledBack size="30" />
         </a>
-        <StyledHeader>Forgot Password</StyledHeader>
+        <AuthHeader>Forgot Password</AuthHeader>
         <StyledParagraph>
           {' '}
           Please enter the email associated with your account to recieve a reset
