@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-landconservancy-dev-213325-authRole",
+      "UnauthRoleArn": "arn:aws:iam::633874248049:role/amplify-landconservancy-dev-213325-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::633874248049:role/amplify-landconservancy-dev-213325-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-landconservancy-dev-213325-deployment",
+      "UnauthRoleName": "amplify-landconservancy-dev-213325-unauthRole",
+      "StackName": "amplify-landconservancy-dev-213325",
+      "StackId": "arn:aws:cloudformation:us-west-2:633874248049:stack/amplify-landconservancy-dev-213325/f26236f0-8afb-11ec-a33d-061e86cae111",
+      "AmplifyAppId": "d1zo24uz7agiig"
+    },
+    "categories": {
+      "auth": {
+        "thelandconservancy": {
+          "userPoolId": "us-west-2_GsGspX3dl",
+          "userPoolName": "conservancy-user-pool",
+          "webClientId": "56nsvt3lp1gmb3ou6t63ldj72m",
+          "nativeClientId": "56nsvt3lp1gmb3ou6t63ldj72m"
+        }
+      }
+    }
+  }
+}
