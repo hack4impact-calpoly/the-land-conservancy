@@ -1,61 +1,18 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { StyledBack, AuthHeader } from '../styledComponents';
+import {
+  StyledBack,
+  AuthHeader,
+  AuthContainer,
+  AuthContent,
+  Form,
+  Input,
+  Label,
+  Submit,
+} from './authComponents';
 
 // TODO: change to containr later and text-aling left
 // but that will probably go into styledComponenets as well
-
-const TopBar = styled.div`
-  box-sizing: border-box;
-  height: 144px;
-  text-align: left;
-`;
-
-const Card = styled.div`
-  width: 414px;
-  margin: 0 auto;
-`;
-
-
-const Label = styled.h3`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 19px;
-  padding-left: 56px;
-  text-align: left;
-
-  color: #5b5a5a;
-`;
-
-const Input = styled.input`
-  width: 302px;
-  height: 33px;
-  border: 1px solid #c4c4c4;
-  border-radius: 6px;
-  display: flex;
-  align-items: flex-start;
-  margin-left: 56px;
-  margin-right: 56px;
-`;
-
-const Button = styled.button`
-  width: 305px;
-  height: 36px;
-  background: #5f8f3e;
-  border-radius: 6px;
-  border: none;
-  margin: 29px;
-
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  color: #ffffff;
-`;
 
 export default function CreateAccount() {
   const [name, setName] = useState('');
@@ -66,6 +23,7 @@ export default function CreateAccount() {
 
   const createAccount = () => {
     // regex for email validation
+    // TODO: add validation for password requirements
     const re =
       /^(([^<>()[\].,;:\s@"]+(.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/i;
     if (
@@ -91,24 +49,61 @@ export default function CreateAccount() {
   };
 
   return (
-    <Card>
-      <TopBar>
-        <Link to="/login">
-          <StyledBack size="30" />
-        </Link>
-      </TopBar>
-      <AuthHeader>Create an account</AuthHeader>
-      <Label>Name</Label>
-      <Input onChange={(e) => setName(e.target.value)} />
-      <Label>Email</Label>
-      <Input onChange={(e) => setEmail(e.target.value)} />
-      <Label>Phone number</Label>
-      <Input onChange={(e) => setNumber(e.target.value)} />
-      <Label>Password</Label>
-      <Input onChange={(e) => setPassword(e.target.value)} />
-      <Label>Re-enter password</Label>
-      <Input onChange={(e) => setRePassword(e.target.value)} />
-      <Button onClick={createAccount}>Create Account</Button>
-    </Card>
+    <AuthContainer>
+      <Link to="/login">
+        <StyledBack size="30" />
+      </Link>
+      <AuthContent>
+        <AuthHeader>Create an account</AuthHeader>
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <Label htmlFor="f1">First and Last Name</Label>
+          <Input
+            type="text"
+            id="f1"
+            onChange={(e) => setName(e.target.value)}
+            placeholder="First Last"
+            required
+          />
+
+          <Label htmlFor="f2">Email</Label>
+          <Input
+            type="email"
+            id="f2"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="email address"
+            required
+          />
+
+          <Label htmlFor="f3">Phone Number</Label>
+          <Input
+            type="tel"
+            id="f3"
+            onChange={(e) => setNumber(e.target.value)}
+            placeholder="8053215678"
+          />
+          <Label htmlFor="f4">Password</Label>
+          <Input
+            type="password"
+            id="f4"
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="password"
+            required
+          />
+          <Label htmlFor="f5">Re-enter Password</Label>
+          <Input
+            type="password"
+            id="f5"
+            onChange={(e) => setRePassword(e.target.value)}
+            placeholder="password"
+            required
+          />
+          <Submit
+            type="submit"
+            onClick={createAccount}
+            value="Create Account"
+          />
+        </Form>
+      </AuthContent>
+    </AuthContainer>
   );
 }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
+import { AuthContainer, AuthContent, Form, Input } from './authComponents';
 
-const StyledFake = styled.p`
+const StyledForgot = styled.p`
   height: 15px;
 
   font-family: Poppins;
@@ -17,33 +19,9 @@ const StyledFake = styled.p`
   color: #011338;
 `;
 
-const Form = styled.form`
-  input[type='button'],
-  input[type='submit'],
-  input[type='reset'] {
-    width: 149.61px;
-    height: 46.95px;
-
-    background: #000;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-  input[type='text'],
-  input[type='password'],
-  input[type='email'] {
-    width: 347px;
-    height: 47px;
-
-    border: 1px solid #8f8f8f;
-    box-sizing: border-box;
-    border-radius: 15px;
-  }
-`;
-
 const Button = styled.button.attrs(
   (props: { c: string; wid: string; bc: string }) => props
 )`
-  width: ${(props) => props.wid};
   height: 47px;
 
   border: 2px solid #5f8f3e;
@@ -60,6 +38,11 @@ const Button = styled.button.attrs(
   line-height: 22px;
   text-align: center;
 
+  width: 100%;
+  @media only screen and (min-width: 300px) {
+    width: ${({ wid }) => wid};
+  }
+
   color: ${(props) => props.c};
 `;
 
@@ -70,21 +53,19 @@ const Flex = styled.div.attrs((props: { ai: string; dir: string }) => props)`
   flex-direction: ${({ dir }) => dir};
 `;
 
-const FlexContainer = styled.div.attrs(
-  (props: { mb: string; pad: string; ta: string }) => props
-)`
-  flex: 100%;
-  width: 347px;
-  margin-bottom: ${({ mb }) => mb || '10px'};
-  padding: ${({ pad }) => pad || '0px'};
-  text-align: ${({ ta }) => ta};
-`;
-
 const StyledImage = styled.img`
   height: auto;
   width: auto;
   max-width: 173px;
   max-height: 173px;
+`;
+
+const SLink = styled(Link)`
+  width: 45%;
+`;
+
+const FLink = styled(Link)`
+  text-decoration: none;
 `;
 
 export default function LoginPage() {
@@ -122,57 +103,52 @@ export default function LoginPage() {
   };
 
   return (
-    <Flex dir="column" ai="center">
-      <FlexContainer pad="40px">
+    <AuthContainer>
+      <Flex dir="column" ai="center">
         <StyledImage src={logo} alt="The Land Conservancy of SLO logo" />
-      </FlexContainer>
-      <FlexContainer mb="-20px">
-        <Form>
-          <Flex dir="column" ai="center">
-            <FlexContainer>
-              <input
-                type="email"
-                placeholder="Email/Phone Number"
-                name="uname"
-                onChange={(e) => setUsername(e.target.value)}
-                onBlur={validateUsername}
-                required
-              />
-            </FlexContainer>
-            <FlexContainer>
-              <input
-                type="password"
-                placeholder="Password"
-                name="passwd"
-                onChange={(e) => setPassword(e.target.value)}
-                onBlur={validatePassword}
-                required
-              />
-            </FlexContainer>
-            <FlexContainer>
-              <Flex dir="row">
-                <Button wid="176.67px" c="#5F8F3E">
-                  {' '}
-                  Create Account{' '}
-                </Button>
-                <Button
-                  type="submit"
-                  wid="149.61px"
-                  bc="#5F8F3E"
-                  c="#ffffff"
-                  onClick={retrieveUser}
-                >
-                  {' '}
-                  Sign in{' '}
-                </Button>
-              </Flex>
-            </FlexContainer>
+      </Flex>
+      <AuthContent>
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <Input
+            type="email"
+            id="f1"
+            onChange={(e) => setUsername(e.target.value)}
+            onBlur={validateUsername}
+            placeholder="email"
+            required
+          />
+          <Input
+            type="password"
+            id="f2"
+            onChange={(e) => setPassword(e.target.value)}
+            onBlur={validatePassword}
+            placeholder="password"
+            required
+          />
+
+          <Flex dir="row">
+            <SLink to="/create-account">
+              <Button c="#5F8F3E" wid="100%">
+                {' '}
+                Create Account{' '}
+              </Button>
+            </SLink>
+            <Button
+              type="submit"
+              bc="#5F8F3E"
+              c="#ffffff"
+              wid="45%"
+              onClick={retrieveUser}
+            >
+              {' '}
+              Sign in{' '}
+            </Button>
           </Flex>
         </Form>
-      </FlexContainer>
-      <FlexContainer>
-        <StyledFake> Forgot password? </StyledFake>
-      </FlexContainer>
-    </Flex>
+        <FLink to="/forgot-password">
+          <StyledForgot> Forgot password? </StyledForgot>
+        </FLink>
+      </AuthContent>
+    </AuthContainer>
   );
 }
