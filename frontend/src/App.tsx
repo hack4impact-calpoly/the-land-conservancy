@@ -10,6 +10,7 @@ import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
 import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
+import LogHours from './components/pages/logHours';
 import awsconfig from './aws-exports';
 
 Amplify.configure(awsconfig);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/past-shifts" element={<PastShifts />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/log-hours" element={<LogHours />} />
         </Routes>
       </BrowserRouter>
     </div>
