@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   StyledBack,
@@ -15,31 +15,41 @@ import {
 export default function ResetPassword() {
   const [pass1, setPass1] = useState('');
   const [pass2, setPass2] = useState('');
-  const [badPassMsg, setBatpassMsg] = useState('');
+  const [badPassMsg, setBadpassMsg] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const firstRender = useRef(true);
 
   const validatePass = () => {
     if (pass1 !== pass2) {
-      setBatpassMsg('Passwords must match');
-    } else if (pass1.length < 8) {
-      // must add valifation for other requirements
-      // or can catch the error because cognito also checks
-      setBatpassMsg(
+      setBadpassMsg('Passwords must match');
+      return false;
+    }
+    if (pass1.length < 8) {
+      // TODO: add validation for other requirements (see msg below)
+      setBadpassMsg(
         'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
       );
-    } else {
-      setBatpassMsg('');
+      return false;
     }
+    setBadpassMsg('');
+    return true;
   };
 
-  const finalValidation = () => {
+  // only called when form is not disabled
+  const changePassword = () => {
     // no actual functionality here yet since no backend
-    validatePass();
-    if (badPassMsg !== '') {
-      console.log('pass NOT changed');
-    } else {
-      console.log('pass changed');
-    }
+    console.log('pass changed');
   };
+
+  useEffect(() => {
+    // we want to skip validation on first render
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    setDisabled(!validatePass());
+  }, [pass1, pass2]);
 
   return (
     <AuthContainer>
@@ -48,7 +58,12 @@ export default function ResetPassword() {
       </Link>
       <AuthContent>
         <AuthHeader>Reset Password</AuthHeader>
-        <Form onSubmit={(e) => e.preventDefault()}>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            changePassword();
+          }}
+        >
           <Label htmlFor="np1">New password</Label>
           <Input
             type="password"
@@ -60,15 +75,9 @@ export default function ResetPassword() {
             type="password"
             id="np2"
             onChange={(e) => setPass2(e.target.value)}
-            onBlur={validatePass}
           />
           <ErrorMsg>{badPassMsg}</ErrorMsg>
-          <Submit
-            type="submit"
-            onClick={validatePass}
-            onSubmit={finalValidation}
-            value="Confirm"
-          />
+          <Submit type="submit" value="Confirm" disabled={disabled} />
         </Form>
       </AuthContent>
     </AuthContainer>

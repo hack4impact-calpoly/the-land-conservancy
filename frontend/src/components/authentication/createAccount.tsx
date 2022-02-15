@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   StyledBack,
@@ -9,6 +9,7 @@ import {
   Input,
   Label,
   Submit,
+  ErrorMsg,
 } from './authComponents';
 
 // TODO: change to containr later and text-aling left
@@ -18,35 +19,56 @@ export default function CreateAccount() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
+  const [pass1, setPass1] = useState('');
+  const [pass2, setPass2] = useState('');
+  const [badMsg, setBadMsg] = useState('');
+  const [disabled, setDisabled] = useState(true);
 
+  // submit only calls when form meets requirements
   const createAccount = () => {
-    // regex for email validation
-    // TODO: add validation for password requirements
-    const re =
-      /^(([^<>()[\].,;:\s@"]+(.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (
-      name &&
-      email &&
-      number &&
-      password &&
-      rePassword &&
-      password === rePassword &&
-      re.test(email)
-    ) {
-      const account = {
-        Name: name,
-        Email: email,
-        Number: number,
-        Password: password,
-      };
-      console.log(account);
-    } else {
-      // print to console for now, change to actual errors later
-      console.log('Unable to create account');
-    }
+    const account = {
+      Name: name,
+      Email: email,
+      Number: number,
+      Password: pass1,
+    };
+    console.log(account);
+    // print to console for now, call some backend/ cognito function later
   };
+
+  const validateForm = () => {
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const phoneRegex = /[0-9]{10}/;
+
+    if (email && !emailRegex.test(email)) {
+      setBadMsg('Please enter a valid email address.');
+      return false;
+    }
+
+    if (number && !(phoneRegex.test(number) && number.length === 10)) {
+      setBadMsg('please enter the 10 digits of your phone number only');
+      return false;
+    }
+    if (pass1 && pass1.length < 8) {
+      // TODO: add validation for other requirements (see msg below)
+      setBadMsg(
+        'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
+      );
+      return false;
+    }
+    if (pass1 && pass1 !== pass2) {
+      setBadMsg('Passwords must match');
+      return false;
+    }
+
+    setBadMsg('');
+    return true;
+  };
+
+  useEffect(() => {
+    setDisabled(!validateForm());
+  }, [email, number, pass1, pass2]);
 
   return (
     <AuthContainer>
@@ -55,7 +77,12 @@ export default function CreateAccount() {
       </Link>
       <AuthContent>
         <AuthHeader>Create an account</AuthHeader>
-        <Form onSubmit={(e) => e.preventDefault()}>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createAccount();
+          }}
+        >
           <Label htmlFor="f1">First and Last Name</Label>
           <Input
             type="text"
@@ -85,7 +112,7 @@ export default function CreateAccount() {
           <Input
             type="password"
             id="f4"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPass1(e.target.value)}
             placeholder="password"
             required
           />
@@ -93,15 +120,12 @@ export default function CreateAccount() {
           <Input
             type="password"
             id="f5"
-            onChange={(e) => setRePassword(e.target.value)}
+            onChange={(e) => setPass2(e.target.value)}
             placeholder="password"
             required
           />
-          <Submit
-            type="submit"
-            onClick={createAccount}
-            value="Create Account"
-          />
+          <ErrorMsg>{badMsg}</ErrorMsg>
+          <Submit type="submit" value="Create Account" disabled={disabled} />
         </Form>
       </AuthContent>
     </AuthContainer>

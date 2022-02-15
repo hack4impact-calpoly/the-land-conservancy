@@ -99,7 +99,7 @@ export default function LoginPage() {
       firstRender.current = false;
       return;
     }
-    setDisabled(!(validatePassword() && validateUsername()));
+    setDisabled(!(validateUsername() && validatePassword()));
   }, [username, password]);
 
   // only runs when form not disabled (requirements met)
