@@ -20,15 +20,15 @@ export default function ResetPassword() {
   const firstRender = useRef(true);
 
   const validatePass = () => {
-    if (pass1 !== pass2) {
-      setBadpassMsg('Passwords must match');
-      return false;
-    }
     if (pass1.length < 8) {
       // TODO: add validation for other requirements (see msg below)
       setBadpassMsg(
         'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
       );
+      return false;
+    }
+    if (pass1 !== pass2) {
+      setBadpassMsg('Passwords must match');
       return false;
     }
     setBadpassMsg('');
