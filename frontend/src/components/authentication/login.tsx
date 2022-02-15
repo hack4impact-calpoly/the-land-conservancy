@@ -34,7 +34,7 @@ const Button = styled.button.attrs(
   font-family: Poppins;
   font-style: normal;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 20px;
   line-height: 22px;
   text-align: center;
 
@@ -60,7 +60,7 @@ const StyledImage = styled.img`
   max-height: 173px;
 `;
 
-const SLink = styled(Link)`
+const CLink = styled(Link)`
   width: 45%;
 `;
 
@@ -127,12 +127,12 @@ export default function LoginPage() {
           />
 
           <Flex dir="row">
-            <SLink to="/create-account">
-              <Button c="#5F8F3E" wid="100%">
+            <CLink to="/create-account">
+              <Button type="button" c="#5F8F3E" wid="100%">
                 {' '}
                 Create Account{' '}
               </Button>
-            </SLink>
+            </CLink>
             <Button
               type="submit"
               bc="#5F8F3E"

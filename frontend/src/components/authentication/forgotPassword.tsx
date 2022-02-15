@@ -74,15 +74,14 @@ export default function ForgotPassword() {
           link.{' '}
         </StyledParagraph>
         <Form onSubmit={(e) => e.preventDefault()}>
-          <Label htmlFor="email">
-            Email
-            <Input
-              type="text"
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={validateEmail}
-            />
-          </Label>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            type="text"
+            id="email"
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={validateEmail}
+            placeholder="email"
+          />
           <ErrorMsg>{valid}</ErrorMsg>
           <Submit type="submit" onClick={sendEmail} value="Send" />{' '}
           {/* Doesn't actually do anything since it is just frontend for now */}

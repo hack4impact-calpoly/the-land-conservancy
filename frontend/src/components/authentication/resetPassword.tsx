@@ -49,23 +49,19 @@ export default function ResetPassword() {
       <AuthContent>
         <AuthHeader>Reset Password</AuthHeader>
         <Form onSubmit={(e) => e.preventDefault()}>
-          <Label htmlFor="np1">
-            New password
-            <Input
-              type="password"
-              id="np1"
-              onChange={(e) => setPass1(e.target.value)}
-            />
-          </Label>
-          <Label htmlFor="np2">
-            Re-enter new password
-            <Input
-              type="password"
-              id="np2"
-              onChange={(e) => setPass2(e.target.value)}
-              onBlur={validatePass}
-            />
-          </Label>
+          <Label htmlFor="np1">New password</Label>
+          <Input
+            type="password"
+            id="np1"
+            onChange={(e) => setPass1(e.target.value)}
+          />
+          <Label htmlFor="np2">Re-enter new password</Label>
+          <Input
+            type="password"
+            id="np2"
+            onChange={(e) => setPass2(e.target.value)}
+            onBlur={validatePass}
+          />
           <ErrorMsg>{badPassMsg}</ErrorMsg>
           <Submit
             type="submit"

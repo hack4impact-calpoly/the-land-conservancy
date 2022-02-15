@@ -70,7 +70,7 @@ const Input = styled.input`
   border: 1px solid #c4c4c4;
   border-radius: 10px;
   height: 33px;
-  padding-left: 6px;
+  padding-left: 10px;
 
   font-family: Poppins;
   font-size: 20px;
