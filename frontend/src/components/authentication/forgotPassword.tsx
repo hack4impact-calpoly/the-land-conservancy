@@ -49,16 +49,13 @@ export default function ForgotPassword() {
     }
   };
 
-  /* if the email is valid then after pressing send it will display message */
+  /* only called when form requirements met */
+  /* Doesn't do anything on the back since it is just frontend for now */
   const sendEmail = () => {
-    validateEmail();
-    if (valid === '') {
-      setSent(
-        'Email has been sent. Please check your email for your reset link.'
-      );
-    } else {
-      setSent('');
-    }
+    validateEmail(); // to reset error msg
+    setSent(
+      'Email has been sent. Please check your email for your reset link.'
+    );
   };
 
   return (
@@ -73,18 +70,26 @@ export default function ForgotPassword() {
           Please enter the email associated with your account to recieve a reset
           link.{' '}
         </StyledParagraph>
-        <Form onSubmit={(e) => e.preventDefault()}>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendEmail();
+          }}
+        >
           <Label htmlFor="email">Email</Label>
           <Input
             type="text"
             id="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setSent('');
+            }}
             onBlur={validateEmail}
             placeholder="email"
+            required
           />
           <ErrorMsg>{valid}</ErrorMsg>
-          <Submit type="submit" onClick={sendEmail} value="Send" />{' '}
-          {/* Doesn't actually do anything since it is just frontend for now */}
+          <Submit type="submit" value="Send" />{' '}
           <StyledSentMsg>{sent}</StyledSentMsg>
         </Form>
       </AuthContent>
