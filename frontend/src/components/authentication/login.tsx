@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
@@ -69,37 +69,43 @@ const FLink = styled(Link)`
 `;
 
 export default function LoginPage() {
+  const firstRender = useRef(true);
   const [username, setUsername] = useState('');
-  const [validUsername, setValidUsername] = useState('');
-
   const [password, setPassword] = useState('');
-  const [validPassword, setValidPassword] = useState('');
+  const [disabled, setDisabled] = useState(true);
 
+  // "required" attribute on input also validates more precisely
   const validateUsername = () => {
-    if (username.length > 0) {
-      console.log('Is valid');
-      setValidUsername('');
-    } else {
-      console.log('Is not valid');
-      setValidUsername('Please enter a username.');
+    if (username.includes('@') && username.includes('.')) {
+      console.log('valid email');
+      return true;
     }
+    console.log('invalid email');
+    return false;
   };
 
   const validatePassword = () => {
     if (password.length > 0) {
-      console.log('Password is valid');
-      setValidPassword('');
-    } else {
-      console.log('Password is not valid');
-      setValidPassword('Please enter a password.');
+      console.log('valid Password');
+      return true;
     }
+    console.log('invalid Password');
+    return false;
   };
 
-  const retrieveUser = () => {
-    if (validUsername === '' && validPassword === '') {
-      console.log(username);
-      console.log(password);
+  useEffect(() => {
+    // we want to skip validation on first render
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
     }
+    setDisabled(!(validatePassword() && validateUsername()));
+  }, [username, password]);
+
+  // only runs when form not disabled (requirements met)
+  const retrieveUser = () => {
+    console.log(username);
+    console.log(password);
   };
 
   return (
@@ -108,7 +114,12 @@ export default function LoginPage() {
         <StyledImage src={logo} alt="The Land Conservancy of SLO logo" />
       </Flex>
       <AuthContent>
-        <Form onSubmit={(e) => e.preventDefault()}>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            retrieveUser();
+          }}
+        >
           <Input
             type="email"
             id="f1"
@@ -135,10 +146,10 @@ export default function LoginPage() {
             </CLink>
             <Button
               type="submit"
+              disabled={disabled}
               bc="#5F8F3E"
               c="#ffffff"
               wid="45%"
-              onClick={retrieveUser}
             >
               {' '}
               Sign in{' '}
