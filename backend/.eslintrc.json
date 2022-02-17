@@ -1,43 +1,54 @@
 {
   "env": {
-      "browser": true,
-      "es2021": true,
-      "es6": true,
-      "node": true
+    "browser": true,
+    "es2021": true,
+    "es6": true,
+    "node": true
   },
-  "extends": [
-      "airbnb",
-      "plugin:prettier/recommended",
-      "prettier"
-  ],
+  "extends": ["airbnb", "plugin:prettier/recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-      "ecmaVersion": 13,
-      "sourceType": "module"
+    "ecmaVersion": 13,
+    "sourceType": "module"
   },
-  "plugins": [
-      "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
     "prettier/prettier": "warn",
     "semi": ["warn", "always"],
-    "no-trailing-spaces":"warn",
+    "no-trailing-spaces": "warn",
     "no-console": "off",
     "indent": "warn",
-    "react/react/in/jsx/scope":0,
+    "react/react/in/jsx/scope": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
     "max-len": [
       "warn",
       {
-          "code": 80,
-          "tabWidth": 2,
-          "comments": 80,
-          "ignoreComments": false,
-          "ignoreTrailingComments": true,
-          "ignoreUrls": true,
-          "ignoreStrings": true,
-          "ignoreTemplateLiterals": true,
-          "ignoreRegExpLiterals": true
+        "code": 80,
+        "tabWidth": 2,
+        "comments": 80,
+        "ignoreComments": false,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
       }
-    ]   
+    ]
   }
 }
