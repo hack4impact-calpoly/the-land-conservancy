@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Header from './navigation/header';
 
 const StyledHeader = styled.header`
   display: 'flex';
@@ -13,9 +14,7 @@ const StyledHeader = styled.header`
 function Home() {
   return (
     <div>
-      <StyledHeader>
-        <p>This is the beginning of The Land Conservancy project.</p>
-      </StyledHeader>
+      <StyledHeader>This is the beginning of The Land Conservancy project.</StyledHeader>
     </div>
   );
 }

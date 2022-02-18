@@ -1,27 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
 import EventCard from './eventCard';
-
-const StyledArrow = styled(BiArrowBack)`
-  margin-top: 10px;
-  color: black;
-  text-align: left;
-  display: block;
-  font-size: 25px;
-`;
-
-const StyledHeader = styled.p`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 27px;
-
-  color: #000000;
-`;
+import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -91,11 +72,8 @@ export default function Events() {
 
   return (
     <div>
+      <Header headerText="Events" />
       <StyledContainer maxWidth="md">
-        <Link to="/">
-          <StyledArrow />
-        </Link>
-        <StyledHeader>Events</StyledHeader>
         {eventCards}
       </StyledContainer>
     </div>
