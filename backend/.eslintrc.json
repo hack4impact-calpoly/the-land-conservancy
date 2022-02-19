@@ -6,7 +6,6 @@
       "node": true
   },
   "extends": [
-      "airbnb",
       "plugin:prettier/recommended",
       "prettier"
   ],
@@ -15,9 +14,14 @@
       "ecmaVersion": 13,
       "sourceType": "module"
   },
-  "plugins": [
-      "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
     "prettier/prettier": "warn",
     "semi": ["warn", "always"],

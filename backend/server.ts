@@ -1,5 +1,6 @@
 const express = require('express'); // includes express
 const mongoose = require('mongoose'); // include mongoose
+const shiftEndpoints = require('./routes/shift');
 require('dotenv').config(); // loads .env into process.env
 
 const app = express(); // initializes Express
@@ -20,8 +21,10 @@ mongoose.connect(process.env.CONNECTION_URL).then(
  * other code here :)
  */
 
-app.get('/', (req: any, res: any) => {
-  res.send('Hello world!');
-});
+// app.get('/', (req: any, res: any) => {
+//   res.send('Hello world!');
+// });
+
+app.use('/', shiftEndpoints);
 
 app.listen(3001); // 3. runs Express
