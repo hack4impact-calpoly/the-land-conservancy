@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import EventSlot from './eventSlot';
+import NavBar from '../navigation/navBar';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
@@ -58,6 +59,7 @@ export default function PastShifts() {
   return (
     <div>
       <StyledContainer>
+        <NavBar />
         <StyledHeader>Past Shifts</StyledHeader>
         {eventSlots}
       </StyledContainer>

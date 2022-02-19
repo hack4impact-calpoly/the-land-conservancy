@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
 import EventCard from './eventCard';
+import NavBar from '../navigation/navBar';
 
 const StyledArrow = styled(BiArrowBack)`
   margin-top: 10px;
@@ -92,9 +92,7 @@ export default function Events() {
   return (
     <div>
       <StyledContainer maxWidth="md">
-        <Link to="/">
-          <StyledArrow />
-        </Link>
+        <NavBar />
         <StyledHeader>Events</StyledHeader>
         {eventCards}
       </StyledContainer>
