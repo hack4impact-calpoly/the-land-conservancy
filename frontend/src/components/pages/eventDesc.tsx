@@ -12,7 +12,7 @@ const StyledEventContainer = styled(Container)`
 
 const StyledTitle = styled.p`
   font-weight: bold;
-  font-size: 14px
+  font-size: 20px
   line-height: 21px;
 `;
 type EventDescProps = {

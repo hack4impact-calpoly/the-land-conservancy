@@ -39,10 +39,6 @@ const StyledInput = styled.input`
   margin-top: 11px;
   margin-bottom: 22px;
 
-  @media (max-width: 600px) {
-    width: 500px;
-  }
-
   @media (max-width: 599px) {
     width: 90vw;
   }
@@ -97,12 +93,16 @@ const testEvents = [
 ];
 
 export default function LogHours() {
-  const [hours, setHours] = React.useState(' ');
+  const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
+  const [link, setLink] = React.useState(' ');
 
   const validateHours = () => {
-    if (Number.isNaN(+hours) === false) {
+    if (hours === '') {
+      console.log('bruh');
+      setValid('Empty');
+    } else if (Number.isNaN(+hours) === false) {
       console.log('true');
       setValid(' ');
     } else {
@@ -112,12 +112,17 @@ export default function LogHours() {
   };
 
   const submitHours = () => {
+    validateHours();
     if (valid === ' ') {
       setSubmit('Hours have been submitted.');
+      setLink('View your updated history here.');
+      setHours('');
     } else {
       setSubmit(' ');
+      setLink(' ');
     }
   };
+
   const eventDesc = testEvents.map((event) => {
     return (
       <EventDesc
@@ -143,16 +148,26 @@ export default function LogHours() {
         <StyledHeader>Log Hours</StyledHeader>
         {eventDesc}
         <StyledHeader3>Total hours volunteered</StyledHeader3>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form
+          id="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitHours();
+          }}
+        >
           <StyledInput
             id="hours"
             type="text"
+            value={hours}
             onChange={(e) => setHours(e.target.value)}
             onBlur={validateHours}
+            required
           />
+
           <StyledHeader4>{valid}</StyledHeader4>
-          <StyledButton onClick={submitHours}>Submit</StyledButton>
+          <StyledButton type="submit">Submit</StyledButton>
           <p>{submit}</p>
+          <Link to="/past-shifts">{link}</Link>
         </form>
       </StyledContainer>
     </div>
