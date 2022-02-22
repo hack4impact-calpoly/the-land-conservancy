@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
@@ -33,7 +33,9 @@ const StyledInput = styled.input`
   border: 1px solid #c4c4c4;
   box-sizing: border-box;
   border-radius: 6px;
+  height: 33px;
 
+  font-size: 20px;
   text-align: left;
 
   margin-top: 11px;
@@ -99,20 +101,17 @@ export default function LogHours() {
   const [link, setLink] = React.useState(' ');
 
   const validateHours = () => {
-    if (hours === '') {
-      console.log('bruh');
-      setValid('Empty');
-    } else if (Number.isNaN(+hours) === false) {
-      console.log('true');
-      setValid(' ');
+    // check: filled, isNumber, is > 0
+    if (hours && (Number.isNaN(hours) || !(+hours > 0))) {
+      console.log('invalid input');
+      setValid('Please enter a positive number of hours');
     } else {
-      console.log('false');
-      setValid('Please enter a valid number');
+      console.log(`good input: ${hours || 'empty'}`);
+      setValid(' ');
     }
   };
 
   const submitHours = () => {
-    validateHours();
     if (valid === ' ') {
       setSubmit('Hours have been submitted.');
       setLink('View your updated history here.');
@@ -122,6 +121,10 @@ export default function LogHours() {
       setLink(' ');
     }
   };
+
+  useEffect(() => {
+    validateHours();
+  }, [hours]);
 
   const eventDesc = testEvents.map((event) => {
     return (
@@ -157,10 +160,10 @@ export default function LogHours() {
         >
           <StyledInput
             id="hours"
-            type="text"
+            type="number"
+            step="0.5"
             value={hours}
             onChange={(e) => setHours(e.target.value)}
-            onBlur={validateHours}
             required
           />
 
