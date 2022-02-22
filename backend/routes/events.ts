@@ -1,4 +1,3 @@
-/* eslint-disable */
 import Event from '../models/eventSchema';
 
 export {};

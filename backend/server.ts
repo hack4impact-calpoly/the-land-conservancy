@@ -21,7 +21,7 @@ mongoose.connect(process.env.CONNECTION_URL).then(
  * other code here :)
  */
 
-app.use('/', eventEndpoints);
+app.use('/events', eventEndpoints);
 
 // app.get('/', (req: any, res: any) => {
 //   res.send('Hello world!');
