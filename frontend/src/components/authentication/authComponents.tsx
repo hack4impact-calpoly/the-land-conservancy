@@ -15,9 +15,12 @@ const AuthHeader = styled.h1`
 `;
 const Div = styled.div`
   display: flex;
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 0;
   @media only screen and (min-width: 768px) {
     justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -32,13 +35,11 @@ const StyledContainer = styled.div`
   text-align: left;
   font-family: Poppins;
   padding: 20px;
-  width: 100%;
   @media only screen and (min-width: 768px) {
     width: 600px;
     background: #fffdfd;
     border: 1px solid #c4c4c4;
     border-radius: 7px;
-    align-self: center;
   }
 `;
 
@@ -67,6 +68,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   display: block;
+  box-sizing: border-box;
   border: 1px solid #c4c4c4;
   border-radius: 10px;
   height: 33px;
@@ -79,7 +81,7 @@ const Input = styled.input`
   margin-top: 11px;
   margin-bottom: 22px;
 
-  width: 98%;
+  width: 100%;
 `;
 
 const Submit = styled.input`
@@ -97,7 +99,7 @@ const Submit = styled.input`
 
   margin-top: 6px;
   margin-bottom: 10px;
-  width: 100%;
+  min-width: 100%;
   height: 36px;
   align-self: center;
 `;

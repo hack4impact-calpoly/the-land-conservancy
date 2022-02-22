@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
@@ -69,38 +69,10 @@ const FLink = styled(Link)`
 `;
 
 export default function LoginPage() {
-  const firstRender = useRef(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [disabled, setDisabled] = useState(true);
 
-  // "required" attribute on input also validates more precisely
-  const validateUsername = () => {
-    if (username.includes('@') && username.includes('.')) {
-      console.log('valid email');
-      return true;
-    }
-    console.log('invalid email');
-    return false;
-  };
-
-  const validatePassword = () => {
-    if (password.length > 0) {
-      console.log('valid Password');
-      return true;
-    }
-    console.log('invalid Password');
-    return false;
-  };
-
-  useEffect(() => {
-    // we want to skip validation on first render
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    setDisabled(!(validateUsername() && validatePassword()));
-  }, [username, password]);
+  // "required" attribute on input validates
 
   // only runs when form not disabled (requirements met)
   const retrieveUser = () => {
@@ -124,7 +96,6 @@ export default function LoginPage() {
             type="email"
             id="f1"
             onChange={(e) => setUsername(e.target.value)}
-            onBlur={validateUsername}
             placeholder="email"
             required
           />
@@ -132,7 +103,6 @@ export default function LoginPage() {
             type="password"
             id="f2"
             onChange={(e) => setPassword(e.target.value)}
-            onBlur={validatePassword}
             placeholder="password"
             required
           />
@@ -144,16 +114,10 @@ export default function LoginPage() {
                 Create Account{' '}
               </Button>
             </CLink>
-            <Button
-              type="submit"
-              disabled={disabled}
-              bc="#5F8F3E"
-              c="#ffffff"
-              wid="45%"
-            >
+            <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
               {' '}
               Sign in{' '}
-            </Button>
+            </Button> 
           </Flex>
         </Form>
         <FLink to="/forgot-password">
