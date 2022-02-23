@@ -7,6 +7,7 @@ import {
   PersonIcon,
   LogoutIcon,
   Button,
+  Path,
   Label,
   StyledLink,
 } from './navComponents';
@@ -21,30 +22,30 @@ export default function NavBar() {
           <Button onClick={() => setNavOpen(false)}>
             <BarIcon />
           </Button>
-          <StyledLink to="/events">
-            <Button>
-              <ClipboardIcon />
+          <Path>
+            <ClipboardIcon />
+            <StyledLink to="/events">
               <Label>Log hours</Label>
-            </Button>
-          </StyledLink>
-          <StyledLink to="/past-shifts">
-            <Button>
-              <ClockIcon />
+            </StyledLink>
+          </Path>
+          <Path>
+            <ClockIcon />
+            <StyledLink to="/past-shifts">
               <Label>Past shifts</Label>
-            </Button>
-          </StyledLink>
-          <StyledLink to="/">
-            <Button>
-              <PersonIcon />
+            </StyledLink>
+          </Path>
+          <Path>
+            <PersonIcon />
+            <StyledLink to="/">
               <Label>Profile</Label>
-            </Button>
-          </StyledLink>
-          <StyledLink to="/">
-            <Button>
-              <LogoutIcon />
+            </StyledLink>
+          </Path>
+          <Path>
+            <LogoutIcon />
+            <StyledLink to="/">
               <Label>Sign out</Label>
-            </Button>
-          </StyledLink>
+            </StyledLink>
+          </Path>
         </div>
       }
       open={navOpen}

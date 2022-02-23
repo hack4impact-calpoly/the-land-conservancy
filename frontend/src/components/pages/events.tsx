@@ -1,17 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
 import EventCard from './eventCard';
 import NavBar from '../navigation/navBar';
-
-const StyledArrow = styled(BiArrowBack)`
-  margin-top: 10px;
-  color: black;
-  text-align: left;
-  display: block;
-  font-size: 25px;
-`;
 
 const StyledHeader = styled.p`
   font-family: Poppins;

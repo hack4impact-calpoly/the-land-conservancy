@@ -55,6 +55,16 @@ const Button = styled.button`
   margin-top: 15px;
 `;
 
+const Path = styled.div`
+  border: none;
+  sizing-border-box;
+  background: none;
+  text-align: left;
+  display: flex;
+  margin-left: 29px;
+  margin-top: 15px;
+`;
+
 const Label = styled.h3`
   font-family: Poppins;
   font-size: 17px;
@@ -62,12 +72,12 @@ const Label = styled.h3`
   font-weight: 400;
   line-height: 26px;
   text-align: center;
-  padding-left: 40px;
 
   color: #000000;
 `;
 
 const StyledLink = styled(Link)`
+  padding: 0 40px 0 40px;
   text-decoration: none;
 `;
 
@@ -78,6 +88,7 @@ export {
   PersonIcon,
   LogoutIcon,
   Button,
+  Path,
   Label,
   StyledLink,
 };
