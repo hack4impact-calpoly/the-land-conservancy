@@ -1,5 +1,6 @@
 const express = require('express'); // includes express
 const mongoose = require('mongoose'); // include mongoose
+const eventEndpoints = require('./routes/events');
 require('dotenv').config(); // loads .env into process.env
 
 const app = express(); // initializes Express
@@ -20,8 +21,10 @@ mongoose.connect(process.env.CONNECTION_URL).then(
  * other code here :)
  */
 
-app.get('/', (req: any, res: any) => {
-  res.send('Hello world!');
-});
+app.use('/events', eventEndpoints);
+
+// app.get('/', (req: any, res: any) => {
+//   res.send('Hello world!');
+// });
 
 app.listen(3001); // 3. runs Express
