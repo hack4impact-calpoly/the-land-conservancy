@@ -2,22 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import EventSlot from './eventSlot';
+import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
 
   margin: 5px;
   padding: 10px;
-`;
-
-const StyledHeader = styled.h1`
-  text-align: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 30px;
-  color: #000000;
 `;
 
 const testEvents = [
@@ -57,10 +48,8 @@ export default function PastShifts() {
 
   return (
     <div>
-      <StyledContainer>
-        <StyledHeader>Past Shifts</StyledHeader>
-        {eventSlots}
-      </StyledContainer>
+      <Header headerText="Past Shifts" />
+      <StyledContainer>{eventSlots}</StyledContainer>
     </div>
   );
 }
