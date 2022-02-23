@@ -49,9 +49,7 @@ export default function PastShifts() {
   return (
     <div>
       <Header headerText="Past Shifts" />
-      <StyledContainer>
-        {eventSlots}
-      </StyledContainer>
+      <StyledContainer>{eventSlots}</StyledContainer>
     </div>
   );
 }

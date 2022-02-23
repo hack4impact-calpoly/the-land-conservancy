@@ -73,9 +73,7 @@ export default function Events() {
   return (
     <div>
       <Header headerText="Events" />
-      <StyledContainer maxWidth="md">
-        {eventCards}
-      </StyledContainer>
+      <StyledContainer maxWidth="md">{eventCards}</StyledContainer>
     </div>
   );
 }
