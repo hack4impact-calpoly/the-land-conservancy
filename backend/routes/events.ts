@@ -12,7 +12,7 @@ router.get('/', async (req: any, res: any) => {
     const temp = await Event.find({});
     res.send(temp);
   } catch (error) {
-    res.send(error);
+    res.status(400).send(error);
   }
 });
 
@@ -22,7 +22,7 @@ router.get('/:eventid', async (req: any, res: any) => {
     const temp = await Event.findOne({ _id: req.params.eventid });
     res.send(temp);
   } catch (error) {
-    res.send(error);
+    res.status(400).send(error);
   }
 });
 
@@ -37,7 +37,7 @@ router.post('/', async (req: any, res: any) => {
     event = await event.save();
     res.json(event);
   } catch (error) {
-    res.send(error);
+    res.status(400).send(error);
   }
 });
 
