@@ -2,9 +2,9 @@ import * as mongoose from 'mongoose';
 
 const ShiftSchema = new mongoose.Schema(
   {
-    event: [mongoose.SchemaTypes.ObjectId],
+    event: mongoose.Schema.Types.ObjectId,
     hours: Number,
-    user: [mongoose.SchemaTypes.ObjectId]
+    user: mongoose.Schema.Types.ObjectId
   },
   { collection: 'Shifts' }
 );
