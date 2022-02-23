@@ -23,7 +23,7 @@ router.get('/:shiftId', async (req: any, res: any) => {
     res.status(400).send(error);
   }
 });
- 
+
 router.use(express.json());
 
 // posts a new shift to the database
