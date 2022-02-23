@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import EventCard from './eventCard';
+import NavBar from '../navigation/navBar';
 import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
@@ -72,7 +73,7 @@ export default function Events() {
 
   return (
     <div>
-      <Header headerText="Events" />
+      <Header headerText="Events" navbar />
       <StyledContainer maxWidth="md">{eventCards}</StyledContainer>
     </div>
   );
