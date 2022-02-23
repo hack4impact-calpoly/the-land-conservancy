@@ -7,7 +7,7 @@ export const EventSchema = new mongoose.Schema(
     end: Date,
     location: String,
     notes: String,
-    shifts: [mongoose.SchemaTypes.ObjectId],
+    shifts: [mongoose.Schema.Types.ObjectId],
   },
   { collection: 'Events' }
 );

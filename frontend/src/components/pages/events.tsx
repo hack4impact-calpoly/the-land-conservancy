@@ -3,16 +3,7 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 import EventCard from './eventCard';
 import NavBar from '../navigation/navBar';
-
-const StyledHeader = styled.p`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 27px;
-
-  color: #000000;
-`;
+import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -82,11 +73,8 @@ export default function Events() {
 
   return (
     <div>
-      <StyledContainer maxWidth="md">
-        <NavBar />
-        <StyledHeader>Events</StyledHeader>
-        {eventCards}
-      </StyledContainer>
+      <Header headerText="Events" navbar />
+      <StyledContainer maxWidth="md">{eventCards}</StyledContainer>
     </div>
   );
 }

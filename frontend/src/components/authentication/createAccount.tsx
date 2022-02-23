@@ -1,126 +1,133 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { BiArrowBack } from 'react-icons/bi';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  StyledBack,
+  AuthHeader,
+  AuthContainer,
+  AuthContent,
+  Form,
+  Input,
+  Label,
+  Submit,
+  ErrorMsg,
+} from './authComponents';
 
-const BackArrow = styled(BiArrowBack)`
-  padding: 31px;
-  float: left;
-`;
-
-const TopBar = styled.div`
-  box-sizing: border-box;
-  height: 144px;
-`;
-
-const Card = styled.div`
-  width: 414px;
-  margin: 0 auto;
-`;
-
-const Header = styled.h1`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 30px;
-  padding-left: 53px;
-  text-align: left;
-
-  color: #000000;
-`;
-
-const Label = styled.h3`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 19px;
-  padding-left: 56px;
-  text-align: left;
-
-  color: #5b5a5a;
-`;
-
-const Input = styled.input`
-  width: 302px;
-  height: 33px;
-  border: 1px solid #c4c4c4;
-  border-radius: 6px;
-  display: flex;
-  align-items: flex-start;
-  margin-left: 56px;
-  margin-right: 56px;
-`;
-
-const Button = styled.button`
-  width: 305px;
-  height: 36px;
-  background: #5f8f3e;
-  border-radius: 6px;
-  border: none;
-  margin: 29px;
-
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  color: #ffffff;
-`;
+// TODO: change to containr later and text-aling left
+// but that will probably go into styledComponenets as well
 
 export default function CreateAccount() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
+  const [pass1, setPass1] = useState('');
+  const [pass2, setPass2] = useState('');
+  const [badMsg, setBadMsg] = useState('');
+  const [disabled, setDisabled] = useState(true);
 
+  // submit only calls when form meets requirements
   const createAccount = () => {
-    // regex for email validation
-    const re =
-      /^(([^<>()[\].,;:\s@"]+(.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (
-      name &&
-      email &&
-      number &&
-      password &&
-      rePassword &&
-      password === rePassword &&
-      re.test(email)
-    ) {
-      const account = {
-        Name: name,
-        Email: email,
-        Number: number,
-        Password: password,
-      };
-      console.log(account);
-    } else {
-      // print to console for now, change to actual errors later
-      console.log('Unable to create account');
-    }
+    const account = {
+      Name: name,
+      Email: email,
+      Number: number,
+      Password: pass1,
+    };
+    console.log(account);
+    // print to console for now, call some backend/ cognito function later
   };
 
+  const validateForm = () => {
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const phoneRegex = /[0-9]{10}/;
+
+    if (email && !emailRegex.test(email)) {
+      setBadMsg('Please enter a valid email address.');
+      return false;
+    }
+
+    if (number && !(phoneRegex.test(number) && number.length === 10)) {
+      setBadMsg('please enter the 10 digits of your phone number only');
+      return false;
+    }
+    if (pass1 && pass1.length < 8) {
+      // TODO: add validation for other requirements (see msg below)
+      setBadMsg(
+        'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
+      );
+      return false;
+    }
+    if (pass1 && pass1 !== pass2) {
+      setBadMsg('Passwords must match');
+      return false;
+    }
+
+    setBadMsg('');
+    return true;
+  };
+
+  useEffect(() => {
+    setDisabled(!validateForm());
+  }, [email, number, pass1, pass2]);
+
   return (
-    <Card>
-      <TopBar>
-        <Link to="/login">
-          <BackArrow />
-        </Link>
-      </TopBar>
-      <Header>Create an account</Header>
-      <Label>Name</Label>
-      <Input onChange={(e) => setName(e.target.value)} />
-      <Label>Email</Label>
-      <Input onChange={(e) => setEmail(e.target.value)} />
-      <Label>Phone number</Label>
-      <Input onChange={(e) => setNumber(e.target.value)} />
-      <Label>Password</Label>
-      <Input onChange={(e) => setPassword(e.target.value)} />
-      <Label>Re-enter password</Label>
-      <Input onChange={(e) => setRePassword(e.target.value)} />
-      <Button onClick={createAccount}>Create Account</Button>
-    </Card>
+    <AuthContainer>
+      <Link to="/login">
+        <StyledBack size="30" />
+      </Link>
+      <AuthContent>
+        <AuthHeader>Create an account</AuthHeader>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createAccount();
+          }}
+        >
+          <Label htmlFor="f1">First and Last Name</Label>
+          <Input
+            type="text"
+            id="f1"
+            onChange={(e) => setName(e.target.value)}
+            placeholder="First Last"
+            required
+          />
+
+          <Label htmlFor="f2">Email</Label>
+          <Input
+            type="email"
+            id="f2"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="email address"
+            required
+          />
+
+          <Label htmlFor="f3">Phone Number</Label>
+          <Input
+            type="tel"
+            id="f3"
+            onChange={(e) => setNumber(e.target.value)}
+            placeholder="8053215678"
+          />
+          <Label htmlFor="f4">Password</Label>
+          <Input
+            type="password"
+            id="f4"
+            onChange={(e) => setPass1(e.target.value)}
+            placeholder="password"
+            required
+          />
+          <Label htmlFor="f5">Re-enter Password</Label>
+          <Input
+            type="password"
+            id="f5"
+            onChange={(e) => setPass2(e.target.value)}
+            placeholder="password"
+            required
+          />
+          <ErrorMsg>{badMsg}</ErrorMsg>
+          <Submit type="submit" value="Create Account" disabled={disabled} />
+        </Form>
+      </AuthContent>
+    </AuthContainer>
   );
 }

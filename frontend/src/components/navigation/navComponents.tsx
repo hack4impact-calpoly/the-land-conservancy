@@ -12,6 +12,7 @@ const BarIcon = styled(FaBars)`
   text-align: left;
   display: block;
   font-size: 25px;
+  cursor: pointer;
 `;
 
 const ClipboardIcon = styled(HiOutlineClipboardList)`

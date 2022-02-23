@@ -14,7 +14,7 @@ function Home() {
   return (
     <div>
       <StyledHeader>
-        <p>This is the beginning of The Land Conservancy project.</p>
+        This is the beginning of The Land Conservancy project.
       </StyledHeader>
     </div>
   );
