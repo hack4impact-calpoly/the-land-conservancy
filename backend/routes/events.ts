@@ -53,6 +53,8 @@ router.delete('/:eventid', async (req: any, res: any) => {
   }
 });
 
+/* patches existing event in databse with any
+   information passed through req body */
 router.patch('/:eventid', async (req: any, res: any) => {
   try {
     const updatedEvent = req.body;
