@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Modal, ButtonBase } from '@mui/material';
 import { IoTrashOutline } from 'react-icons/io5';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
 
 const StyledEventContainer = styled(Container)`
   background: rgba(160, 166, 167, 0.31);
@@ -69,9 +70,24 @@ const TrashIcon = styled(IoTrashOutline)`
   cursor: pointer;
 `;
 
+const PencilIcon = styled(HiOutlinePencilAlt)`
+  text-align: right;
+  color: black;
+  font-size: 25px;
+  display: block;
+  cursor: pointer;
+`;
+
 const Button = styled(ButtonBase)`
   border: none;
   background: none;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100px;
 `;
 
 type EventSlotProps = {
@@ -91,9 +107,14 @@ export default function EventSlot({ title, date, hours }: EventSlotProps) {
           <p>{date}</p>
           <p>{hours} Hours</p>
         </div>
-        <Button onClick={() => setDeleteOpen(true)}>
-          <TrashIcon />
-        </Button>
+        <ButtonDiv>
+          <Button>
+            <PencilIcon />
+          </Button>
+          <Button onClick={() => setDeleteOpen(true)}>
+            <TrashIcon />
+          </Button>
+        </ButtonDiv>
         <StyledModal open={deleteOpen} onClose={() => setDeleteOpen(false)}>
           <StyledModalBox>
             <StyledModalTitle>
