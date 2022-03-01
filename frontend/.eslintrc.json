@@ -32,6 +32,7 @@
     "react/react/in/jsx/scope": 0,
     "linebreak-style": 0,
     "react/jsx-filename-extension": 0,
+    "react/jsx-fragments": 0,
     "no-alert": 0,
     "react/prop-types": 0,
     "import/no-unresolved": 0,
