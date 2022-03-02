@@ -7,9 +7,6 @@ const StyledContainer = styled.div`
   padding: 20px;
   @media only screen and (min-width: 768px) {
     width: 600px;
-    background: #fffdfd;
-    border: 1px solid #c4c4c4;
-    border-radius: 7px;
   }
 `;
 
@@ -28,7 +25,7 @@ type Props = {
   children: ReactChild[];
 };
 
-function AuthContainer({ children }: Props) {
+function Container({ children }: Props) {
   return (
     <Div>
       <StyledContainer>{children}</StyledContainer>
@@ -36,12 +33,4 @@ function AuthContainer({ children }: Props) {
   );
 }
 
-const ErrorMsg = styled.p`
-  color: red;
-  font-size: 15px;
-  font-style: normal;
-  text-align: left;
-  margin-top: -20px;
-`;
-
-export { AuthContainer, ErrorMsg };
+export { Container as default };

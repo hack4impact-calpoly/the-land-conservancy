@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
-import { AuthContainer, AuthContent, Form, Input } from './authComponents';
+import { AuthContainer } from './authComponents';
+import { Content, Form, Input } from '../styledComponents';
 
 const StyledForgot = styled.p`
   height: 15px;
@@ -85,7 +86,7 @@ export default function LoginPage() {
       <Flex dir="column" ai="center">
         <StyledImage src={logo} alt="The Land Conservancy of SLO logo" />
       </Flex>
-      <AuthContent>
+      <Content>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
@@ -117,13 +118,13 @@ export default function LoginPage() {
             <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
               {' '}
               Sign in{' '}
-            </Button> 
+            </Button>
           </Flex>
         </Form>
         <FLink to="/forgot-password">
           <StyledForgot> Forgot password? </StyledForgot>
         </FLink>
-      </AuthContent>
+      </Content>
     </AuthContainer>
   );
 }

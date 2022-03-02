@@ -1,17 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { AuthContainer, ErrorMsg } from './authComponents';
 import {
-  StyledBack,
-  AuthHeader,
-  AuthContainer,
-  AuthContent,
+  Content,
+  Header,
   Form,
   Input,
   Label,
   Submit,
-  ErrorMsg,
-} from './authComponents';
+  StyledBack,
+} from '../styledComponents';
 
 const StyledParagraph = styled.p`
   font-family: Poppins;
@@ -63,8 +62,8 @@ export default function ForgotPassword() {
       <Link to="/login">
         <StyledBack size="30" />
       </Link>
-      <AuthContent>
-        <AuthHeader>Forgot Password</AuthHeader>
+      <Content>
+        <Header>Forgot Password</Header>
         <StyledParagraph>
           {' '}
           Please enter the email associated with your account to recieve a reset
@@ -92,7 +91,7 @@ export default function ForgotPassword() {
           <Submit type="submit" value="Send" />{' '}
           <StyledSentMsg>{sent}</StyledSentMsg>
         </Form>
-      </AuthContent>
+      </Content>
     </AuthContainer>
   );
 }
