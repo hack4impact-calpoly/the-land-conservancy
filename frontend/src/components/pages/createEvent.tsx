@@ -1,16 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import {
-  StyledBack,
-  Header,
-  Container,
-  Content,
-  Form,
-  Input,
-  Label,
-  Submit,
-} from './formComponents';
+import Header from '../navigation/header';
+import Container from './formComponents';
+import { Content, Form, Input, Submit, Label } from '../styledComponents';
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
@@ -19,12 +11,34 @@ const Flex = styled.div.attrs((props: { dir: string }) => props)`
   flex-direction: ${({ dir }) => dir};
 `;
 
+const To = styled.p`
+  padding: 0 10px 0 10px;
+`;
+
+const Select = styled.select`
+  display: block;
+  box-sizing: border-box;
+  border: 1px solid #c4c4c4;
+  border-radius: 10px;
+  height: 33px;
+  padding-left: 10px;
+
+  font-family: Poppins;
+  font-size: 20px;
+  text-align: left;
+
+  margin-top: 11px;
+  margin-bottom: 22px;
+
+  width: 100%;
+`;
+
 export default function CreateEvent() {
   const [title, setTitle] = React.useState(' ');
   const [date, setDate] = React.useState(' ');
   const [startTime, setSTime] = React.useState(' ');
   const [endTime, setETime] = React.useState(' ');
-  const [repeat, setRepeat] = React.useState(' ');
+  const [repeat, setRepeat] = React.useState('false');
   const [endAfter, setEnd] = React.useState(' ');
   const [location, setLocation] = React.useState(' ');
   const [notes, setNotes] = React.useState(' ');
@@ -44,89 +58,97 @@ export default function CreateEvent() {
   };
 
   return (
-    <Container>
-      <Link to="/events">
-        <StyledBack size="30" />
-      </Link>
-      <Content>
-        <Header>Create Event</Header>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-            submitEvent();
-          }}
-        >
-          <Input
-            type="text"
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Event Title"
-            required
-          />
-          <Label>Date</Label>
-          <Input
-            type="date"
-            onChange={(e) => setDate(e.target.value)}
-            placeholder="Date"
-            required
-          />
-
-          <Label>Time</Label>
-          <Flex dir="row">
+    <>
+      <Header headerText="Create Event" back="/events" />
+      <Container>
+        <Content>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitEvent();
+            }}
+          >
             <Input
-              type="time"
-              onChange={(e) => setSTime(e.target.value)}
-              placeholder="Start Time"
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Event Title"
               required
             />
-            <p> to </p>
+            <Label htmlFor="date">Date</Label>
             <Input
-              type="time"
-              onChange={(e) => setETime(e.target.value)}
-              placeholder="End Time"
+              id="date"
+              type="date"
+              onChange={(e) => setDate(e.target.value)}
+              placeholder="Date"
               required
             />
-          </Flex>
 
-          <Flex dir="row">
-            <Flex dir="column">
-              <Label>Repeats</Label>
+            <Label htmlFor="st">Time</Label>
+            <Flex dir="row">
               <Input
-                type="text"
-                onChange={(e) => setRepeat(e.target.value)}
-                placeholder="repeat"
+                id="st"
+                type="time"
+                onChange={(e) => setSTime(e.target.value)}
+                placeholder="Start Time"
+                required
+              />
+              <To>to</To>
+              <Input
+                type="time"
+                onChange={(e) => setETime(e.target.value)}
+                placeholder="End Time"
                 required
               />
             </Flex>
 
-            <Flex dir="column">
-              <Label>Ends After</Label>
-              <Input
-                type="date"
-                onChange={(e) => setEnd(e.target.value)}
-                placeholder="ends after"
-                required
-              />
+            <Flex dir="row">
+              <Flex dir="column">
+                <Label htmlFor="repeat-select">Repeats</Label>
+                <Select
+                  name="repeat"
+                  id="repeat-select"
+                  onChange={(e) => setRepeat(e.target.value)}
+                  required
+                >
+                  <option value="false">Does not repeat</option>
+                  <option value="true">Repeats</option>
+                </Select>
+              </Flex>
+              <Flex dir="column">
+                <Label htmlFor="end-repeat">Ends After</Label>
+                <Input
+                  id="end-repeat"
+                  type="date"
+                  onChange={(e) => setEnd(e.target.value)}
+                  placeholder="ends after"
+                  required
+                  disabled={repeat === 'false'}
+                />
+              </Flex>
             </Flex>
-          </Flex>
 
-          <Label>Location</Label>
-          <Input
-            type="text"
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Location"
-            required
-          />
-          <Label>Additional Notes</Label>
-          <Input
-            type="text"
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Notes"
-            required
-          />
-          <Submit type="submit" value="Create" />
-          <p>{submit}</p>
-        </Form>
-      </Content>
-    </Container>
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              type="text"
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Location"
+              required
+            />
+            <Label htmlFor="notes">Additional Notes</Label>
+            <Input
+              id="notes"
+              type="text"
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Notes"
+              required
+            />
+            <Submit type="submit" value="Create" />
+            <p>{submit}</p>
+          </Form>
+        </Content>
+        <div> </div>
+      </Container>
+    </>
   );
 }

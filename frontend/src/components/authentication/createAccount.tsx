@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContainer, ErrorMsg } from './authComponents';
 import {
-  StyledBack,
-  AuthHeader,
-  AuthContainer,
-  AuthContent,
+  Content,
+  Header,
   Form,
   Input,
   Label,
   Submit,
-  ErrorMsg,
-} from './authComponents';
+  StyledBack,
+} from '../styledComponents';
 
 // TODO: change to containr later and text-aling left
 // but that will probably go into styledComponenets as well
@@ -75,8 +74,8 @@ export default function CreateAccount() {
       <Link to="/login">
         <StyledBack size="30" />
       </Link>
-      <AuthContent>
-        <AuthHeader>Create an account</AuthHeader>
+      <Content>
+        <Header>Create an account</Header>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
@@ -127,7 +126,7 @@ export default function CreateAccount() {
           <ErrorMsg>{badMsg}</ErrorMsg>
           <Submit type="submit" value="Create Account" disabled={disabled} />
         </Form>
-      </AuthContent>
+      </Content>
     </AuthContainer>
   );
 }
