@@ -117,7 +117,7 @@ export default function LoginPage() {
             <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
               {' '}
               Sign in{' '}
-            </Button> 
+            </Button>
           </Flex>
         </Form>
         <FLink to="/forgot-password">
