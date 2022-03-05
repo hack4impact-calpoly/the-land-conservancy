@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 
@@ -29,12 +29,16 @@ Amplify.configure({
 });
 
 function App() {
+  // 'setUser' sets the 'currentUser' to the 'userSub' value,
+  // which is a unique identifier
+  const [currentUser, setUser] = useState('');
+
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 import { AuthContainer, ErrorMsg } from './authComponents';
 import {
   Content,
@@ -14,6 +15,14 @@ import {
 // TODO: change to containr later and text-aling left
 // but that will probably go into styledComponenets as well
 
+// create account type
+type Account = {
+  Name: string;
+  Email: string;
+  Number: string;
+  Password: string;
+};
+
 export default function CreateAccount() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,15 +32,35 @@ export default function CreateAccount() {
   const [badMsg, setBadMsg] = useState('');
   const [disabled, setDisabled] = useState(true);
 
+  // create new user based on inputted credentials, after the form is validated
+  const signUp = async (newAccount: Account) => {
+    try {
+      const { user } = await Auth.signUp({
+        username: newAccount.Email,
+        password: newAccount.Password,
+        attributes: {
+          name: newAccount.Name,
+          email: newAccount.Email, // optional
+          phone_number: newAccount.Number, // optional - E.164 number convention
+          // other custom attributes
+        },
+      });
+      console.log(user);
+    } catch (error) {
+      console.log('error signing up:', error);
+    }
+  };
+
   // submit only calls when form meets requirements
   const createAccount = () => {
-    const account = {
+    const account: Account = {
       Name: name,
       Email: email,
-      Number: number,
+      Number: '+1'.concat(number),
       Password: pass1,
     };
     console.log(account);
+    return account;
     // print to console for now, call some backend/ cognito function later
   };
 
@@ -46,7 +75,7 @@ export default function CreateAccount() {
     }
 
     if (number && !(phoneRegex.test(number) && number.length === 10)) {
-      setBadMsg('please enter the 10 digits of your phone number only');
+      setBadMsg('please enter the 10 digits of your phone number');
       return false;
     }
     if (pass1 && pass1.length < 8) {
@@ -79,7 +108,7 @@ export default function CreateAccount() {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            createAccount();
+            signUp(createAccount());
           }}
         >
           <Label htmlFor="f1">First and Last Name</Label>
