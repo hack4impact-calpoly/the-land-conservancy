@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Auth } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
 import { AuthContainer } from './authComponents';
@@ -69,7 +70,12 @@ const FLink = styled(Link)`
   text-decoration: none;
 `;
 
-export default function LoginPage() {
+// eslint-disable-next-line max-len
+export default function LoginPage({
+  setUser,
+}: {
+  setUser: (val: string) => void;
+}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -79,6 +85,17 @@ export default function LoginPage() {
   const retrieveUser = () => {
     console.log(username);
     console.log(password);
+  };
+
+  // authenticate sign in
+  const signIn = async () => {
+    try {
+      const user = await Auth.signIn(username, password);
+      setUser(user.userSub);
+      console.log(`Successful sign in for user: ${username}`);
+    } catch (error) {
+      console.log('error signing in', error);
+    }
   };
 
   return (
@@ -91,6 +108,7 @@ export default function LoginPage() {
           onSubmit={(e) => {
             e.preventDefault();
             retrieveUser();
+            signIn();
           }}
         >
           <Input
