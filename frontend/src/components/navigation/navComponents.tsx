@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { FaBars } from 'react-icons/fa';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import { GiBackwardTime } from 'react-icons/gi';
-import { BsPerson } from 'react-icons/bs';
 import { MdLogout } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
@@ -16,35 +15,25 @@ const BarIcon = styled(FaBars)`
 `;
 
 const ClipboardIcon = styled(HiOutlineClipboardList)`
-  margin-top: 17px;
-  color: black;
+  color: white;
   text-align: left;
   display: block;
-  font-size: 25px;
+  font-size: 50px;
+  display: inline-block;
 `;
 
 const ClockIcon = styled(GiBackwardTime)`
-  margin-top: 17px;
-  color: black;
+  color: white;
   text-align: left;
   display: block;
-  font-size: 25px;
-`;
-
-const PersonIcon = styled(BsPerson)`
-  margin-top: 17px;
-  color: black;
-  text-align: left;
-  display: block;
-  font-size: 25px;
+  font-size: 50px;
 `;
 
 const LogoutIcon = styled(MdLogout)`
-  margin-top: 17px;
-  color: black;
+  color: white;
   text-align: left;
   display: block;
-  font-size: 25px;
+  font-size: 50px;
 `;
 
 const Button = styled.button`
@@ -56,14 +45,32 @@ const Button = styled.button`
   margin-top: 15px;
 `;
 
-const Path = styled.div`
+interface Props {
+  active: boolean | null;
+}
+
+const Path = styled.div<Props>`
+  border: none;
+  sizing-border-box;
+  background-color: ${(props: Props) =>
+    props.active ? '#aec29b' : 'transparent'}; 
+  display: flex;
+  padding-left: 29px;
+  align-items: center;
+  height: 70px;
+`;
+
+const BottomPath = styled.div`
   border: none;
   sizing-border-box;
   background: none;
-  text-align: left;
   display: flex;
-  margin-left: 29px;
-  margin-top: 15px;
+  padding-left: 29px;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  height: 70px;
+  padding-bottom: 20px;
 `;
 
 const Label = styled.h3`
@@ -73,23 +80,30 @@ const Label = styled.h3`
   font-weight: 400;
   line-height: 26px;
   text-align: center;
-
-  color: #000000;
+  color: white;
+  padding-left: 30px;
 `;
 
 const StyledLink = styled(Link)`
-  padding: 0 40px 0 40px;
   text-decoration: none;
+`;
+
+const LogoImage = styled.img`
+  padding-top: 50px;
+  padding-bottom: 50px;
+  width: 113px;
+  height: 113px;
 `;
 
 export {
   BarIcon,
   ClipboardIcon,
   ClockIcon,
-  PersonIcon,
   LogoutIcon,
   Button,
   Path,
+  BottomPath,
   Label,
   StyledLink,
+  LogoImage,
 };
