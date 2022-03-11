@@ -2,6 +2,7 @@ const express = require('express'); // includes express
 const mongoose = require('mongoose'); // include mongoose
 const eventEndpoints = require('./routes/events');
 const shiftEnpoints = require('./routes/shifts');
+const userEndpoints = require('./routes/users');
 require('dotenv').config(); // loads .env into process.env
 
 const app = express(); // initializes Express
@@ -24,6 +25,7 @@ mongoose.connect(process.env.CONNECTION_URL).then(
 
 app.use('/events', eventEndpoints);
 app.use('/shifts', shiftEnpoints);
+app.use('/users', userEndpoints);
 
 // app.get('/', (req: any, res: any) => {
 //   res.send('Hello world!');
