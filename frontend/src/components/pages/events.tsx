@@ -44,6 +44,16 @@ type EventProps = {
 };
 
 export default function Events({ eventData }: EventProps) {
+  eventData.sort((a: Event, b: Event) => {
+    if (a.start > b.start) {
+      return 1;
+    }
+    if (a.start < b.start) {
+      return -1;
+    }
+    return 0;
+  });
+
   return (
     <div>
       <Header headerText="Events" navbar />
