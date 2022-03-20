@@ -29,6 +29,7 @@ Amplify.configure({
 
 interface Event {
   id: string;
+  _id: string;
   title: string;
   start: string;
   end: string;
@@ -46,7 +47,7 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           setEvents(data);
-          console.log(data);
+          // console.log(data);
         })
         .catch((err) => console.log(err));
     };

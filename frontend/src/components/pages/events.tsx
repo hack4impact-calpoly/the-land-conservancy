@@ -31,6 +31,7 @@ const convertDate = (date: string) => {
 
 interface Event {
   id: string;
+  _id: string;
   title: string;
   start: string;
   end: string;
@@ -62,7 +63,9 @@ export default function Events({ eventData }: EventProps) {
           eventData.map((event) => {
             return (
               <EventCard
-                key={event.id}
+                /* eslint-disable */
+                key={event._id}
+                /* eslint-enable */
                 title={event.title}
                 date={convertDate(event.start)}
               />
