@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 
@@ -28,10 +28,45 @@ Amplify.configure({
   },
 });
 
+interface Event {
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: [string];
+}
+
+interface Shift {
+  id: string;
+  event: Event;
+  hours: number;
+  user: string;
+}
+
 function App() {
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
   const [currentUser, setUser] = useState('');
+  const [pastShifts, setPastShifts] = useState<Shift[]>([]);
+
+  const user = 'sam';
+
+  console.log(currentUser);
+
+  useEffect(() => {
+    const loadPastShifts = async () => {
+      await fetch(`http://localhost:3001/users/${user}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPastShifts(data.pastShifts);
+          console.log(data.id);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadPastShifts();
+  }, []);
 
   return (
     <div className="App">
@@ -42,7 +77,10 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/past-shifts" element={<PastShifts />} />
+          <Route
+            path="/past-shifts"
+            element={<PastShifts pastShiftData={pastShifts} />}
+          />
           <Route path="/events" element={<Events />} />
           <Route path="/log-hours" element={<LogHours />} />
           <Route path="/create-event" element={<CreateEvent />} />
