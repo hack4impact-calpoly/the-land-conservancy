@@ -1,6 +1,5 @@
 /* eslint-disable func-names */
 import User from '../models/userSchema';
-import Event from '../models/eventSchema';
 
 const express = require('express');
 
@@ -22,7 +21,7 @@ router.get('/:userId', async (req: any, res: any) => {
     const temp = await User.findById(req.params.userId)
       .populate({
         path: 'pastShifts',
-        populate: { path: 'event', model: Event },
+        populate: { path: 'event', model: 'Events' },
       })
       .exec(function (err, data) {
         if (err) res.status(400).send(err);
