@@ -1,4 +1,3 @@
-/* eslint-disable func-names */
 import User from '../models/userSchema';
 
 const express = require('express');
@@ -18,19 +17,13 @@ router.get('/', async (req: any, res: any) => {
 // get specific user
 router.get('/:userId', async (req: any, res: any) => {
   try {
-    const temp = await User.findById(req.params.userId)
-      .populate({
-        path: 'pastShifts',
-        populate: { path: 'event', model: 'Events' },
-      })
-      .exec(function (err, data) {
-        if (err) res.status(400).send(err);
-        res.json(data);
-      });
-    console.log('temp = ', temp);
+    const temp = await User.findById(req.params.userId).populate({
+      path: 'pastShifts',
+      populate: 'event',
+    });
     res.send(temp);
   } catch (error) {
-    res.status(407).send(error);
+    res.status(400).send(error);
   }
 });
 
