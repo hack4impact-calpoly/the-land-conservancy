@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import EventDesc from './eventDesc';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
+  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;

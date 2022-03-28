@@ -39,6 +39,15 @@ const LayoutDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-decoration: none;
+`;
+
+const StyledDiv = styled.div`
+  text-decoration: none;
+  z-index: 99999999;
+  &:hover ${StyledContainer} {
+    background: #5f8f3e6b;
+  }
 `;
 
 type EventCardProps = {
@@ -48,7 +57,7 @@ type EventCardProps = {
 
 export default function EventCard({ title, date }: EventCardProps) {
   return (
-    <div>
+    <StyledDiv>
       <StyledContainer>
         <LayoutDiv>
           <TextDiv>
@@ -60,6 +69,6 @@ export default function EventCard({ title, date }: EventCardProps) {
           </ArrowDiv>
         </LayoutDiv>
       </StyledContainer>
-    </div>
+    </StyledDiv>
   );
 }

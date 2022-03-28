@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 
@@ -12,9 +12,9 @@ import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
-import awsconfig from './aws-exports';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region
@@ -28,10 +28,39 @@ Amplify.configure({
   },
 });
 
+interface Event {
+  id: string;
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
+
 function App() {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      await fetch('http://localhost:3001/events')
+        .then((res) => res.json())
+        .then((data) => {
+          setEvents(data);
+          // console.log(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadEvents();
+  }, []);
+
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
+  /* eslint-disable */
   const [currentUser, setUser] = useState('');
+  /* eslint-enable */
 
   return (
     <div className="App">
@@ -43,7 +72,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/past-shifts" element={<PastShifts />} />
-          <Route path="/events" element={<Events />} />
+          <Route path="/events" element={<Events eventData={events} />} />
           <Route path="/log-hours" element={<LogHours />} />
           <Route path="/create-event" element={<CreateEvent />} />
         </Routes>
