@@ -23,6 +23,16 @@ mongoose.connect(process.env.CONNECTION_URL).then(
  * other code here :)
  */
 
+app.use((req: any, res: any, next: any) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT');
+  next();
+});
+
 app.use('/events', eventEndpoints);
 app.use('/shifts', shiftEnpoints);
 app.use('/users', userEndpoints);

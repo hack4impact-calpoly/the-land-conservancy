@@ -70,8 +70,8 @@ export default function Events({ eventData }: EventProps) {
           eventData.map((event) => {
             return (
               <StyledLink
-                to="/log-hours"
                 /* eslint-disable */
+                to={`/log-hours/${event._id}`}
                 key={event._id}
                 /* eslint-enable */
               >

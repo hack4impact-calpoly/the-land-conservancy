@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 
 const StyledContainer = styled(Container)`
@@ -82,23 +82,48 @@ const StyledHeader4 = styled.h4`
   color: red;
 `;
 
-const testEvents = [
-  {
-    title: 'Event One',
-    date: 'Monday 2/14/2022',
-    start: '12:00 pm',
-    end: '12:00 am',
-    location: '123 Street st.',
-    notes: "don't be late :)",
-    key: 1,
-  },
-];
+interface Event {
+  id: string;
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
 
-export default function LogHours() {
+type LogHoursProps = {
+  eventData: Event[];
+};
+
+const convertDate = (date: string) => {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const reformat = new Date(date);
+
+  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString()}`;
+};
+
+export default function LogHours({ eventData }: LogHoursProps) {
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [link, setLink] = React.useState(' ');
+  const { eventId } = useParams();
+  const thisEvent = eventData.find((event) => {
+    /* eslint-disable */
+    return event._id === eventId;
+    /* eslint-enable */
+  });
 
   const validateHours = () => {
     // check: filled, isNumber, is > 0
@@ -126,20 +151,6 @@ export default function LogHours() {
     validateHours();
   }, [hours]);
 
-  const eventDesc = testEvents.map((event) => {
-    return (
-      <EventDesc
-        key={event.key}
-        title={event.title}
-        date={event.date}
-        start={event.start}
-        end={event.end}
-        location={event.location}
-        notes={event.notes}
-      />
-    );
-  });
-
   return (
     <div>
       <StyledContainer maxWidth="sm">
@@ -149,7 +160,20 @@ export default function LogHours() {
           </Link>
         </StyledBack>
         <StyledHeader>Log Hours</StyledHeader>
-        {eventDesc}
+        {thisEvent ? (
+          <EventDesc
+            /* eslint-disable */
+            key={thisEvent._id}
+            /* eslint-enable */
+            title={thisEvent.title}
+            start={convertDate(thisEvent.start)}
+            end={convertDate(thisEvent.end)}
+            location={thisEvent.location}
+            notes={thisEvent.notes}
+          />
+        ) : (
+          'hewwo'
+        )}
         <StyledHeader3>Total hours volunteered</StyledHeader3>
         <form
           id="form"
