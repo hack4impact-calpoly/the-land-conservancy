@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 
 import './App.css';
-import Home from './components/Home';
 import Login from './components/authentication/login';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
@@ -59,7 +58,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate replace to="/events" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
