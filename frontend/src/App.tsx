@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 
 import './App.css';
-import Home from './components/Home';
 import Login from './components/authentication/login';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
@@ -28,22 +27,48 @@ Amplify.configure({
   },
 });
 
+interface Event {
+  id: string;
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
+
 function App() {
+  const [events, setEvents] = useState<Event[]>([]);
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
   const [currentUser, setUser] = useState('');
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      await fetch('http://localhost:3001/events')
+        .then((res) => res.json())
+        .then((data) => {
+          setEvents(data);
+          // console.log(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadEvents();
+  }, []);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate replace to="/events" />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/past-shifts" element={<PastShifts />} />
-          <Route path="/events" element={<Events />} />
+          <Route path="/events" element={<Events eventData={events} />} />
           <Route path="/log-hours" element={<LogHours />} />
           <Route path="/create-event" element={<CreateEvent />} />
         </Routes>

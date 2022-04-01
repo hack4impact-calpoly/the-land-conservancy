@@ -13,39 +13,7 @@ const StyledContainer = styled(Container)`
   justify-content: left;
 `;
 
-/*  just dummy test data for displaying events :) */
-
-const testEvents = [
-  {
-    title: "Ben's party",
-    start: new Date(121170000),
-    end: new Date(),
-    location: '35.30254888400675, -120.69751392967409',
-    notes: 'very fun',
-    id: 12,
-  },
-  {
-    title: 'Kyle Concert',
-    start: new Date(22222222),
-    end: new Date(44444444444444),
-    location: 'university union',
-    notes: 'also very fun',
-    id: 13,
-  },
-  {
-    title: "Armstrong's Winter Staff Party",
-    start: new Date(),
-    end: new Date(),
-    location: 'PAC',
-    notes: "Everyone's invited!",
-    id: 99900,
-  },
-];
-
-const convertDate = (date: {
-  getDay: () => number;
-  toLocaleDateString: () => string;
-}) => {
+const convertDate = (date: string) => {
   const days = [
     'Sunday',
     'Monday',
@@ -56,24 +24,57 @@ const convertDate = (date: {
     'Saturday',
   ];
 
-  return `${days[date.getDay()]} ${date.toLocaleDateString()}`;
+  const reformat = new Date(date);
+
+  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString()}`;
 };
 
-export default function Events() {
-  const eventCards = testEvents.map((event) => {
-    return (
-      <EventCard
-        key={event.id}
-        title={event.title}
-        date={convertDate(event.start)}
-      />
-    );
+interface Event {
+  id: string;
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
+
+type EventProps = {
+  eventData: Event[];
+};
+
+export default function Events({ eventData }: EventProps) {
+  eventData.sort((a: Event, b: Event) => {
+    if (a.start > b.start) {
+      return -1;
+    }
+    if (a.start < b.start) {
+      return 1;
+    }
+    return 0;
   });
 
   return (
     <div>
       <Header headerText="Events" navbar />
-      <StyledContainer maxWidth="md">{eventCards}</StyledContainer>
+      <StyledContainer maxWidth="md">
+        {eventData ? (
+          eventData.map((event) => {
+            return (
+              <EventCard
+                /* eslint-disable */
+                key={event._id}
+                /* eslint-enable */
+                title={event.title}
+                date={convertDate(event.start)}
+              />
+            );
+          })
+        ) : (
+          <p key="load"> Loading ...</p>
+        )}
+      </StyledContainer>
     </div>
   );
 }
