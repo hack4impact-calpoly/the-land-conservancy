@@ -49,10 +49,10 @@ type ShiftProps = {
 export default function PastShifts({ pastShiftData }: ShiftProps) {
   pastShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
-      return 1;
+      return -1;
     }
     if (a.event.start < b.event.start) {
-      return -1;
+      return 1;
     }
     return 0;
   });
