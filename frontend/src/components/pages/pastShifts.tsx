@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import EventSlot from './eventSlot';
+import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
@@ -37,7 +37,7 @@ const testEvents = [
 export default function PastShifts() {
   const eventSlots = testEvents.map((event) => {
     return (
-      <EventSlot
+      <ShiftSlot
         key={event.key}
         title={event.title}
         date={event.date}

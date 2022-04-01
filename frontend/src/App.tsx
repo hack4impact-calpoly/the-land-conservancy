@@ -10,9 +10,10 @@ import ResetPassword from './components/authentication/resetPassword';
 import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
-// import awsconfig from './aws-exports';
+import CreateEvent from './components/pages/createEvent';
+import awsconfig from './aws-exports';
 
-// Amplify.configure(awsconfig);
+Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region
@@ -39,6 +40,9 @@ interface Event {
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
+  // 'setUser' sets the 'currentUser' to the 'userSub' value,
+  // which is a unique identifier
+  const [currentUser, setUser] = useState('');
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -59,13 +63,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate replace to="/events" />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/past-shifts" element={<PastShifts />} />
           <Route path="/events" element={<Events eventData={events} />} />
           <Route path="/log-hours" element={<LogHours />} />
+          <Route path="/create-event" element={<CreateEvent />} />
         </Routes>
       </BrowserRouter>
     </div>

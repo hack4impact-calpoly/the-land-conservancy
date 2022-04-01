@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContainer, ErrorMsg } from './authComponents';
 import {
-  StyledBack,
-  AuthHeader,
-  AuthContainer,
-  AuthContent,
-  Input,
+  Content,
+  Header,
   Form,
+  Input,
   Label,
   Submit,
-  ErrorMsg,
-} from './authComponents';
+  StyledBack,
+} from '../styledComponents';
 
 export default function ResetPassword() {
   const [pass1, setPass1] = useState('');
@@ -56,8 +55,8 @@ export default function ResetPassword() {
       <Link to="/forgot-password">
         <StyledBack size="30" />
       </Link>
-      <AuthContent>
-        <AuthHeader>Reset Password</AuthHeader>
+      <Content>
+        <Header>Reset Password</Header>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
@@ -79,7 +78,7 @@ export default function ResetPassword() {
           <ErrorMsg>{badPassMsg}</ErrorMsg>
           <Submit type="submit" value="Confirm" disabled={disabled} />
         </Form>
-      </AuthContent>
+      </Content>
     </AuthContainer>
   );
 }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Auth } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
-import { AuthContainer, AuthContent, Form, Input } from './authComponents';
+import { AuthContainer } from './authComponents';
+import { Content, Form, Input } from '../styledComponents';
 
 const StyledForgot = styled.p`
   height: 15px;
@@ -68,7 +70,12 @@ const FLink = styled(Link)`
   text-decoration: none;
 `;
 
-export default function LoginPage() {
+// eslint-disable-next-line max-len
+export default function LoginPage({
+  setUser,
+}: {
+  setUser: (val: string) => void;
+}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -80,16 +87,28 @@ export default function LoginPage() {
     console.log(password);
   };
 
+  // authenticate sign in
+  const signIn = async () => {
+    try {
+      const user = await Auth.signIn(username, password);
+      setUser(user.userSub);
+      console.log(`Successful sign in for user: ${username}`);
+    } catch (error) {
+      console.log('error signing in', error);
+    }
+  };
+
   return (
     <AuthContainer>
       <Flex dir="column" ai="center">
         <StyledImage src={logo} alt="The Land Conservancy of SLO logo" />
       </Flex>
-      <AuthContent>
+      <Content>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
             retrieveUser();
+            signIn();
           }}
         >
           <Input
@@ -117,13 +136,13 @@ export default function LoginPage() {
             <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
               {' '}
               Sign in{' '}
-            </Button> 
+            </Button>
           </Flex>
         </Form>
         <FLink to="/forgot-password">
           <StyledForgot> Forgot password? </StyledForgot>
         </FLink>
-      </AuthContent>
+      </Content>
     </AuthContainer>
   );
 }
