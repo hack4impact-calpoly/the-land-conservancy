@@ -42,10 +42,7 @@ const testEvents = [
   },
 ];
 
-const convertDate = (date: {
-  getDay: () => number;
-  toLocaleDateString: () => string;
-}) => {
+const convertDate = (date: Date) => {
   const days = [
     'Sunday',
     'Monday',
@@ -56,7 +53,9 @@ const convertDate = (date: {
     'Saturday',
   ];
 
-  return `${days[date.getDay()]} ${date.toLocaleDateString()}`;
+  return `${days[date.getDay()]} ${date.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  })}`;
 };
 
 export default function Events() {

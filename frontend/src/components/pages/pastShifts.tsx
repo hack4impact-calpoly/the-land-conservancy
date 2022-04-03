@@ -23,7 +23,9 @@ const convertDate = (date: string) => {
   ];
   const reformat = new Date(date);
 
-  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString()}`;
+  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  })}`;
 };
 
 interface Event {
@@ -36,7 +38,7 @@ interface Event {
 }
 
 interface Shift {
-  id: string;
+  _id: string;
   event: Event;
   hours: number;
   user: string;
@@ -66,7 +68,8 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
             pastShiftData.map((shift) => {
               return (
                 <ShiftSlot
-                  key={shift.id}
+                  // eslint-disable-next-line no-underscore-dangle
+                  key={shift._id}
                   title={shift.event.title}
                   date={convertDate(shift.event.start)}
                   hours={shift.hours}

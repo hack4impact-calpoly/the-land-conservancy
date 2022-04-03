@@ -38,7 +38,7 @@ interface Event {
 }
 
 interface Shift {
-  id: string;
+  _id: string;
   event: Event;
   hours: number;
   user: string;
@@ -60,7 +60,6 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           setPastShifts(data.pastShifts);
-          console.log(data.id);
         })
         .catch((err) => console.log(err));
     };
