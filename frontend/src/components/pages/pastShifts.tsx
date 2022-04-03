@@ -68,7 +68,6 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
             pastShiftData.map((shift) => {
               return (
                 <ShiftSlot
-                  // eslint-disable-next-line no-underscore-dangle
                   key={shift._id}
                   title={shift.event.title}
                   date={convertDate(shift.event.start)}

@@ -32,6 +32,7 @@ app.use((req: any, res: any, next: any) => {
   res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT');
   next();
 });
+
 app.use('/events', eventEndpoints);
 app.use('/shifts', shiftEnpoints);
 app.use('/users', userEndpoints);
