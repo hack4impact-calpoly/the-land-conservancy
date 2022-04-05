@@ -64,31 +64,32 @@ export default function Events({ eventData }: EventProps) {
 
   return (
     <div>
-      <Header headerText="Events" />
-      <StyledContainer maxWidth="md">
-        {eventData ? (
-          eventData.map((event) => {
-            return (
-              <StyledLink
-                /* eslint-disable */
-                to={`/log-hours/${event._id}`}
-                key={event._id}
-                /* eslint-enable */
-              >
-                <EventCard
-                  title={event.title}
-                  date={convertDate(event.start)}
+      <Header headerText="Events" navbar>
+        <StyledContainer maxWidth="md">
+          {eventData ? (
+            eventData.map((event) => {
+              return (
+                <StyledLink
                   /* eslint-disable */
+                  to={`/log-hours/${event._id}`}
                   key={event._id}
                   /* eslint-enable */
-                />
-              </StyledLink>
-            );
-          })
-        ) : (
-          <p key="load"> Loading ...</p>
-        )}
-      </StyledContainer>
+                >
+                  <EventCard
+                    title={event.title}
+                    date={convertDate(event.start)}
+                    /* eslint-disable */
+                    key={event._id}
+                    /* eslint-enable */
+                  />
+                </StyledLink>
+              );
+            })
+          ) : (
+            <p key="load"> Loading ...</p>
+          )}
+        </StyledContainer>
+      </Header>
     </div>
   );
 }
