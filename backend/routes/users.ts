@@ -17,7 +17,10 @@ router.get('/', async (req: any, res: any) => {
 // get specific user
 router.get('/:userId', async (req: any, res: any) => {
   try {
-    const temp = await User.findById(req.params.userId);
+    const temp = await User.findById(req.params.userId).populate({
+      path: 'pastShifts',
+      populate: 'event',
+    });
     res.send(temp);
   } catch (error) {
     res.status(400).send(error);

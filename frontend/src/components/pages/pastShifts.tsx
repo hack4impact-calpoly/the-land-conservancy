@@ -11,45 +11,75 @@ const StyledContainer = styled(Container)`
   padding: 10px;
 `;
 
-const testEvents = [
-  {
-    title: 'Event one',
-    date: 'Tuesday 1/04/2022',
-    hours: 6,
-    key: 1,
-  },
+const convertDate = (date: string) => {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  const reformat = new Date(date);
 
-  {
-    title: 'Event two',
-    date: ' Monday 11/04/2021',
-    hours: 4,
-    key: 2,
-  },
+  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  })}`;
+};
 
-  {
-    title: 'Event three',
-    date: ' Wednesday 1/20/2021',
-    hours: 3,
-    key: 3,
-  },
-];
+interface Event {
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: [string];
+}
 
-export default function PastShifts() {
-  const eventSlots = testEvents.map((event) => {
-    return (
-      <ShiftSlot
-        key={event.key}
-        title={event.title}
-        date={event.date}
-        hours={event.hours}
-      />
-    );
+interface Shift {
+  _id: string;
+  event: Event;
+  hours: number;
+  user: string;
+}
+
+type ShiftProps = {
+  pastShiftData: Shift[];
+};
+
+export default function PastShifts({ pastShiftData }: ShiftProps) {
+  pastShiftData.sort((a: Shift, b: Shift) => {
+    if (a.event.start > b.event.start) {
+      return -1;
+    }
+    if (a.event.start < b.event.start) {
+      return 1;
+    }
+    return 0;
   });
 
   return (
     <div>
       <Header headerText="Past Shifts" navbar />
-      <StyledContainer>{eventSlots}</StyledContainer>
+      <StyledContainer>
+        <StyledContainer maxWidth="md">
+          {pastShiftData ? (
+            pastShiftData.map((shift) => {
+              return (
+                <ShiftSlot
+                  key={shift._id}
+                  title={shift.event.title}
+                  date={convertDate(shift.event.start)}
+                  hours={shift.hours}
+                />
+              );
+            })
+          ) : (
+            <p key="load"> Loading ...</p>
+          )}
+        </StyledContainer>
+      </StyledContainer>
     </div>
   );
 }

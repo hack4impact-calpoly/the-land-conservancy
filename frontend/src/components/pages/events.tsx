@@ -13,7 +13,7 @@ const StyledContainer = styled(Container)`
   justify-content: left;
 `;
 
-const convertDate = (date: string) => {
+const convertDate = (dateString: string) => {
   const days = [
     'Sunday',
     'Monday',
@@ -24,13 +24,14 @@ const convertDate = (date: string) => {
     'Saturday',
   ];
 
-  const reformat = new Date(date);
+  const date = new Date(dateString);
 
-  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString()}`;
+  return `${days[date.getDay()]} ${date.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  })}`;
 };
 
 interface Event {
-  id: string;
   _id: string;
   title: string;
   start: string;
@@ -63,9 +64,7 @@ export default function Events({ eventData }: EventProps) {
           eventData.map((event) => {
             return (
               <EventCard
-                /* eslint-disable */
                 key={event._id}
-                /* eslint-enable */
                 title={event.title}
                 date={convertDate(event.start)}
               />

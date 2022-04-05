@@ -27,6 +27,7 @@
     "prettier/prettier": "warn",
     "semi": ["warn", "always"],
     "no-trailing-spaces": "warn",
+    "no-underscore-dangle":"off",
     "no-console": "off",
     "indent": "warn",
     "react/react/in/jsx/scope": 0,
