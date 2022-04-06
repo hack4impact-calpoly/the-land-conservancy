@@ -11,6 +11,7 @@ import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
+import VolunteerLog from './components/pages/volunteerLog';
 import awsconfig from './aws-exports';
 
 Amplify.configure(awsconfig);
@@ -98,6 +99,7 @@ function App() {
           <Route path="/events" element={<Events eventData={events} />} />
           <Route path="/log-hours" element={<LogHours />} />
           <Route path="/create-event" element={<CreateEvent />} />
+          <Route path="/volunteer-log" element={<VolunteerLog />} />
         </Routes>
       </BrowserRouter>
     </div>
