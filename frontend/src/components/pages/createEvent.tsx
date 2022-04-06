@@ -34,27 +34,53 @@ const Select = styled.select`
 `;
 
 export default function CreateEvent() {
-  const [title, setTitle] = React.useState(' ');
-  const [date, setDate] = React.useState(' ');
-  const [startTime, setSTime] = React.useState(' ');
-  const [endTime, setETime] = React.useState(' ');
+  const [title, setTitle] = React.useState('');
+  const [date, setDate] = React.useState('');
+  const [startTime, setSTime] = React.useState('');
+  const [endTime, setETime] = React.useState('');
   const [repeat, setRepeat] = React.useState('false');
-  const [endAfter, setEnd] = React.useState(' ');
-  const [location, setLocation] = React.useState(' ');
-  const [notes, setNotes] = React.useState(' ');
-  const [submit, setSubmit] = React.useState(' ');
+  const [endAfter, setEnd] = React.useState('');
+  const [location, setLocation] = React.useState('');
+  const [notes, setNotes] = React.useState('');
+  const [submit, setSubmit] = React.useState('');
 
-  const submitEvent = () => {
-    console.log(title);
-    console.log(date);
-    console.log(startTime);
-    console.log(endTime);
-    console.log(repeat);
-    console.log(endAfter);
-    console.log(location);
-    console.log(notes);
+  const clearForm = () => {
+    setTitle('');
+    setDate('');
+    setSTime('');
+    setETime('');
+    setRepeat('false');
+    setEnd('');
+    setLocation('');
+    setNotes('');
+  };
+  const submitEvent = async () => {
+    const startDate = new Date(date.concat('T', startTime));
+    const endDate = new Date(date.concat('T', endTime));
 
-    setSubmit('Your event has been created');
+    const newEvent = {
+      title,
+      start: startDate,
+      end: endDate,
+      location,
+      notes,
+      shifts: [],
+    };
+
+    fetch('http://localhost:3001/events/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newEvent),
+    })
+      .then((response) => response.json())
+      .then(() => setSubmit('Your event has been created'))
+      .then(() => clearForm())
+      .catch((error) => {
+        console.error('Error:', error);
+        setSubmit('Error submitting event');
+      });
   };
 
   return (
@@ -72,6 +98,7 @@ export default function CreateEvent() {
               type="text"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Event Title"
+              value={title}
               required
             />
             <Label htmlFor="date">Date</Label>
@@ -80,6 +107,7 @@ export default function CreateEvent() {
               type="date"
               onChange={(e) => setDate(e.target.value)}
               placeholder="Date"
+              value={date}
               required
             />
 
@@ -90,6 +118,7 @@ export default function CreateEvent() {
                 type="time"
                 onChange={(e) => setSTime(e.target.value)}
                 placeholder="Start Time"
+                value={startTime}
                 required
               />
               <To>to</To>
@@ -97,6 +126,7 @@ export default function CreateEvent() {
                 type="time"
                 onChange={(e) => setETime(e.target.value)}
                 placeholder="End Time"
+                value={endTime}
                 required
               />
             </Flex>
@@ -108,6 +138,7 @@ export default function CreateEvent() {
                   name="repeat"
                   id="repeat-select"
                   onChange={(e) => setRepeat(e.target.value)}
+                  value={repeat}
                   required
                 >
                   <option value="false">Does not repeat</option>
@@ -121,6 +152,7 @@ export default function CreateEvent() {
                   type="date"
                   onChange={(e) => setEnd(e.target.value)}
                   placeholder="ends after"
+                  value={endAfter}
                   required
                   disabled={repeat === 'false'}
                 />
@@ -133,6 +165,7 @@ export default function CreateEvent() {
               type="text"
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Location"
+              value={location}
               required
             />
             <Label htmlFor="notes">Additional Notes</Label>
@@ -141,6 +174,7 @@ export default function CreateEvent() {
               type="text"
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Notes"
+              value={notes}
               required
             />
             <Submit type="submit" value="Create" />
