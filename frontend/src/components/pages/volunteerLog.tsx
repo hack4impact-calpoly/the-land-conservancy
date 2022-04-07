@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,10 +16,9 @@ const StyledContainer = styled(Container)`
   border radius: 7px;
   margin: 5px;
   padding: 10px;
-  font-family: Poppins;
-
 `;
 
+// TODO: once navbar get fixed, import header component from header.tsx
 const StyledHeader = styled.h1`
   text-align: center;
   font-family: Poppins;
@@ -27,6 +27,22 @@ const StyledHeader = styled.h1`
   font-size: 30px;
   line-height: 30px;
   color: #000000;
+`;
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Poppins',
+    fontSize: 16,
+  },
+});
+
+const StyledEdit = styled(BiEdit)`
+  font-size: 20px;
+  cursor: pointer;
+`;
+const StyledDelete = styled(RiDeleteBin6Line)`
+  font-size: 20px;
+  cursor: pointer;
 `;
 
 function createData(
@@ -39,49 +55,37 @@ function createData(
 }
 
 const rows = [
+  createData(
+    'John Appleseed',
+    'Trash pickup at Pismo Preserve',
+    '1/07/2022',
+    6
+  ),
   createData('John Appleseed', 'Event 1', '1/07/2022', 6),
-  createData('John Appleseed', 'Event 1', '1/07/2022', 6),
-  createData('John Appleseed', 'Event 1', '1/07/2022', 6),
-  createData('John Appleseed', 'Event 1', '1/07/2022', 6),
-  createData('John Appleseed', 'Event 1', '1/07/2022', 6),
+  createData('Another Person', 'Event 1', '1/07/2022', 25),
+  createData('John Appleseed', 'Event 1', '1/07/2022', 16),
+  createData(
+    'John Appleseed',
+    'Very long event title that is long 1',
+    '1/07/2022',
+    6
+  ),
 ];
 
 export default function VolunteerLog() {
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <StyledContainer>
         <StyledHeader> Volunteer Log </StyledHeader>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <TableHead sx={{ fontSize: '81' }}>
+          <Table size="small" aria-label="a dense table">
+            <TableHead sx={{ fontSize: '100px' }}>
               <TableRow sx={{ background: '#5F8F3E73' }}>
-                <TableCell sx={{ fontFamily: 'Poppins', fontWeight: 500 }}>
-                  Name
-                </TableCell>
-                <TableCell
-                  sx={{ fontFamily: 'Poppins', fontWeight: 500 }}
-                  align="right"
-                >
-                  Event Title
-                </TableCell>
-                <TableCell
-                  sx={{ fontFamily: 'Poppins', fontWeight: 500 }}
-                  align="right"
-                >
-                  Date
-                </TableCell>
-                <TableCell
-                  sx={{ fontFamily: 'Poppins', fontWeight: 500 }}
-                  align="right"
-                >
-                  Hours
-                </TableCell>
-                <TableCell
-                  sx={{ fontFamily: 'Poppins', fontWeight: 500 }}
-                  align="right"
-                >
-                  Options
-                </TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Event Title</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Hours</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Options</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -90,24 +94,14 @@ export default function VolunteerLog() {
                   key={row.name}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell
-                    sx={{ fontFamily: 'Poppins' }}
-                    component="th"
-                    scope="row"
-                  >
+                  <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell sx={{ fontFamily: 'Poppins' }} align="right">
-                    {row.eventTitle}
-                  </TableCell>
-                  <TableCell sx={{ fontFamily: 'Poppins' }} align="right">
-                    {row.date}
-                  </TableCell>
-                  <TableCell sx={{ fontFamily: 'Poppins' }} align="right">
-                    {row.hours}
-                  </TableCell>
-                  <TableCell sx={{ fontFamily: 'Poppins' }} align="right">
-                    <BiEdit /> <RiDeleteBin6Line />
+                  <TableCell>{row.eventTitle}</TableCell>
+                  <TableCell>{row.date}</TableCell>
+                  <TableCell>{row.hours}</TableCell>
+                  <TableCell>
+                    <StyledEdit /> <StyledDelete />
                   </TableCell>
                 </TableRow>
               ))}
@@ -115,6 +109,6 @@ export default function VolunteerLog() {
           </Table>
         </TableContainer>
       </StyledContainer>
-    </div>
+    </ThemeProvider>
   );
 }
