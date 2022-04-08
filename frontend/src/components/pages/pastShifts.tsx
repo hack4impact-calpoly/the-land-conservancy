@@ -6,7 +6,6 @@ import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
-
   margin: 5px;
   padding: 10px;
 `;

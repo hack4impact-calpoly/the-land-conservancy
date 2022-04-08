@@ -92,7 +92,9 @@ const convertDate = (date: string) => {
 
   const reformat = new Date(date);
 
-  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString()}`;
+  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  })}`;
 };
 
 export default function LogHours({ eventData }: LogHoursProps) {
@@ -136,9 +138,7 @@ export default function LogHours({ eventData }: LogHoursProps) {
       <StyledContainer maxWidth="sm">
         {thisEvent ? (
           <EventDesc
-            /* eslint-disable */
             key={thisEvent._id}
-            /* eslint-enable */
             title={thisEvent.title}
             start={convertDate(thisEvent.start)}
             end={convertDate(thisEvent.end)}

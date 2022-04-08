@@ -24,6 +24,7 @@ const EventDate = styled.p`
 
 const StyledArrow = styled(RiArrowRightSLine)`
   color: #6c6b6b;
+  font-size: 60px;
 `;
 
 const TextDiv = styled.div`
@@ -43,7 +44,6 @@ const LayoutDiv = styled.div`
 
 const StyledDiv = styled.div`
   text-decoration: none;
-  z-index: 99999999;
   &:hover ${StyledContainer} {
     background: #5f8f3e6b;
   }
@@ -64,7 +64,7 @@ export default function EventCard({ title, date }: EventCardProps) {
             <EventDate>{date}</EventDate>
           </TextDiv>
           <ArrowDiv>
-            <StyledArrow size="60" />
+            <StyledArrow />
           </ArrowDiv>
         </LayoutDiv>
       </StyledContainer>
