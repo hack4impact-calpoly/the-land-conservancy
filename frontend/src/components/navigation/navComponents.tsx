@@ -96,10 +96,6 @@ const LogoImage = styled.img`
   height: 113px;
 `;
 
-const StyledWrapper = styled.div`
-  z-index: 1;
-`;
-
 export {
   BarIcon,
   ClipboardIcon,
@@ -111,5 +107,4 @@ export {
   Label,
   StyledLink,
   LogoImage,
-  StyledWrapper,
 };

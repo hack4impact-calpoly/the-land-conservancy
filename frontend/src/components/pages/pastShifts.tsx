@@ -34,7 +34,7 @@ interface Event {
   end: string;
   location: string;
   notes: string;
-  shifts: [string];
+  shifts: string[];
 }
 
 interface Shift {

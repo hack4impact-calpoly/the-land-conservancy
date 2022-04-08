@@ -13,7 +13,6 @@ const StyledContainer = styled(Container)`
   align-items: left;
   justify-content: left;
   text-decoration: none;
-  z-index: 100;
 `;
 
 const StyledLink = styled(Link)`
@@ -45,7 +44,7 @@ interface Event {
   end: string;
   location: string;
   notes: string;
-  shifts: [string];
+  shifts: string[];
 }
 
 type EventProps = {
@@ -69,18 +68,11 @@ export default function Events({ eventData }: EventProps) {
         {eventData ? (
           eventData.map((event) => {
             return (
-              <StyledLink
-                /* eslint-disable */
-                  to={`/log-hours/${event._id}`}
-                  key={event._id}
-                  /* eslint-enable */
-              >
+              <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
                 <EventCard
                   title={event.title}
                   date={convertDate(event.start)}
-                  /* eslint-disable */
-                    key={event._id}
-                    /* eslint-enable */
+                  key={event._id}
                 />
               </StyledLink>
             );

@@ -102,9 +102,7 @@ export default function LogHours({ eventData }: LogHoursProps) {
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => {
-    /* eslint-disable */
     return event._id === eventId;
-    /* eslint-enable */
   });
 
   const validateHours = () => {
