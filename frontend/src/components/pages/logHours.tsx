@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
 import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
+import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -11,23 +11,6 @@ const StyledContainer = styled(Container)`
   padding: 10px;
 `;
 
-const StyledBack = styled.button`
-  display: block;
-  border: none;
-  text-align: left;
-  background: white;
-  font-size: 25px;
-  color: black;
-`;
-const StyledHeader = styled.h1`
-  text-align: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 30px;
-  color: #000000;
-`;
 const StyledInput = styled.input`
   display: block;
   border: 1px solid #c4c4c4;
@@ -83,7 +66,6 @@ const StyledHeader4 = styled.h4`
 `;
 
 interface Event {
-  id: string;
   _id: string;
   title: string;
   start: string;
@@ -152,14 +134,8 @@ export default function LogHours({ eventData }: LogHoursProps) {
   }, [hours]);
 
   return (
-    <div>
+    <Header headerText="Log Hours" back="/events">
       <StyledContainer maxWidth="sm">
-        <StyledBack>
-          <Link to="/events">
-            <BiArrowBack />
-          </Link>
-        </StyledBack>
-        <StyledHeader>Log Hours</StyledHeader>
         {thisEvent ? (
           <EventDesc
             /* eslint-disable */
@@ -197,6 +173,6 @@ export default function LogHours({ eventData }: LogHoursProps) {
           <Link to="/past-shifts">{link}</Link>
         </form>
       </StyledContainer>
-    </div>
+    </Header>
   );
 }

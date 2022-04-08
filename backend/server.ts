@@ -8,10 +8,10 @@ require('dotenv').config(); // loads .env into process.env
 const app = express(); // initializes Express
 
 // connect to MongoDB
-if (!process.env.CONNECTION_URL) {
-  console.warn('CONNECTION_URL not found');
+if (!process.env.DATABASE_URL) {
+  console.warn('DATABASE_URL not found');
 }
-mongoose.connect(process.env.CONNECTION_URL).then(
+mongoose.connect(process.env.DATABASE_URL).then(
   () => {
     console.log('Connected to server successfully!');
   },
@@ -41,4 +41,10 @@ app.use('/users', userEndpoints);
 //   res.send('Hello world!');
 // });
 
-app.listen(3001); // 3. runs Express
+if (process.argv.includes('dev')) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+}
+// app.listen(3001); // 3. runs Express
+
+module.exports = app;

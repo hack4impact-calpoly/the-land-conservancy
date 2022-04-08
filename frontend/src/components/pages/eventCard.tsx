@@ -8,7 +8,6 @@ const StyledContainer = styled(Container)`
   border-radius: 6px;
   padding: 14px;
   padding-left: 25px;
-
   margin-bottom: 10px;
 `;
 
