@@ -6,7 +6,6 @@ import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
-
   margin: 5px;
   padding: 10px;
 `;
@@ -34,7 +33,7 @@ interface Event {
   end: string;
   location: string;
   notes: string;
-  shifts: [string];
+  shifts: string[];
 }
 
 interface Shift {
@@ -60,8 +59,7 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
   });
 
   return (
-    <div>
-      <Header headerText="Past Shifts" navbar />
+    <Header headerText="Past Shifts" navbar>
       <StyledContainer>
         <StyledContainer maxWidth="md">
           {pastShiftData ? (
@@ -80,6 +78,6 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
           )}
         </StyledContainer>
       </StyledContainer>
-    </div>
+    </Header>
   );
 }

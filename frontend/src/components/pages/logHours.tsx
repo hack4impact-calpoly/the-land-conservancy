@@ -1,33 +1,16 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
+import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
+  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;
 
-const StyledBack = styled.button`
-  display: block;
-  border: none;
-  text-align: left;
-  background: white;
-  font-size: 25px;
-  color: black;
-`;
-const StyledHeader = styled.h1`
-  text-align: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 30px;
-  color: #000000;
-`;
 const StyledInput = styled.input`
   display: block;
   border: 1px solid #c4c4c4;
@@ -82,23 +65,47 @@ const StyledHeader4 = styled.h4`
   color: red;
 `;
 
-const testEvents = [
-  {
-    title: 'Event One',
-    date: 'Monday 2/14/2022',
-    start: '12:00 pm',
-    end: '12:00 am',
-    location: '123 Street st.',
-    notes: "don't be late :)",
-    key: 1,
-  },
-];
+interface Event {
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
 
-export default function LogHours() {
+type LogHoursProps = {
+  eventData: Event[];
+};
+
+const convertDate = (date: string) => {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const reformat = new Date(date);
+
+  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  })}`;
+};
+
+export default function LogHours({ eventData }: LogHoursProps) {
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [link, setLink] = React.useState(' ');
+  const { eventId } = useParams();
+  const thisEvent = eventData.find((event) => {
+    return event._id === eventId;
+  });
 
   const validateHours = () => {
     // check: filled, isNumber, is > 0
@@ -126,30 +133,21 @@ export default function LogHours() {
     validateHours();
   }, [hours]);
 
-  const eventDesc = testEvents.map((event) => {
-    return (
-      <EventDesc
-        key={event.key}
-        title={event.title}
-        date={event.date}
-        start={event.start}
-        end={event.end}
-        location={event.location}
-        notes={event.notes}
-      />
-    );
-  });
-
   return (
-    <div>
+    <Header headerText="Log Hours" back="/events">
       <StyledContainer maxWidth="sm">
-        <StyledBack>
-          <Link to="/events">
-            <BiArrowBack />
-          </Link>
-        </StyledBack>
-        <StyledHeader>Log Hours</StyledHeader>
-        {eventDesc}
+        {thisEvent ? (
+          <EventDesc
+            key={thisEvent._id}
+            title={thisEvent.title}
+            start={convertDate(thisEvent.start)}
+            end={convertDate(thisEvent.end)}
+            location={thisEvent.location}
+            notes={thisEvent.notes}
+          />
+        ) : (
+          'hewwo'
+        )}
         <StyledHeader3>Total hours volunteered</StyledHeader3>
         <form
           id="form"
@@ -173,6 +171,6 @@ export default function LogHours() {
           <Link to="/past-shifts">{link}</Link>
         </form>
       </StyledContainer>
-    </div>
+    </Header>
   );
 }

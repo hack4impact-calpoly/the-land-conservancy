@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
 import EventCard from './eventCard';
 import Header from '../navigation/header';
@@ -11,6 +12,11 @@ const StyledContainer = styled(Container)`
   padding: 20px;
   align-items: left;
   justify-content: left;
+  text-decoration: none;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const convertDate = (dateString: string) => {
@@ -57,23 +63,24 @@ export default function Events({ eventData }: EventProps) {
   });
 
   return (
-    <div>
-      <Header headerText="Events" navbar />
+    <Header headerText="Events" navbar>
       <StyledContainer maxWidth="md">
         {eventData ? (
           eventData.map((event) => {
             return (
-              <EventCard
-                key={event._id}
-                title={event.title}
-                date={convertDate(event.start)}
-              />
+              <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
+                <EventCard
+                  title={event.title}
+                  date={convertDate(event.start)}
+                  key={event._id}
+                />
+              </StyledLink>
             );
           })
         ) : (
           <p key="load"> Loading ...</p>
         )}
       </StyledContainer>
-    </div>
+    </Header>
   );
 }

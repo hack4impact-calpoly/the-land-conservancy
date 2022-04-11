@@ -12,12 +12,12 @@ const StyledEventContainer = styled(Container)`
 
 const StyledTitle = styled.p`
   font-weight: bold;
-  font-size: 20px
+  font-size: 20px;
   line-height: 21px;
 `;
+
 type EventDescProps = {
   title: string;
-  date: string;
   start: string;
   end: string;
   location: string;
@@ -26,7 +26,6 @@ type EventDescProps = {
 
 export default function EventDesc({
   title,
-  date,
   start,
   end,
   location,
@@ -36,7 +35,6 @@ export default function EventDesc({
     <div>
       <StyledEventContainer>
         <StyledTitle>{title}</StyledTitle>
-        <p>{date}</p>
         <p>
           {start} to {end}
         </p>

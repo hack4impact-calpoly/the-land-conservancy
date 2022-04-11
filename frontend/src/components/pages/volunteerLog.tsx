@@ -13,22 +13,12 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import Header from '../navigation/header';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
   margin: 5px;
   padding: 10px;
-`;
-
-// TODO: once navbar get fixed, import header component from header.tsx
-const StyledHeader = styled.h1`
-  text-align: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 30px;
-  color: #000000;
 `;
 
 const theme = createTheme({
@@ -76,41 +66,42 @@ const rows = [
 
 export default function VolunteerLog() {
   return (
-    <ThemeProvider theme={theme}>
-      <StyledContainer>
-        <StyledHeader> Volunteer Log </StyledHeader>
-        <TableContainer component={Paper}>
-          <Table size="small" aria-label="a dense table">
-            <TableHead sx={{ fontSize: '100px' }}>
-              <TableRow sx={{ background: '#5F8F3E73' }}>
-                <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Event Title</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Hours</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Options</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell>{row.eventTitle}</TableCell>
-                  <TableCell>{row.date}</TableCell>
-                  <TableCell>{row.hours}</TableCell>
-                  <TableCell>
-                    <StyledEdit /> <StyledDelete />
-                  </TableCell>
+    <Header headerText="Volunteer Log" navbar>
+      <ThemeProvider theme={theme}>
+        <StyledContainer>
+          <TableContainer component={Paper}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead sx={{ fontSize: '100px' }}>
+                <TableRow sx={{ background: '#5F8F3E73' }}>
+                  <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Event Title</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Hours</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Options</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </StyledContainer>
-    </ThemeProvider>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell>{row.eventTitle}</TableCell>
+                    <TableCell>{row.date}</TableCell>
+                    <TableCell>{row.hours}</TableCell>
+                    <TableCell>
+                      <StyledEdit /> <StyledDelete />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </StyledContainer>
+      </ThemeProvider>
+    </Header>
   );
 }

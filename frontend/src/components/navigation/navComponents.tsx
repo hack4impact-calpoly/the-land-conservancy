@@ -41,8 +41,9 @@ const Button = styled.button`
   background: none;
   text-align: left;
   display: flex;
-  margin-left: 29px;
-  margin-top: 15px;
+  position: absolute;
+  left: 30px;
+  top: 15px;
 `;
 
 interface Props {

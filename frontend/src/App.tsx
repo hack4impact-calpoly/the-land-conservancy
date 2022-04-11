@@ -35,7 +35,7 @@ interface Event {
   end: string;
   location: string;
   notes: string;
-  shifts: [string];
+  shifts: string[];
 }
 
 interface Shift {
@@ -47,8 +47,24 @@ interface Shift {
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      await fetch('http://localhost:3001/events')
+        .then((res) => res.json())
+        .then((data) => {
+          setEvents(data);
+          // console.log(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadEvents();
+  }, []);
+
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
+  /* eslint-disable */
   const [currentUser, setUser] = useState('');
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
@@ -92,12 +108,15 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/events" element={<Events eventData={events} />} />
+          <Route
+            path="/log-hours/:eventId"
+            element={<LogHours eventData={events} />}
+          />
           <Route
             path="/past-shifts"
             element={<PastShifts pastShiftData={pastShifts} />}
           />
-          <Route path="/events" element={<Events eventData={events} />} />
-          <Route path="/log-hours" element={<LogHours />} />
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/volunteer-log" element={<VolunteerLog />} />
         </Routes>

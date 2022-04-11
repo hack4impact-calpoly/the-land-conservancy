@@ -58,8 +58,7 @@ export default function CreateEvent() {
   };
 
   return (
-    <>
-      <Header headerText="Create Event" back="/events" />
+    <Header headerText="Create Event" back="/events" navbar>
       <Container>
         <Content>
           <Form
@@ -149,6 +148,6 @@ export default function CreateEvent() {
         </Content>
         <div> </div>
       </Container>
-    </>
+    </Header>
   );
 }
