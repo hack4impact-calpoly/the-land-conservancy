@@ -20,8 +20,8 @@ jobs:
     - id: backend-deployment
       uses: Zimboboys/express-deployment-aws@v0.1.0
       with:
-        s3-bucket: 'example-api-deployment'
-        stack-name: 'example-api-deployment-stack'
+        s3-bucket: 'the-land-conservancy'
+        stack-name: 'the-land-conservancy-stack'
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
