@@ -16,10 +16,11 @@ import {
 import logo from '../../imgs/logo.png';
 
 type Props = {
+  isAdmin?: boolean;
   children: React.ReactChild;
 };
 
-export default function NavBar({ children }: Props) {
+export default function NavBar({ isAdmin, children }: Props) {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
@@ -27,18 +28,36 @@ export default function NavBar({ children }: Props) {
       sidebar={
         <div>
           <LogoImage src={logo} />
-          <StyledLink to="/events">
-            <Path active={!!useMatch('/events')}>
-              <ClipboardIcon />
-              <Label>Log hours</Label>
-            </Path>
-          </StyledLink>
-          <StyledLink to="/past-shifts">
-            <Path active={!!useMatch('/past-shifts')}>
-              <ClockIcon />
-              <Label>Past shifts</Label>
-            </Path>
-          </StyledLink>
+          {isAdmin ? (
+            <StyledLink to="/create-event">
+              <Path active={!!useMatch('/create-event')}>
+                <ClipboardIcon />
+                <Label>Log hours</Label>
+              </Path>
+            </StyledLink>
+          ) : (
+            <StyledLink to="/events">
+              <Path active={!!useMatch('/events')}>
+                <ClipboardIcon />
+                <Label>Events</Label>
+              </Path>
+            </StyledLink>
+          )}
+          {isAdmin ? (
+            <StyledLink to="/events">
+              <Path active={!!useMatch('/events')}>
+                <ClockIcon />
+                <Label>Past shifts</Label>
+              </Path>
+            </StyledLink>
+          ) : (
+            <StyledLink to="/past-shifts">
+              <Path active={!!useMatch('/past-shifts')}>
+                <ClockIcon />
+                <Label>Past shifts</Label>
+              </Path>
+            </StyledLink>
+          )}
           <StyledLink to="/">
             <BottomPath>
               <LogoutIcon />
@@ -60,3 +79,6 @@ export default function NavBar({ children }: Props) {
     </Sidebar>
   );
 }
+NavBar.defaultProps = {
+  isAdmin: false,
+};

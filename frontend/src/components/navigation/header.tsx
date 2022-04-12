@@ -75,7 +75,7 @@ export default function Header({
   return (
     <Navigation>
       {navbar ? (
-        <NavBar>
+        <NavBar isAdmin>
           <Container>
             <StyledHeader>{headerText}</StyledHeader>
             {children}

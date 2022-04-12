@@ -13,6 +13,7 @@ import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import awsconfig from './aws-exports';
+import userContext from './userContext';
 
 Amplify.configure(awsconfig);
 Amplify.configure({
@@ -100,28 +101,30 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/events" />} />
-          <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/forgot-password" element={<ForgotPasword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/events" element={<Events eventData={events} />} />
-          <Route
-            path="/log-hours/:eventId"
-            element={<LogHours eventData={events} />}
-          />
-          <Route
-            path="/past-shifts"
-            element={<PastShifts pastShiftData={pastShifts} />}
-          />
-          <Route path="/create-event" element={<CreateEvent />} />
-          <Route path="/volunteer-log" element={<VolunteerLog />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <userContext.Provider value={{ user: currentUser }}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/events" />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/forgot-password" element={<ForgotPasword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/events" element={<Events eventData={events} />} />
+            <Route
+              path="/log-hours/:eventId"
+              element={<LogHours eventData={events} />}
+            />
+            <Route
+              path="/past-shifts"
+              element={<PastShifts pastShiftData={pastShifts} />}
+            />
+            <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/volunteer-log" element={<VolunteerLog />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </userContext.Provider>
   );
 }
 
