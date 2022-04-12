@@ -55,6 +55,7 @@ function App() {
 
   const user = 'sam';
   const auth = true;
+  const loggedin = false;
 
   console.log(user);
   console.log(currentUser);
@@ -95,7 +96,7 @@ function App() {
             path="/login"
             element={
               <ProtectedRoute
-                isAuthenticated
+                isAuthenticated={!loggedin}
                 authenticationPath="/"
                 outlet={<Login setUser={setUser} />}
               />
