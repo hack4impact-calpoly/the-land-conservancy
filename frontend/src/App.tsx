@@ -52,7 +52,6 @@ function App() {
           setEvents(data);
           // console.log(data);
         })
-        .then(() => console.log('rendered!'))
         .catch((err) => console.log(err));
     };
 

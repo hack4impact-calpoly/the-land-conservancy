@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { eachWeekOfInterval, getDay } from 'date-fns';
 import Header from '../navigation/header';
 import Container from './formComponents';
@@ -52,15 +53,16 @@ export default function CreateEvent({
   eventData: Event[];
   setEvents: (val: Event[]) => void;
 }) {
-  const [title, setTitle] = React.useState('');
-  const [date, setDate] = React.useState('');
-  const [startTime, setSTime] = React.useState('');
-  const [endTime, setETime] = React.useState('');
-  const [repeat, setRepeat] = React.useState('false');
-  const [endAfter, setEnd] = React.useState('');
-  const [location, setLocation] = React.useState('');
-  const [notes, setNotes] = React.useState('');
-  const [submit, setSubmit] = React.useState('');
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [startTime, setSTime] = useState('');
+  const [endTime, setETime] = useState('');
+  const [repeat, setRepeat] = useState('false');
+  const [endAfter, setEnd] = useState('');
+  const [location, setLocation] = useState('');
+  const [notes, setNotes] = useState('');
+  const [submit, setSubmit] = useState('');
+  const [link, setLink] = useState('');
 
   const clearForm = () => {
     setTitle('');
@@ -106,7 +108,10 @@ export default function CreateEvent({
     })
       .then((response) => response.json())
       .then((data) => setEvents([...eventData, data]))
-      .then(() => setSubmit('Your event has been created'))
+      .then(() => {
+        setSubmit('Your event has been created. ');
+        setLink('Back to events');
+      })
       .then(() => clearForm())
       .catch((error) => {
         console.error('Error:', error);
@@ -133,7 +138,7 @@ export default function CreateEvent({
           },
           { weekStartsOn: getDay(startDate) }
         );
-        console.log(dates);
+        // console.log(dates); // the dates of all the repeat events
         dates.forEach((curDate) =>
           postEvent(curDate.toISOString(), startH, startM, endH, endM)
         );
@@ -239,7 +244,12 @@ export default function CreateEvent({
               required
             />
             <Submit type="submit" value="Create" />
-            <p>{submit}</p>
+            <p>
+              <b>
+                {submit}
+                <Link to="/events">{link}</Link>
+              </b>
+            </p>
           </Form>
         </Content>
         <div> </div>
