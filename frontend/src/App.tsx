@@ -54,7 +54,7 @@ function App() {
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
   const user = 'sam';
-  const auth = false;
+  const auth = true;
 
   console.log(user);
   console.log(currentUser);
@@ -91,7 +91,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate replace to="/events" />} />
-          <Route path="/login" element={<Login setUser={setUser} />} />
+          <Route
+            path="/login"
+            element={
+              <ProtectedRoute
+                isAuthenticated
+                authenticationPath="/"
+                outlet={<Login setUser={setUser} />}
+              />
+            }
+          />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
