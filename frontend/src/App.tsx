@@ -7,6 +7,7 @@ import Login from './components/authentication/login';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
+import ProtectedRoute from './components/authentication/privateRoutes';
 import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
@@ -53,7 +54,9 @@ function App() {
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
   const user = 'sam';
+  const auth = false;
 
+  console.log(user);
   console.log(currentUser);
 
   useEffect(() => {
@@ -94,12 +97,54 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/past-shifts"
-            element={<PastShifts pastShiftData={pastShifts} />}
+            element={
+              <ProtectedRoute
+                isAuthenticated={auth}
+                authenticationPath="/login"
+                outlet={<PastShifts pastShiftData={pastShifts} />}
+              />
+            }
           />
-          <Route path="/events" element={<Events eventData={events} />} />
-          <Route path="/log-hours" element={<LogHours />} />
-          <Route path="/create-event" element={<CreateEvent />} />
-          <Route path="/volunteer-log" element={<VolunteerLog />} />
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute
+                isAuthenticated={auth}
+                authenticationPath="/login"
+                outlet={<Events eventData={events} />}
+              />
+            }
+          />
+          <Route
+            path="/log-hours"
+            element={
+              <ProtectedRoute
+                isAuthenticated={auth}
+                authenticationPath="/login"
+                outlet={<LogHours />}
+              />
+            }
+          />
+          <Route
+            path="/create-event"
+            element={
+              <ProtectedRoute
+                isAuthenticated={auth}
+                authenticationPath="/login"
+                outlet={<CreateEvent />}
+              />
+            }
+          />
+          <Route
+            path="/volunteer-log"
+            element={
+              <ProtectedRoute
+                isAuthenticated={auth}
+                authenticationPath="/login"
+                outlet={<VolunteerLog />}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
