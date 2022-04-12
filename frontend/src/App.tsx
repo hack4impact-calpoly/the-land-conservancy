@@ -97,7 +97,7 @@ function App() {
             element={
               <ProtectedRoute
                 isAuthenticated={!loggedin}
-                authenticationPath="/"
+                unauthenticatedPath="/"
                 outlet={<Login setUser={setUser} />}
               />
             }
@@ -110,7 +110,7 @@ function App() {
             element={
               <ProtectedRoute
                 isAuthenticated={auth}
-                authenticationPath="/login"
+                unauthenticatedPath="/login"
                 outlet={<PastShifts pastShiftData={pastShifts} />}
               />
             }
@@ -120,7 +120,7 @@ function App() {
             element={
               <ProtectedRoute
                 isAuthenticated={auth}
-                authenticationPath="/login"
+                unauthenticatedPath="/login"
                 outlet={<Events eventData={events} />}
               />
             }
@@ -130,7 +130,7 @@ function App() {
             element={
               <ProtectedRoute
                 isAuthenticated={auth}
-                authenticationPath="/login"
+                unauthenticatedPath="/login"
                 outlet={<LogHours />}
               />
             }
@@ -140,7 +140,7 @@ function App() {
             element={
               <ProtectedRoute
                 isAuthenticated={auth}
-                authenticationPath="/login"
+                unauthenticatedPath="/login"
                 outlet={<CreateEvent />}
               />
             }
@@ -150,7 +150,7 @@ function App() {
             element={
               <ProtectedRoute
                 isAuthenticated={auth}
-                authenticationPath="/login"
+                unauthenticatedPath="/login"
                 outlet={<VolunteerLog />}
               />
             }
