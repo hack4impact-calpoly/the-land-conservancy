@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { eachWeekOfInterval, getDay } from 'date-fns';
 import Header from '../navigation/header';
 import Container from './formComponents';
 import { Content, Form, Input, Submit, Label } from '../styledComponents';
@@ -33,7 +34,24 @@ const Select = styled.select`
   width: 100%;
 `;
 
-export default function CreateEvent() {
+interface Event {
+  id: string;
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
+
+export default function CreateEvent({
+  eventData,
+  setEvents,
+}: {
+  eventData: Event[];
+  setEvents: (val: Event[]) => void;
+}) {
   const [title, setTitle] = React.useState('');
   const [date, setDate] = React.useState('');
   const [startTime, setSTime] = React.useState('');
@@ -54,14 +72,26 @@ export default function CreateEvent() {
     setLocation('');
     setNotes('');
   };
-  const submitEvent = async () => {
-    const startDate = new Date(date.concat('T', startTime));
-    const endDate = new Date(date.concat('T', endTime));
+
+  const postEvent = async (
+    curDate: string,
+    startH: string,
+    startM: string,
+    endH: string,
+    endM: string
+  ) => {
+    const startTimeDate = new Date(curDate);
+    const endTimeDate = new Date(curDate);
+
+    startTimeDate.setHours(+startH);
+    startTimeDate.setMinutes(+startM);
+    endTimeDate.setHours(+endH);
+    endTimeDate.setMinutes(+endM);
 
     const newEvent = {
       title,
-      start: startDate,
-      end: endDate,
+      start: new Date(startTimeDate.toUTCString()),
+      end: new Date(endTimeDate.toUTCString()),
       location,
       notes,
       shifts: [],
@@ -75,6 +105,7 @@ export default function CreateEvent() {
       body: JSON.stringify(newEvent),
     })
       .then((response) => response.json())
+      .then((data) => setEvents([...eventData, data]))
       .then(() => setSubmit('Your event has been created'))
       .then(() => clearForm())
       .catch((error) => {
@@ -83,6 +114,36 @@ export default function CreateEvent() {
       });
   };
 
+  const submitEvent = async () => {
+    const [startH, startM] = startTime.split(':');
+    const [endH, endM] = endTime.split(':');
+
+    if (repeat === 'false') {
+      postEvent(date, startH, startM, endH, endM);
+    } else {
+      // need times to make sure date is correct
+      const startDate = new Date(date.concat(' ', startTime));
+      const endDate = new Date(endAfter.concat(' ', endTime));
+      try {
+        // get range of dates between the start and end dates
+        const dates = eachWeekOfInterval(
+          {
+            start: startDate,
+            end: endDate,
+          },
+          { weekStartsOn: getDay(startDate) }
+        );
+        console.log(dates);
+        dates.forEach((curDate) =>
+          postEvent(curDate.toISOString(), startH, startM, endH, endM)
+        );
+      } catch (RangeError) {
+        setSubmit(
+          'Invalid date range, make sure starting date is before end date'
+        );
+      }
+    }
+  };
   return (
     <>
       <Header headerText="Create Event" back="/events" />

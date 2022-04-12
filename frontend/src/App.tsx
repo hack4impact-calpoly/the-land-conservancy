@@ -52,6 +52,7 @@ function App() {
           setEvents(data);
           // console.log(data);
         })
+        .then(() => console.log('rendered!'))
         .catch((err) => console.log(err));
     };
 
@@ -70,7 +71,10 @@ function App() {
           <Route path="/past-shifts" element={<PastShifts />} />
           <Route path="/events" element={<Events eventData={events} />} />
           <Route path="/log-hours" element={<LogHours />} />
-          <Route path="/create-event" element={<CreateEvent />} />
+          <Route
+            path="/create-event"
+            element={<CreateEvent eventData={events} setEvents={setEvents} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>
