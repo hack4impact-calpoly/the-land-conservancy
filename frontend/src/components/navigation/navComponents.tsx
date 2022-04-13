@@ -87,6 +87,12 @@ const Label = styled.h3`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    color: #5f8f3e;
+    text-decoration: underline;
+  }
 `;
 
 const LogoImage = styled.img`

@@ -32,7 +32,7 @@ const convertDate = (dateString: string) => {
 
   const date = new Date(dateString);
 
-  return `${days[date.getDay()]} ${date.toLocaleDateString('en-US', {
+  return `${days[date.getUTCDay()]} ${date.toLocaleDateString('en-US', {
     timeZone: 'UTC',
   })}`;
 };

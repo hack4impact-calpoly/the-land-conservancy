@@ -92,7 +92,7 @@ const convertDate = (date: string) => {
 
   const reformat = new Date(date);
 
-  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString('en-US', {
     timeZone: 'UTC',
   })}`;
 };

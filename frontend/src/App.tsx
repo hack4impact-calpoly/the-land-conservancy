@@ -110,6 +110,10 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/events" element={<Events eventData={events} />} />
           <Route
+            path="/create-event"
+            element={<CreateEvent eventData={events} setEvents={setEvents} />}
+          />
+          <Route
             path="/log-hours/:eventId"
             element={<LogHours eventData={events} />}
           />
@@ -117,7 +121,6 @@ function App() {
             path="/past-shifts"
             element={<PastShifts pastShiftData={pastShifts} />}
           />
-          <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/volunteer-log" element={<VolunteerLog />} />
         </Routes>
       </BrowserRouter>
