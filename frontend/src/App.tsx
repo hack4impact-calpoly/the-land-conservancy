@@ -12,9 +12,9 @@ import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
-import awsconfig from './aws-exports';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region

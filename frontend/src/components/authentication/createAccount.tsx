@@ -32,10 +32,32 @@ export default function CreateAccount() {
   const [badMsg, setBadMsg] = useState('');
   const [disabled, setDisabled] = useState(true);
 
+  const addUserToDb = async (awsUserId: string) => {
+    const mongoUser = {
+      _id: awsUserId,
+      isAdmin: false, // defaulting to non-admin accounts
+      name,
+      email,
+      phone: number,
+      pastShifts: [], // no shifts or hours on init
+      totalHours: 0,
+    };
+    console.log(mongoUser);
+    await fetch(`http://localhost:3001/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mongoUser),
+    });
+  };
+
   // create new user based on inputted credentials, after the form is validated
+
   const signUp = async (newAccount: Account) => {
     try {
-      const { user } = await Auth.signUp({
+      // make cognito user
+      const { user, userSub } = await Auth.signUp({
         username: newAccount.Email,
         password: newAccount.Password,
         attributes: {
@@ -45,7 +67,15 @@ export default function CreateAccount() {
           // other custom attributes
         },
       });
+      // now make mongodb user, once AWS user is made
       console.log(user);
+      console.log(userSub);
+      try {
+        await addUserToDb(userSub);
+      } catch (error) {
+        console.log('error adding user to mongoDB:', error);
+        console.log('May have duplicate _id values');
+      }
     } catch (error) {
       console.log('error signing up:', error);
     }
@@ -59,7 +89,7 @@ export default function CreateAccount() {
       Number: '+1'.concat(number),
       Password: pass1,
     };
-    console.log(account);
+    // console.log(account);
     return account;
     // print to console for now, call some backend/ cognito function later
   };
