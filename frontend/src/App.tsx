@@ -11,6 +11,7 @@ import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
+import VolunteerLog from './components/pages/volunteerLog';
 import awsconfig from './aws-exports';
 
 Amplify.configure(awsconfig);
@@ -28,7 +29,6 @@ Amplify.configure({
 });
 
 interface Event {
-  id: string;
   _id: string;
   title: string;
   start: string;
@@ -38,11 +38,52 @@ interface Event {
   shifts: string[];
 }
 
+interface Shift {
+  _id: string;
+  event: Event;
+  hours: number;
+  user: string;
+}
+
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      await fetch('http://localhost:3001/events')
+        .then((res) => res.json())
+        .then((data) => {
+          setEvents(data);
+          // console.log(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadEvents();
+  }, []);
+
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
+  /* eslint-disable */
   const [currentUser, setUser] = useState('');
+  const [pastShifts, setPastShifts] = useState<Shift[]>([]);
+
+  const user = 'sam';
+
+  console.log(currentUser);
+
+  useEffect(() => {
+    const loadPastShifts = async () => {
+      await fetch(`http://localhost:3001/users/${user}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPastShifts(data.pastShifts);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadPastShifts();
+  }, []);
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -67,13 +108,20 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/past-shifts" element={<PastShifts />} />
           <Route path="/events" element={<Events eventData={events} />} />
-          <Route path="/log-hours" element={<LogHours />} />
           <Route
             path="/create-event"
             element={<CreateEvent eventData={events} setEvents={setEvents} />}
           />
+          <Route
+            path="/log-hours/:eventId"
+            element={<LogHours eventData={events} />}
+          />
+          <Route
+            path="/past-shifts"
+            element={<PastShifts pastShiftData={pastShifts} />}
+          />
+          <Route path="/volunteer-log" element={<VolunteerLog />} />
         </Routes>
       </BrowserRouter>
     </div>

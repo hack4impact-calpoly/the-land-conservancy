@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { eachWeekOfInterval, getDay } from 'date-fns';
 import Header from '../navigation/header';
 import Container from './formComponents';
-import { Content, Form, Input, Submit, Label } from '../styledComponents';
+import { Form, Input, Submit, Label, GreenLink } from '../styledComponents';
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
@@ -36,7 +35,6 @@ const Select = styled.select`
 `;
 
 interface Event {
-  id: string;
   _id: string;
   title: string;
   start: string;
@@ -83,22 +81,33 @@ export default function CreateEvent({
     endM: string
   ) => {
     const startTimeDate = new Date(curDate);
-    const endTimeDate = new Date(curDate);
+    const [sYear, sMonth, sDay] = [
+      startTimeDate.getFullYear(),
+      startTimeDate.getMonth(),
+      startTimeDate.getUTCDate(),
+    ];
+    const convertedStart = new Date(
+      Date.UTC(sYear, sMonth, sDay, +startH, +startM)
+    );
 
-    startTimeDate.setHours(+startH);
-    startTimeDate.setMinutes(+startM);
-    endTimeDate.setHours(+endH);
-    endTimeDate.setMinutes(+endM);
+    const endTimeDate = new Date(curDate);
+    const [eYear, eMonth, eDay] = [
+      endTimeDate.getFullYear(),
+      endTimeDate.getMonth(),
+      endTimeDate.getUTCDate(),
+    ];
+    const convertedEnd = new Date(Date.UTC(eYear, eMonth, eDay, +endH, +endM));
 
     const newEvent = {
       title,
-      start: new Date(startTimeDate.toUTCString()),
-      end: new Date(endTimeDate.toUTCString()),
+      start: convertedStart,
+      end: convertedEnd,
       location,
       notes,
       shifts: [],
     };
 
+    clearForm(); // clear form first to prevent multiple clicks => multiple submits
     fetch('http://localhost:3001/events/', {
       method: 'POST',
       headers: {
@@ -112,7 +121,6 @@ export default function CreateEvent({
         setSubmit('Your event has been created. ');
         setLink('Back to events');
       })
-      .then(() => clearForm())
       .catch((error) => {
         console.error('Error:', error);
         setSubmit('Error submitting event');
@@ -139,9 +147,9 @@ export default function CreateEvent({
           { weekStartsOn: getDay(startDate) }
         );
         // console.log(dates); // the dates of all the repeat events
-        dates.forEach((curDate) =>
-          postEvent(curDate.toISOString(), startH, startM, endH, endM)
-        );
+        dates.forEach((curDate) => {
+          postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+        });
       } catch (RangeError) {
         setSubmit(
           'Invalid date range, make sure starting date is before end date'
@@ -150,10 +158,9 @@ export default function CreateEvent({
     }
   };
   return (
-    <>
-      <Header headerText="Create Event" back="/events" />
+    <Header headerText="Create Event" back="/events" navbar>
       <Container>
-        <Content>
+        <div>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -199,7 +206,7 @@ export default function CreateEvent({
 
             <Flex dir="row">
               <Flex dir="column">
-                <Label htmlFor="repeat-select">Repeats</Label>
+                <Label htmlFor="repeat-select">Weekly Repeat</Label>
                 <Select
                   name="repeat"
                   id="repeat-select"
@@ -247,13 +254,13 @@ export default function CreateEvent({
             <p>
               <b>
                 {submit}
-                <Link to="/events">{link}</Link>
+                <GreenLink to="/events">{link}</GreenLink>
               </b>
             </p>
           </Form>
-        </Content>
+        </div>
         <div> </div>
       </Container>
-    </>
+    </Header>
   );
 }

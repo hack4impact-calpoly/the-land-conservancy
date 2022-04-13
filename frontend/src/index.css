@@ -7,16 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: #5f8f3e;
-  text-decoration: none;
-}
-
-a:hover, a:active, a:focus {
-  color: #5f8f3e;
-  text-decoration:underline;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

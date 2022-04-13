@@ -15,7 +15,11 @@ import {
 } from './navComponents';
 import logo from '../../imgs/logo.png';
 
-export default function NavBar() {
+type Props = {
+  children: React.ReactChild;
+};
+
+export default function NavBar({ children }: Props) {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
@@ -52,6 +56,7 @@ export default function NavBar() {
       <Button onClick={() => setNavOpen(true)}>
         <BarIcon />
       </Button>
+      {children}
     </Sidebar>
   );
 }

@@ -41,8 +41,9 @@ const Button = styled.button`
   background: none;
   text-align: left;
   display: flex;
-  margin-left: 29px;
-  margin-top: 15px;
+  position: absolute;
+  left: 30px;
+  top: 15px;
 `;
 
 interface Props {
@@ -86,6 +87,12 @@ const Label = styled.h3`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    color: #5f8f3e;
+    text-decoration: underline;
+  }
 `;
 
 const LogoImage = styled.img`
