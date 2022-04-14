@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { AuthContainer, ErrorMsg } from './authComponents';
 import {
@@ -23,7 +23,11 @@ type Account = {
   Password: string;
 };
 
-export default function CreateAccount() {
+export default function CreateAccount({
+  setUser,
+}: {
+  setUser: (val: string) => void;
+}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
@@ -33,7 +37,7 @@ export default function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
 
   // create new user based on inputted credentials, after the form is validated
-  const signUp = async (newAccount: Account) => {
+  const signUp = async (newAccount: Account): Promise<boolean> => {
     try {
       const { user } = await Auth.signUp({
         username: newAccount.Email,
@@ -46,8 +50,11 @@ export default function CreateAccount() {
         },
       });
       console.log(user);
+      setUser(user.getUsername());
+      return true;
     } catch (error) {
       console.log('error signing up:', error);
+      return false;
     }
   };
 
@@ -98,6 +105,8 @@ export default function CreateAccount() {
     setDisabled(!validateForm());
   }, [email, number, pass1, pass2]);
 
+  const navigate = useNavigate();
+
   return (
     <AuthContainer>
       <Link to="/login">
@@ -106,9 +115,12 @@ export default function CreateAccount() {
       <Content>
         <Header>Create an account</Header>
         <Form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            signUp(createAccount());
+            // if signup is successful, navigate to confirm email page
+            if (await signUp(createAccount())) {
+              navigate('/confirm-email');
+            }
           }}
         >
           <Label htmlFor="f1">First and Last Name</Label>

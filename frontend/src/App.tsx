@@ -4,6 +4,7 @@ import Amplify from 'aws-amplify';
 
 import './App.css';
 import Login from './components/authentication/login';
+import ConfirmEmail from './components/authentication/confirmEmail';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
@@ -49,6 +50,7 @@ function App() {
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
   const [currentUser, setUser] = useState('');
+  const [confirmed, setConfirmed] = useState(false);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
   const user = 'sam';
@@ -88,7 +90,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate replace to="/events" />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/confirm-email" element={<ConfirmEmail user={currentUser}/>} />
+          <Route
+            path="/create-account"
+            element={<CreateAccount setUser={setUser} />}
+          />
           <Route path="/forgot-password" element={<ForgotPasword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route
