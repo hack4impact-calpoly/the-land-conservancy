@@ -62,8 +62,9 @@ function App() {
     loadEvents();
   }, []);
 
-  // 'setUser' sets the 'currentUser' to the 'userSub' value,
-  // which is a unique identifier
+  // 'setUser' sets the 'currentUser' to the
+  // mongodb user document fetched on login,
+  // doc includes the users userSub
   /* eslint-disable */
   const [currentUser, setUser] = useState('');
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
