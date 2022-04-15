@@ -87,14 +87,35 @@ export default function LoginPage({
     console.log(password);
   };
 
+  // fetches Mongo user who signed in
+  const getMongoUser = async (id: string) => {
+    try {
+      fetch(`http://localhost:3001/users/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setUser(data);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.log('error getting user from mongodb', error);
+    }
+  };
+
   // authenticate sign in
   const signIn = async () => {
     try {
+      // first get cognitoUser
       const user = await Auth.signIn(username, password);
-      setUser(user.userSub);
+      console.log(user);
+      // note: the user id is stored in the username
+      // attribute of object returned by signIn
+
+      // then get mongoUser
+      await getMongoUser(user.username);
       console.log(`Successful sign in for user: ${username}`);
     } catch (error) {
       console.log('error signing in', error);
+      window.alert(error);
     }
   };
 
