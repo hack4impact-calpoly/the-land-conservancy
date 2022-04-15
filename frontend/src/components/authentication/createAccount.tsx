@@ -78,6 +78,7 @@ export default function CreateAccount() {
       }
     } catch (error) {
       console.log('error signing up:', error);
+      window.alert(error);
     }
   };
 
