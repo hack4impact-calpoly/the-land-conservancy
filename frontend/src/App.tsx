@@ -12,9 +12,9 @@ import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
-import awsconfig from './aws-exports';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region
@@ -47,7 +47,15 @@ interface Shift {
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
+  // 'setUser' sets the 'currentUser' to the
+  // mongodb user document fetched on login,
+  // doc includes the users userSub
+  const [currentUser, setUser] = useState('');
+  const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
+  const user = 'sam';
+
+  // loads in all events
   useEffect(() => {
     const loadEvents = async () => {
       await fetch('http://localhost:3001/events')
@@ -62,16 +70,7 @@ function App() {
     loadEvents();
   }, []);
 
-  // 'setUser' sets the 'currentUser' to the 'userSub' value,
-  // which is a unique identifier
-  /* eslint-disable */
-  const [currentUser, setUser] = useState('');
-  const [pastShifts, setPastShifts] = useState<Shift[]>([]);
-
-  const user = 'sam';
-
-  console.log(currentUser);
-
+  // get user's past shifts from db
   useEffect(() => {
     const loadPastShifts = async () => {
       await fetch(`http://localhost:3001/users/${user}`)
@@ -85,19 +84,10 @@ function App() {
     loadPastShifts();
   }, []);
 
+  // runs when currentUser is updated
   useEffect(() => {
-    const loadEvents = async () => {
-      await fetch('http://localhost:3001/events')
-        .then((res) => res.json())
-        .then((data) => {
-          setEvents(data);
-          // console.log(data);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    loadEvents();
-  }, []);
+    console.log('currentUser has been updated: ', currentUser);
+  }, [currentUser]);
 
   return (
     <div className="App">
