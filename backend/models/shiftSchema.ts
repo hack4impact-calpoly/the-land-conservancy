@@ -4,7 +4,7 @@ const ShiftSchema = new mongoose.Schema(
   {
     event: { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
     hours: Number,
-    user: mongoose.Schema.Types.ObjectId,
+    user: String,
   },
   { collection: 'Shifts' }
 );
