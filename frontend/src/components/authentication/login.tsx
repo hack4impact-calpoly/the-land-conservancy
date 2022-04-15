@@ -87,7 +87,7 @@ export default function LoginPage({
     console.log(password);
   };
 
-  // fetches user who signed in here
+  // fetches Mongo user who signed in
   const getMongoUser = async (id: string) => {
     try {
       fetch(`http://localhost:3001/users/${id}`)
@@ -104,14 +104,18 @@ export default function LoginPage({
   // authenticate sign in
   const signIn = async () => {
     try {
+      // first get cognitoUser
       const user = await Auth.signIn(username, password);
       console.log(user);
       // note: the user id is stored in the username
       // attribute of object returned by signIn
+
+      // then get mongoUser
       await getMongoUser(user.username);
       console.log(`Successful sign in for user: ${username}`);
     } catch (error) {
       console.log('error signing in', error);
+      window.alert(error);
     }
   };
 
