@@ -38,25 +38,28 @@ const StyledDelete = styled(RiDeleteBin6Line)`
 `;
 
 function createData(
+  _id: string,
   name: string,
   eventTitle: string,
   date: string,
   hours: number
 ) {
-  return { name, eventTitle, date, hours };
+  return { _id, name, eventTitle, date, hours };
 }
 
 const rows = [
   createData(
+    '001',
     'John Appleseed',
     'Trash pickup at Pismo Preserve',
     '1/07/2022',
     6
   ),
-  createData('John Appleseed', 'Event 1', '1/07/2022', 6),
-  createData('Another Person', 'Event 1', '1/07/2022', 25),
-  createData('John Appleseed', 'Event 1', '1/07/2022', 16),
+  createData('002', 'John Appleseed', 'Event 1', '1/07/2022', 6),
+  createData('003', 'Another Person', 'Event 1', '1/07/2022', 25),
+  createData('004', 'John Appleseed', 'Event 1', '1/07/2022', 16),
   createData(
+    '005',
     'John Appleseed',
     'Very long event title that is long 1',
     '1/07/2022',
@@ -83,7 +86,7 @@ export default function VolunteerLog() {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">

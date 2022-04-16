@@ -70,7 +70,6 @@ const FLink = styled(Link)`
   text-decoration: none;
 `;
 
-// eslint-disable-next-line max-len
 export default function LoginPage({
   setUser,
 }: {
