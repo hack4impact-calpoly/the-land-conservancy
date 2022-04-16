@@ -12,6 +12,7 @@ import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
+import { Event, Shift } from './types';
 // import awsconfig from './aws-exports';
 
 // Amplify.configure(awsconfig);
@@ -27,23 +28,6 @@ Amplify.configure({
     mandatorySignIn: false,
   },
 });
-
-interface Event {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: string[];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);

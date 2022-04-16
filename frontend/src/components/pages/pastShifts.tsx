@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
+import { Shift } from '../../types';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
@@ -26,22 +27,6 @@ const convertDate = (date: string) => {
     timeZone: 'UTC',
   })}`;
 };
-
-interface Event {
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: string[];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
 
 type ShiftProps = {
   pastShiftData: Shift[];

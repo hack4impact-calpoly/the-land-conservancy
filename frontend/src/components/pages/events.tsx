@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
 import EventCard from './eventCard';
 import Header from '../navigation/header';
+import { Event } from '../../types';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -36,16 +37,6 @@ const convertDate = (dateString: string) => {
     timeZone: 'UTC',
   })}`;
 };
-
-interface Event {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: string[];
-}
 
 type EventProps = {
   eventData: Event[];

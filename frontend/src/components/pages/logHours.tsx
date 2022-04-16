@@ -4,6 +4,8 @@ import { Container } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
+import { Submit } from '../styledComponents';
+import { Event } from '../../types';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -40,20 +42,6 @@ const StyledHeader3 = styled.h3`
   color: #5b5a5a;
 `;
 
-const StyledButton = styled.button`
-  color: white;
-  display: block;
-  background: #5f8f3e;
-  border-radius: 6px;
-
-  width: 100%;
-  height: 33px;
-  padding-left: 6px;
-
-  font-family: Poppins;
-  text-align: center;
-`;
-
 const StyledHeader4 = styled.h4`
   display: block;
   text-align: left;
@@ -64,16 +52,6 @@ const StyledHeader4 = styled.h4`
   line-height: 19px;
   color: red;
 `;
-
-interface Event {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: string[];
-}
 
 type LogHoursProps = {
   eventData: Event[];
@@ -92,8 +70,10 @@ const convertDate = (date: string) => {
 
   const reformat = new Date(date);
 
-  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString('en-US', {
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleString('en-US', {
     timeZone: 'UTC',
+    dateStyle: 'short',
+    timeStyle: 'short',
   })}`;
 };
 
@@ -166,7 +146,7 @@ export default function LogHours({ eventData }: LogHoursProps) {
           />
 
           <StyledHeader4>{valid}</StyledHeader4>
-          <StyledButton type="submit">Submit</StyledButton>
+          <Submit type="submit" value="Submit" />
           <p>{submit}</p>
           <Link to="/past-shifts">{link}</Link>
         </form>
