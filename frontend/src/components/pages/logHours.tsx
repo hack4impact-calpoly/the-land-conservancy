@@ -4,51 +4,36 @@ import { Container } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
-import { Submit } from '../styledComponents';
+import { Input, Label, Submit } from '../styledComponents';
 import { Event } from '../../types';
 
 const StyledContainer = styled(Container)`
-  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;
 
-const StyledInput = styled.input`
-  display: block;
-  border: 1px solid #c4c4c4;
-  box-sizing: border-box;
-  border-radius: 6px;
-  height: 33px;
-
+const StyledInput = styled(Input)`
   font-size: 20px;
   text-align: left;
 
   margin-top: 11px;
   margin-bottom: 22px;
 
-  @media (max-width: 599px) {
-    width: 90vw;
-  }
+  max-width: 100px;
 `;
 
-const StyledHeader3 = styled.h3`
+const StyledLabel = styled(Label)`
+  display: block;
+  text-align: left;
+`;
+
+const Feedback = styled.div`
   display: block;
   text-align: left;
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  font-size: 13px;
-  line-height: 19px;
-  color: #5b5a5a;
-`;
-
-const StyledHeader4 = styled.h4`
-  display: block;
-  text-align: left;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 10px;
+  font-size: 15px;
   line-height: 19px;
   color: red;
 `;
@@ -126,9 +111,8 @@ export default function LogHours({ eventData }: LogHoursProps) {
             notes={thisEvent.notes}
           />
         ) : (
-          'hewwo'
+          'Loading...'
         )}
-        <StyledHeader3>Total hours volunteered</StyledHeader3>
         <form
           id="form"
           onSubmit={(e) => {
@@ -136,6 +120,7 @@ export default function LogHours({ eventData }: LogHoursProps) {
             submitHours();
           }}
         >
+          <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
           <StyledInput
             id="hours"
             type="number"
@@ -145,7 +130,7 @@ export default function LogHours({ eventData }: LogHoursProps) {
             required
           />
 
-          <StyledHeader4>{valid}</StyledHeader4>
+          <Feedback>{valid}</Feedback>
           <Submit type="submit" value="Submit" />
           <p>{submit}</p>
           <Link to="/past-shifts">{link}</Link>
