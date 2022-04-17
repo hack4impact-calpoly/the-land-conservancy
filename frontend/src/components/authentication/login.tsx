@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
 import { AuthContainer } from './authComponents';
 import { Content, Form, Input } from '../styledComponents';
+import landscape from '../../imgs/tlc_background.jpeg';
+
+const Background = styled.div`
+  background-image: url(${landscape});
+  background-size: cover;
+`;
 
 const StyledForgot = styled.p`
   height: 15px;
@@ -119,50 +125,52 @@ export default function LoginPage({
   };
 
   return (
-    <AuthContainer>
-      <Flex dir="column" ai="center">
-        <StyledImage src={logo} alt="The Land Conservancy of SLO logo" />
-      </Flex>
-      <Content>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-            retrieveUser();
-            signIn();
-          }}
-        >
-          <Input
-            type="email"
-            id="f1"
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="email"
-            required
-          />
-          <Input
-            type="password"
-            id="f2"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="password"
-            required
-          />
+    <Background>
+      <AuthContainer>
+        <Flex dir="column" ai="center">
+          <StyledImage src={logo} alt="The Land Conservancy of SLO logo" />
+        </Flex>
+        <Content>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              retrieveUser();
+              signIn();
+            }}
+          >
+            <Input
+              type="email"
+              id="f1"
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="email"
+              required
+            />
+            <Input
+              type="password"
+              id="f2"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="password"
+              required
+            />
 
-          <Flex dir="row">
-            <CLink to="/create-account">
-              <Button type="button" c="#5F8F3E" wid="100%">
+            <Flex dir="row">
+              <CLink to="/create-account">
+                <Button type="button" c="#5F8F3E" wid="100%">
+                  {' '}
+                  Create Account{' '}
+                </Button>
+              </CLink>
+              <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
                 {' '}
-                Create Account{' '}
+                Sign in{' '}
               </Button>
-            </CLink>
-            <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
-              {' '}
-              Sign in{' '}
-            </Button>
-          </Flex>
-        </Form>
-        <FLink to="/forgot-password">
-          <StyledForgot> Forgot password? </StyledForgot>
-        </FLink>
-      </Content>
-    </AuthContainer>
+            </Flex>
+          </Form>
+          <FLink to="/forgot-password">
+            <StyledForgot> Forgot password? </StyledForgot>
+          </FLink>
+        </Content>
+      </AuthContainer>
+    </Background>
   );
 }
