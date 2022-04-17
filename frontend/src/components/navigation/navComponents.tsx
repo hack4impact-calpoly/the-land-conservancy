@@ -3,6 +3,8 @@ import { FaBars } from 'react-icons/fa';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import { GiBackwardTime } from 'react-icons/gi';
 import { MdLogout } from 'react-icons/md';
+import { IoMdAddCircleOutline } from 'react-icons/io';
+import { FiCalendar } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 const BarIcon = styled(FaBars)`
@@ -27,6 +29,22 @@ const ClockIcon = styled(GiBackwardTime)`
   text-align: left;
   display: block;
   font-size: 50px;
+`;
+
+const AddIcon = styled(IoMdAddCircleOutline)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
+`;
+
+const CalendarIcon = styled(FiCalendar)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
 `;
 
 const LogoutIcon = styled(MdLogout)`
@@ -100,6 +118,8 @@ export {
   BarIcon,
   ClipboardIcon,
   ClockIcon,
+  AddIcon,
+  CalendarIcon,
   LogoutIcon,
   Button,
   Path,

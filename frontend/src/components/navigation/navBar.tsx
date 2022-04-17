@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useMatch } from 'react-router-dom';
 import Sidebar from 'react-sidebar';
 import {
@@ -6,6 +6,8 @@ import {
   ClipboardIcon,
   ClockIcon,
   LogoutIcon,
+  AddIcon,
+  CalendarIcon,
   Button,
   Path,
   BottomPath,
@@ -14,14 +16,15 @@ import {
   LogoImage,
 } from './navComponents';
 import logo from '../../imgs/logo.png';
+import userContext from '../../userContext';
 
 type Props = {
-  isAdmin?: boolean;
   children: React.ReactChild;
 };
 
-export default function NavBar({ isAdmin, children }: Props) {
+export default function NavBar({ children }: Props) {
   const [navOpen, setNavOpen] = useState(false);
+  const isAdmin = useContext(userContext);
 
   return (
     <Sidebar
@@ -29,34 +32,47 @@ export default function NavBar({ isAdmin, children }: Props) {
         <div>
           <LogoImage src={logo} />
           {isAdmin ? (
-            <StyledLink to="/create-event">
-              <Path active={!!useMatch('/create-event')}>
-                <ClipboardIcon />
-                <Label>Log hours</Label>
-              </Path>
-            </StyledLink>
+            <div>
+              <StyledLink to="/create-event">
+                <Path active={!!useMatch('/create-event')}>
+                  <AddIcon />
+                  <Label>Create event</Label>
+                </Path>
+              </StyledLink>
+              <StyledLink to="/events">
+                <Path active={!!useMatch('/events')}>
+                  <CalendarIcon />
+                  <Label>Events</Label>
+                </Path>
+              </StyledLink>
+              <StyledLink to="/volunteer-log">
+                <Path active={!!useMatch('/volunteer-log')}>
+                  <ClipboardIcon />
+                  <Label>Volunteer log</Label>
+                </Path>
+              </StyledLink>
+              <StyledLink to="/progress-bar">
+                <Path active={!!useMatch('/progress-bar')}>
+                  <ClipboardIcon />
+                  <Label>Progress bar</Label>
+                </Path>
+              </StyledLink>
+            </div>
           ) : (
-            <StyledLink to="/events">
-              <Path active={!!useMatch('/events')}>
-                <ClipboardIcon />
-                <Label>Events</Label>
-              </Path>
-            </StyledLink>
-          )}
-          {isAdmin ? (
-            <StyledLink to="/events">
-              <Path active={!!useMatch('/events')}>
-                <ClockIcon />
-                <Label>Past shifts</Label>
-              </Path>
-            </StyledLink>
-          ) : (
-            <StyledLink to="/past-shifts">
-              <Path active={!!useMatch('/past-shifts')}>
-                <ClockIcon />
-                <Label>Past shifts</Label>
-              </Path>
-            </StyledLink>
+            <div>
+              <StyledLink to="/events">
+                <Path active={!!useMatch('/events')}>
+                  <ClipboardIcon />
+                  <Label>Events</Label>
+                </Path>
+              </StyledLink>
+              <StyledLink to="/past-shifts">
+                <Path active={!!useMatch('/past-shifts')}>
+                  <ClockIcon />
+                  <Label>Past shifts</Label>
+                </Path>
+              </StyledLink>
+            </div>
           )}
           <StyledLink to="/">
             <BottomPath>
@@ -79,6 +95,3 @@ export default function NavBar({ isAdmin, children }: Props) {
     </Sidebar>
   );
 }
-NavBar.defaultProps = {
-  isAdmin: false,
-};
