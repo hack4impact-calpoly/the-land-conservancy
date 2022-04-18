@@ -7,7 +7,7 @@ import Login from './components/authentication/login';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
-import ProtectedRoute from './components/authentication/privateRoutes';
+import ProtectedRoute from './components/authentication/protectedRoute';
 import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
@@ -51,11 +51,12 @@ function App() {
   // 'setUser' sets the 'currentUser' to the 'userSub' value,
   // which is a unique identifier
   const [currentUser, setUser] = useState('');
+  // const [loggedIn, setLoggedIn] = useState(false);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
+  const [authorized, setAuthorized] = useState(false);
 
   const user = 'sam';
-  const auth = true;
-  const loggedin = false;
+  // const auth = true;
 
   console.log(user);
   console.log(currentUser);
@@ -95,11 +96,7 @@ function App() {
           <Route
             path="/login"
             element={
-              <ProtectedRoute
-                isAuthenticated={!loggedin}
-                unauthenticatedPath="/"
-                outlet={<Login setUser={setUser} />}
-              />
+              <Login setUser={setUser} setAuthorization={setAuthorized} />
             }
           />
           <Route path="/create-account" element={<CreateAccount />} />
@@ -109,50 +106,60 @@ function App() {
             path="/past-shifts"
             element={
               <ProtectedRoute
-                isAuthenticated={auth}
                 unauthenticatedPath="/login"
-                outlet={<PastShifts pastShiftData={pastShifts} />}
-              />
+                authorization={authorized}
+                setAuthorization={setAuthorized}
+              >
+                <PastShifts pastShiftData={pastShifts} />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/events"
             element={
               <ProtectedRoute
-                isAuthenticated={auth}
                 unauthenticatedPath="/login"
-                outlet={<Events eventData={events} />}
-              />
+                authorization={authorized}
+                setAuthorization={setAuthorized}
+              >
+                <Events eventData={events} />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/log-hours"
             element={
               <ProtectedRoute
-                isAuthenticated={auth}
                 unauthenticatedPath="/login"
-                outlet={<LogHours />}
-              />
+                authorization={authorized}
+                setAuthorization={setAuthorized}
+              >
+                <LogHours />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/create-event"
             element={
               <ProtectedRoute
-                isAuthenticated={auth}
                 unauthenticatedPath="/login"
-                outlet={<CreateEvent />}
-              />
+                authorization={authorized}
+                setAuthorization={setAuthorized}
+              >
+                <CreateEvent />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/volunteer-log"
             element={
               <ProtectedRoute
-                isAuthenticated={auth}
                 unauthenticatedPath="/login"
-                outlet={<VolunteerLog />}
-              />
+                authorization={authorized}
+                setAuthorization={setAuthorized}
+              >
+                <VolunteerLog />
+              </ProtectedRoute>
             }
           />
         </Routes>

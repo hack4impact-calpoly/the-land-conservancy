@@ -73,8 +73,10 @@ const FLink = styled(Link)`
 // eslint-disable-next-line max-len
 export default function LoginPage({
   setUser,
+  setAuthorization,
 }: {
   setUser: (val: string) => void;
+  setAuthorization: (val: boolean) => void;
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -92,6 +94,7 @@ export default function LoginPage({
     try {
       const user = await Auth.signIn(username, password);
       setUser(user.userSub);
+      setAuthorization(true);
       console.log(`Successful sign in for user: ${username}`);
     } catch (error) {
       console.log('error signing in', error);
