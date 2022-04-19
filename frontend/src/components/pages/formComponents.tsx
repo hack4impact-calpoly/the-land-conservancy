@@ -16,7 +16,7 @@ const Div = styled.div`
   min-height: 100vh;
   padding: 0;
   @media only screen and (min-width: 768px) {
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
   }
 `;

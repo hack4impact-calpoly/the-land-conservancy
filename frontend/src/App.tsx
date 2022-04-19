@@ -13,9 +13,12 @@ import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
-import awsconfig from './aws-exports';
+import EditProgressBar from './components/pages/editProgressBar';
+import userContext from './userContext';
+import { Event, Shift } from './types';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region
@@ -29,27 +32,11 @@ Amplify.configure({
   },
 });
 
-interface Event {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: [string];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
-
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
-  // 'setUser' sets the 'currentUser' to the 'userSub' value,
-  // which is a unique identifier
+  // 'setUser' sets the 'currentUser' to the
+  // mongodb user document fetched on login,
+  // doc includes the users userSub
   const [currentUser, setUser] = useState('');
   // const [loggedIn, setLoggedIn] = useState(false);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
@@ -61,19 +48,7 @@ function App() {
   console.log(user);
   console.log(currentUser);
 
-  useEffect(() => {
-    const loadPastShifts = async () => {
-      await fetch(`http://localhost:3001/users/${user}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setPastShifts(data.pastShifts);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    loadPastShifts();
-  }, []);
-
+  // loads in all events
   useEffect(() => {
     const loadEvents = async () => {
       await fetch('http://localhost:3001/events')
@@ -88,78 +63,134 @@ function App() {
     loadEvents();
   }, []);
 
+  // get user's past shifts from db
+  useEffect(() => {
+    const loadPastShifts = async () => {
+      await fetch(`http://localhost:3001/users/${user}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPastShifts(data.pastShifts);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    loadPastShifts();
+  }, []);
+
+  // runs when currentUser is updated
+  useEffect(() => {
+    console.log('currentUser has been updated: ', currentUser);
+  }, [currentUser]);
+
+  // TODO: value={currentUser} when we get auth finalized
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/events" />} />
-          <Route
-            path="/login"
-            element={
-              <Login setUser={setUser} setAuthorization={setAuthorized} />
-            }
-          />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/forgot-password" element={<ForgotPasword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/past-shifts"
-            element={
-              <ProtectedRoute
-                authorization={authorized}
-                setAuthorization={setAuthorized}
-              >
-                <PastShifts pastShiftData={pastShifts} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/events"
-            element={
-              <ProtectedRoute
-                authorization={authorized}
-                setAuthorization={setAuthorized}
-              >
-                <Events eventData={events} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/log-hours"
-            element={
-              <ProtectedRoute
-                authorization={authorized}
-                setAuthorization={setAuthorized}
-              >
-                <LogHours />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/create-event"
-            element={
-              <ProtectedRoute
-                authorization={authorized}
-                setAuthorization={setAuthorized}
-              >
-                <CreateEvent />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/volunteer-log"
-            element={
-              <ProtectedRoute
-                authorization={authorized}
-                setAuthorization={setAuthorized}
-              >
-                <VolunteerLog />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <userContext.Provider value={user}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/events" />} />
+            <Route
+              path="/login"
+              element={
+                <Login setUser={setUser} setAuthorization={setAuthorized} />
+              }
+            />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/forgot-password" element={<ForgotPasword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
+            <Route
+              path="/past-shifts"
+              element={
+                <ProtectedRoute
+                  authorization={authorized}
+                  setAuthorization={setAuthorized}
+                  setUser={setUser}
+                >
+                  <PastShifts pastShiftData={pastShifts} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events"
+              element={
+                <ProtectedRoute
+                  authorization={authorized}
+                  setAuthorization={setAuthorized}
+                  setUser={setUser}
+                >
+                  <Events eventData={events} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/log-hours"
+              element={
+                <ProtectedRoute
+                  authorization={authorized}
+                  setAuthorization={setAuthorized}
+                  setUser={setUser}
+                >
+                  <LogHours eventData={events} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-event"
+              element={
+                <ProtectedRoute
+                  authorization={authorized}
+                  setAuthorization={setAuthorized}
+                  setUser={setUser}
+                >
+                  <CreateEvent eventData={events} setEvents={setEvents} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer-log"
+              element={
+                <ProtectedRoute
+                  authorization={authorized}
+                  setAuthorization={setAuthorized}
+                  setUser={setUser}
+                >
+                  <VolunteerLog />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/progress-bar"
+              element={
+                <ProtectedRoute
+                  authorization={authorized}
+                  setAuthorization={setAuthorized}
+                  setUser={setUser}
+                >
+                  <EditProgressBar />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* <Route path="/events" element={<Events eventData={events} />} />
+            <Route
+              path="/log-hours/:eventId"
+              element={<LogHours eventData={events} />}
+            />
+            <Route
+              path="/past-shifts"
+              element={<PastShifts pastShiftData={pastShifts} />}
+            />
+            <Route
+              path="/create-event"
+              element={<CreateEvent eventData={events} setEvents={setEvents} />}
+            />
+            <Route path="/volunteer-log" element={<VolunteerLog />} />
+            <Route path="/progress-bar" element={<EditProgressBar />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </userContext.Provider>
   );
 }
 

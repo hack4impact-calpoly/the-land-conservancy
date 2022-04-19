@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
+import { Shift } from '../../types';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
-
   margin: 5px;
   padding: 10px;
 `;
@@ -23,26 +23,10 @@ const convertDate = (date: string) => {
   ];
   const reformat = new Date(date);
 
-  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString('en-US', {
     timeZone: 'UTC',
   })}`;
 };
-
-interface Event {
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: [string];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
 
 type ShiftProps = {
   pastShiftData: Shift[];
@@ -60,8 +44,7 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
   });
 
   return (
-    <div>
-      <Header headerText="Past Shifts" navbar />
+    <Header headerText="Past Shifts" navbar>
       <StyledContainer>
         <StyledContainer maxWidth="md">
           {pastShiftData ? (
@@ -80,6 +63,6 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
           )}
         </StyledContainer>
       </StyledContainer>
-    </div>
+    </Header>
   );
 }

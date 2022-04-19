@@ -1,104 +1,76 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { BiArrowBack } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
+import Header from '../navigation/header';
+import { Input, Label, Submit } from '../styledComponents';
+import { Event } from '../../types';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
   margin: 5px;
   padding: 10px;
 `;
 
-const StyledBack = styled.button`
-  display: block;
-  border: none;
-  text-align: left;
-  background: white;
-  font-size: 25px;
-  color: black;
-`;
-const StyledHeader = styled.h1`
-  text-align: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 30px;
-  color: #000000;
-`;
-const StyledInput = styled.input`
-  display: block;
-  border: 1px solid #c4c4c4;
-  box-sizing: border-box;
-  border-radius: 6px;
-  height: 33px;
-
+const StyledInput = styled(Input)`
   font-size: 20px;
   text-align: left;
 
   margin-top: 11px;
   margin-bottom: 22px;
 
-  @media (max-width: 599px) {
-    width: 90vw;
-  }
+  max-width: 100px;
 `;
 
-const StyledHeader3 = styled.h3`
+const StyledLabel = styled(Label)`
+  display: block;
+  text-align: left;
+`;
+
+const Feedback = styled.div`
   display: block;
   text-align: left;
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  font-size: 13px;
-  line-height: 19px;
-  color: #5b5a5a;
-`;
-
-const StyledButton = styled.button`
-  color: white;
-  display: block;
-  background: #5f8f3e;
-  border-radius: 6px;
-
-  width: 100%;
-  height: 33px;
-  padding-left: 6px;
-
-  font-family: Poppins;
-  text-align: center;
-`;
-
-const StyledHeader4 = styled.h4`
-  display: block;
-  text-align: left;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 10px;
+  font-size: 15px;
   line-height: 19px;
   color: red;
 `;
 
-const testEvents = [
-  {
-    title: 'Event One',
-    date: 'Monday 2/14/2022',
-    start: '12:00 pm',
-    end: '12:00 am',
-    location: '123 Street st.',
-    notes: "don't be late :)",
-    key: 1,
-  },
-];
+type LogHoursProps = {
+  eventData: Event[];
+};
 
-export default function LogHours() {
+const convertDate = (date: string) => {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const reformat = new Date(date);
+
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleString('en-US', {
+    timeZone: 'UTC',
+    dateStyle: 'short',
+    timeStyle: 'short',
+  })}`;
+};
+
+export default function LogHours({ eventData }: LogHoursProps) {
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [link, setLink] = React.useState(' ');
+  const { eventId } = useParams();
+  const thisEvent = eventData.find((event) => {
+    return event._id === eventId;
+  });
 
   const validateHours = () => {
     // check: filled, isNumber, is > 0
@@ -126,31 +98,21 @@ export default function LogHours() {
     validateHours();
   }, [hours]);
 
-  const eventDesc = testEvents.map((event) => {
-    return (
-      <EventDesc
-        key={event.key}
-        title={event.title}
-        date={event.date}
-        start={event.start}
-        end={event.end}
-        location={event.location}
-        notes={event.notes}
-      />
-    );
-  });
-
   return (
-    <div>
+    <Header headerText="Log Hours" back="/events">
       <StyledContainer maxWidth="sm">
-        <StyledBack>
-          <Link to="/events">
-            <BiArrowBack />
-          </Link>
-        </StyledBack>
-        <StyledHeader>Log Hours</StyledHeader>
-        {eventDesc}
-        <StyledHeader3>Total hours volunteered</StyledHeader3>
+        {thisEvent ? (
+          <EventDesc
+            key={thisEvent._id}
+            title={thisEvent.title}
+            start={convertDate(thisEvent.start)}
+            end={convertDate(thisEvent.end)}
+            location={thisEvent.location}
+            notes={thisEvent.notes}
+          />
+        ) : (
+          'Loading...'
+        )}
         <form
           id="form"
           onSubmit={(e) => {
@@ -158,6 +120,7 @@ export default function LogHours() {
             submitHours();
           }}
         >
+          <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
           <StyledInput
             id="hours"
             type="number"
@@ -167,12 +130,12 @@ export default function LogHours() {
             required
           />
 
-          <StyledHeader4>{valid}</StyledHeader4>
-          <StyledButton type="submit">Submit</StyledButton>
+          <Feedback>{valid}</Feedback>
+          <Submit type="submit" value="Submit" />
           <p>{submit}</p>
           <Link to="/past-shifts">{link}</Link>
         </form>
       </StyledContainer>
-    </div>
+    </Header>
   );
 }
