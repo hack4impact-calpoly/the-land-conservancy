@@ -106,7 +106,6 @@ function App() {
             path="/past-shifts"
             element={
               <ProtectedRoute
-                unauthenticatedPath="/login"
                 authorization={authorized}
                 setAuthorization={setAuthorized}
               >
@@ -118,7 +117,6 @@ function App() {
             path="/events"
             element={
               <ProtectedRoute
-                unauthenticatedPath="/login"
                 authorization={authorized}
                 setAuthorization={setAuthorized}
               >
@@ -130,7 +128,6 @@ function App() {
             path="/log-hours"
             element={
               <ProtectedRoute
-                unauthenticatedPath="/login"
                 authorization={authorized}
                 setAuthorization={setAuthorized}
               >
@@ -142,7 +139,6 @@ function App() {
             path="/create-event"
             element={
               <ProtectedRoute
-                unauthenticatedPath="/login"
                 authorization={authorized}
                 setAuthorization={setAuthorized}
               >
@@ -154,7 +150,6 @@ function App() {
             path="/volunteer-log"
             element={
               <ProtectedRoute
-                unauthenticatedPath="/login"
                 authorization={authorized}
                 setAuthorization={setAuthorized}
               >

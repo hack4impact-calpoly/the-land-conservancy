@@ -4,14 +4,12 @@ import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 
 export type ProtectedRouteProps = {
   children: JSX.Element;
-  unauthenticatedPath: string;
   authorization: boolean;
-  setAuthorization: Dispatch<SetStateAction<boolean>>;
+  setAuthorization: (cond: boolean) => void;
 };
 
 function ProtectedRoute({
   children,
-  unauthenticatedPath,
   authorization,
   setAuthorization,
 }: ProtectedRouteProps) {
@@ -20,7 +18,7 @@ function ProtectedRoute({
   let auth = authorization;
 
   const redirectToLogin = () => {
-    navigate(unauthenticatedPath);
+    navigate('/login');
   };
 
   const isAuthenticated = () => {
@@ -45,8 +43,9 @@ function ProtectedRoute({
   };
 
   useEffect(() => {
+    console.log('auth changed: ', authorization);
     isAuthenticated();
-  }, []);
+  }, [authorization]);
 
   if (!auth) {
     // Redirect them to the /login page, but save the current location they were
