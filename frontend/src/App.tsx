@@ -12,6 +12,8 @@ import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
+import EditProgressBar from './components/pages/editProgressBar';
+import userContext from './userContext';
 import { Event, Shift } from './types';
 // import awsconfig from './aws-exports';
 
@@ -73,32 +75,36 @@ function App() {
     console.log('currentUser has been updated: ', currentUser);
   }, [currentUser]);
 
+  // TODO: value={currentUser} when we get auth finalized
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/events" />} />
-          <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/forgot-password" element={<ForgotPasword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/events" element={<Events eventData={events} />} />
-          <Route
-            path="/create-event"
-            element={<CreateEvent eventData={events} setEvents={setEvents} />}
-          />
-          <Route
-            path="/log-hours/:eventId"
-            element={<LogHours eventData={events} />}
-          />
-          <Route
-            path="/past-shifts"
-            element={<PastShifts pastShiftData={pastShifts} />}
-          />
-          <Route path="/volunteer-log" element={<VolunteerLog />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <userContext.Provider value={user}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/events" />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/forgot-password" element={<ForgotPasword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/events" element={<Events eventData={events} />} />
+            <Route
+              path="/log-hours/:eventId"
+              element={<LogHours eventData={events} />}
+            />
+            <Route
+              path="/past-shifts"
+              element={<PastShifts pastShiftData={pastShifts} />}
+            />
+            <Route
+              path="/create-event"
+              element={<CreateEvent eventData={events} setEvents={setEvents} />}
+            />
+            <Route path="/volunteer-log" element={<VolunteerLog />} />
+            <Route path="/progress-bar" element={<EditProgressBar />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </userContext.Provider>
   );
 }
 
