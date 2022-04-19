@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { BiArrowBack } from 'react-icons/bi';
 
 const StyledBack = styled(BiArrowBack)`
@@ -67,6 +68,22 @@ const Submit = styled.input`
   min-width: 100%;
   height: 36px;
   align-self: center;
+  &:hover,
+  &:active,
+  &:focus {
+    background: #6d9d4e;
+  }
 `;
 
-export { StyledBack, Header, Content, Form, Label, Input, Submit };
+const GreenLink = styled(Link)`
+  color: #5f8f3e;
+  text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    color: #5f8f3e;
+    text-decoration: underline;
+  }
+`;
+
+export { StyledBack, Header, Content, Form, Label, Input, Submit, GreenLink };

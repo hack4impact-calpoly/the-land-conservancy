@@ -12,10 +12,12 @@ import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
-import awsconfig from './aws-exports';
+import EditProgressBar from './components/pages/editProgressBar';
 import userContext from './userContext';
+import { Event, Shift } from './types';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region
@@ -29,26 +31,17 @@ Amplify.configure({
   },
 });
 
-interface Event {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: string[];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
-
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
+  // 'setUser' sets the 'currentUser' to the
+  // mongodb user document fetched on login,
+  // doc includes the users userSub
+  const [currentUser, setUser] = useState('');
+  const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
+  const user = 'sam';
+
+  // loads in all events
   useEffect(() => {
     const loadEvents = async () => {
       await fetch('http://localhost:3001/events')
@@ -63,16 +56,7 @@ function App() {
     loadEvents();
   }, []);
 
-  // 'setUser' sets the 'currentUser' to the 'userSub' value,
-  // which is a unique identifier
-  /* eslint-disable */
-  const [currentUser, setUser] = useState('');
-  const [pastShifts, setPastShifts] = useState<Shift[]>([]);
-
-  const user = 'sam';
-
-  console.log(currentUser);
-
+  // get user's past shifts from db
   useEffect(() => {
     const loadPastShifts = async () => {
       await fetch(`http://localhost:3001/users/${user}`)
@@ -86,22 +70,14 @@ function App() {
     loadPastShifts();
   }, []);
 
+  // runs when currentUser is updated
   useEffect(() => {
-    const loadEvents = async () => {
-      await fetch('http://localhost:3001/events')
-        .then((res) => res.json())
-        .then((data) => {
-          setEvents(data);
-          // console.log(data);
-        })
-        .catch((err) => console.log(err));
-    };
+    console.log('currentUser has been updated: ', currentUser);
+  }, [currentUser]);
 
-    loadEvents();
-  }, []);
-
+  // TODO: value={currentUser} when we get auth finalized
   return (
-    <userContext.Provider value={{ user: currentUser }}>
+    <userContext.Provider value={user}>
       <div className="App">
         <BrowserRouter>
           <Routes>
@@ -119,8 +95,12 @@ function App() {
               path="/past-shifts"
               element={<PastShifts pastShiftData={pastShifts} />}
             />
-            <Route path="/create-event" element={<CreateEvent />} />
+            <Route
+              path="/create-event"
+              element={<CreateEvent eventData={events} setEvents={setEvents} />}
+            />
             <Route path="/volunteer-log" element={<VolunteerLog />} />
+            <Route path="/progress-bar" element={<EditProgressBar />} />
           </Routes>
         </BrowserRouter>
       </div>
