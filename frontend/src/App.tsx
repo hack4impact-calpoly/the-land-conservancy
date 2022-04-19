@@ -15,7 +15,7 @@ import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
 import userContext from './userContext';
-import { Event, Shift } from './types';
+import { Event, Shift, User } from './types';
 // import awsconfig from './aws-exports';
 
 // Amplify.configure(awsconfig);
@@ -37,16 +37,8 @@ function App() {
   // 'setUser' sets the 'currentUser' to the
   // mongodb user document fetched on login,
   // doc includes the users userSub
-  const [currentUser, setUser] = useState('');
-  // const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
-  const [authorized, setAuthorized] = useState(false);
-
-  const user = 'sam';
-  // const auth = true;
-
-  console.log(user);
-  console.log(currentUser);
 
   // loads in all events
   useEffect(() => {
@@ -66,7 +58,7 @@ function App() {
   // get user's past shifts from db
   useEffect(() => {
     const loadPastShifts = async () => {
-      await fetch(`http://localhost:3001/users/${user}`)
+      await fetch(`http://localhost:3001/users/${currentUser._id}`)
         .then((res) => res.json())
         .then((data) => {
           setPastShifts(data.pastShifts);
@@ -74,8 +66,10 @@ function App() {
         .catch((err) => console.log(err));
     };
 
-    loadPastShifts();
-  }, []);
+    if (currentUser && currentUser._id) {
+      loadPastShifts();
+    }
+  }, [currentUser]);
 
   // runs when currentUser is updated
   useEffect(() => {
@@ -84,17 +78,12 @@ function App() {
 
   // TODO: value={currentUser} when we get auth finalized
   return (
-    <userContext.Provider value={user}>
+    <userContext.Provider value={currentUser}>
       <div className="App">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate replace to="/events" />} />
-            <Route
-              path="/login"
-              element={
-                <Login setUser={setUser} setAuthorization={setAuthorized} />
-              }
-            />
+            <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/forgot-password" element={<ForgotPasword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -102,11 +91,7 @@ function App() {
             <Route
               path="/past-shifts"
               element={
-                <ProtectedRoute
-                  authorization={authorized}
-                  setAuthorization={setAuthorized}
-                  setUser={setUser}
-                >
+                <ProtectedRoute setUser={setUser}>
                   <PastShifts pastShiftData={pastShifts} />
                 </ProtectedRoute>
               }
@@ -114,11 +99,7 @@ function App() {
             <Route
               path="/events"
               element={
-                <ProtectedRoute
-                  authorization={authorized}
-                  setAuthorization={setAuthorized}
-                  setUser={setUser}
-                >
+                <ProtectedRoute setUser={setUser}>
                   <Events eventData={events} />
                 </ProtectedRoute>
               }
@@ -126,11 +107,7 @@ function App() {
             <Route
               path="/log-hours"
               element={
-                <ProtectedRoute
-                  authorization={authorized}
-                  setAuthorization={setAuthorized}
-                  setUser={setUser}
-                >
+                <ProtectedRoute setUser={setUser}>
                   <LogHours eventData={events} />
                 </ProtectedRoute>
               }
@@ -138,11 +115,7 @@ function App() {
             <Route
               path="/create-event"
               element={
-                <ProtectedRoute
-                  authorization={authorized}
-                  setAuthorization={setAuthorized}
-                  setUser={setUser}
-                >
+                <ProtectedRoute setUser={setUser}>
                   <CreateEvent eventData={events} setEvents={setEvents} />
                 </ProtectedRoute>
               }
@@ -150,11 +123,7 @@ function App() {
             <Route
               path="/volunteer-log"
               element={
-                <ProtectedRoute
-                  authorization={authorized}
-                  setAuthorization={setAuthorized}
-                  setUser={setUser}
-                >
+                <ProtectedRoute setUser={setUser}>
                   <VolunteerLog />
                 </ProtectedRoute>
               }
@@ -162,11 +131,7 @@ function App() {
             <Route
               path="/progress-bar"
               element={
-                <ProtectedRoute
-                  authorization={authorized}
-                  setAuthorization={setAuthorized}
-                  setUser={setUser}
-                >
+                <ProtectedRoute setUser={setUser}>
                   <EditProgressBar />
                 </ProtectedRoute>
               }

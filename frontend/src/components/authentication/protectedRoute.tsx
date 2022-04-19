@@ -1,24 +1,18 @@
 import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { User } from '../../types';
 
 export type ProtectedRouteProps = {
   children: JSX.Element;
-  authorization: boolean;
-  setAuthorization: (cond: boolean) => void;
-  setUser: (val: string) => void;
+  setUser: (val: User) => void;
 };
 
-function ProtectedRoute({
-  children,
-  setUser,
-  authorization,
-  setAuthorization,
-}: ProtectedRouteProps) {
+function ProtectedRoute({ children, setUser }: ProtectedRouteProps) {
   const [pending, setPending] = useState(true);
-  const [found, setFound] = useState({});
+  const [found, setFound] = useState();
   const location = useLocation();
-  let auth = authorization;
+  const navigate = useNavigate();
 
   // fetches Mongo user who signed in
   const getMongoUser = async (id: string) => {
@@ -27,50 +21,30 @@ function ProtectedRoute({
         .then((res) => res.json())
         .then((data) => {
           setUser(data);
-          return data;
+          setFound(data);
         })
         .catch((err) => console.log(err));
     } catch (error) {
       console.log('error getting user from mongodb', error);
     }
-    return undefined;
   };
 
-  const isAuthenticated = () => {
-    Auth.currentAuthenticatedUser()
-      .then((response: { username: string }) => {
-        return getMongoUser(response.username);
-      })
-      .then((response) => {
-        console.log(response);
-        if (response) {
-          setAuthorization(true);
-
-          setFound(response);
-          auth = true;
-          console.log('in the authorization loop');
-          console.log(response);
-          console.log('after');
-          console.log(authorization);
-        } else {
-          setPending(false);
-          console.log('nope');
-          // redirectToLogin();
-        }
-      })
-      .catch(() => {
-        console.log('no user found');
-        setPending(false);
-        // redirectToLogin();
-      });
+  const checkAuth = async () => {
+    try {
+      const cognitoUser = await Auth.currentAuthenticatedUser();
+      await getMongoUser(cognitoUser.username);
+    } catch (err) {
+      // error indicataes no user is logged in
+      navigate('/login');
+    }
   };
 
   useEffect(() => {
-    isAuthenticated();
+    checkAuth();
   }, []);
 
   useEffect(() => {
-    console.log(found === true);
+    console.log(found);
     if (found !== undefined) {
       setPending(false);
     }
@@ -79,17 +53,14 @@ function ProtectedRoute({
   if (pending) {
     return <div>Loading...</div>;
   }
-  console.log('auth: ', authorization);
   if (!found) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
     console.log('in auth statement');
-    console.log(auth);
     return <Navigate to="/login" state={{ from: location }} />;
   }
-  console.log('auth = ', authorization);
 
   return children;
 }

@@ -6,6 +6,7 @@ import logo from '../../imgs/logo.png';
 import { AuthContainer } from './authComponents';
 import { Content, Form, Input } from '../styledComponents';
 import landscape from '../../imgs/tlc_background.jpeg';
+import { User } from '../../types';
 
 const Background = styled.div`
   background-image: url(${landscape});
@@ -78,10 +79,8 @@ const FLink = styled(Link)`
 
 export default function LoginPage({
   setUser,
-  setAuthorization,
 }: {
-  setUser: (val: string) => void;
-  setAuthorization: (val: boolean) => void;
+  setUser: (val: User) => void;
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -115,7 +114,6 @@ export default function LoginPage({
       // first get cognitoUser
       const user = await Auth.signIn(username, password);
       setUser(user.userSub);
-      setAuthorization(true);
       console.log(user);
       // note: the user id is stored in the username
       // attribute of object returned by signIn
