@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContainer } from './authComponents';
 import {
   Content,
@@ -39,11 +39,7 @@ const Button = styled.button.attrs(
   color: ${(props) => props.c};
 `;
 
-const CLink = styled(Link)`
-  width: 30%;
-`;
-
-const sendConfirmationcode = async ({ user }: { user: string }) => {
+const sendConfirmationcode = async (user: string) => {
   try {
     await Auth.resendSignUp(user);
     console.log('code sent successfully!');
@@ -52,25 +48,17 @@ const sendConfirmationcode = async ({ user }: { user: string }) => {
   }
 };
 
-const confirmSignUp = async ({
+// eslint-disable-next-line max-len
+export default function ConfirmEmailPage({
   user,
-  code,
+  setUser,
 }: {
   user: string;
-  code: string;
-}) => {
-  try {
-    await Auth.confirmSignUp(user, code);
-  } catch (error) {
-    console.log('error confirming sign up', error);
-    // display invalid code error
-  }
-};
-
-// eslint-disable-next-line max-len
-export default function ConfirmEmailPage({ user }: { user: string }) {
-  const [username, setUsername] = useState('');
+  setUser: (val: string) => void;
+}) {
   // "required" attribute on input validates
+  let codeAttempt = '';
+  const navigate = useNavigate();
 
   // send code to specified email
   useEffect(() => {
@@ -79,6 +67,22 @@ export default function ConfirmEmailPage({ user }: { user: string }) {
     const email: string = user !== null ? user : '';
     sendConfirmationcode(email);
   }, []);
+
+  const confirmSignUp = async (userEmail: string, code: string) => {
+    try {
+      await Auth.confirmSignUp(userEmail, code);
+      console.log('user confirmed!');
+      setUser(user);
+      navigate('/login');
+    } catch (error) {
+      console.log('error confirming sign up', error);
+      // display invalid code error
+    }
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    codeAttempt = e.target.value;
+  };
 
   return (
     <AuthContainer>
@@ -94,21 +98,20 @@ export default function ConfirmEmailPage({ user }: { user: string }) {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
+            confirmSignUp(user, codeAttempt);
           }}
         >
           <Input
             type="text"
             id="f1"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => onChange(e)}
             placeholder="Enter code sent to email"
             required
           />
-          <CLink to="/home">
-            <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="100%">
-              {' '}
-              Confirm{' '}
-            </Button>
-          </CLink>
+          <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="100%">
+            {' '}
+            Confirm{' '}
+          </Button>
         </Form>
       </Content>
     </AuthContainer>

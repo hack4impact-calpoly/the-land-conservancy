@@ -90,7 +90,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate replace to="/events" />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/confirm-email" element={<ConfirmEmail user={currentUser}/>} />
+          <Route
+            path="/confirm-email"
+            element={<ConfirmEmail user={currentUser} setUser={setUser} />}
+          />
           <Route
             path="/create-account"
             element={<CreateAccount setUser={setUser} />}

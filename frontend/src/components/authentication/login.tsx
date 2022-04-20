@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
 import { AuthContainer } from './authComponents';
 import { Content, Form, Input } from '../styledComponents';
@@ -79,6 +79,8 @@ export default function LoginPage({
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate();
+
   // "required" attribute on input validates
 
   // only runs when form not disabled (requirements met)
@@ -92,6 +94,9 @@ export default function LoginPage({
     try {
       const user = await Auth.signIn(username, password);
       setUser(user.userSub);
+      if (!user.userConfirmed) {
+        navigate('/confirm-email');
+      }
       console.log(`Successful sign in for user: ${username}`);
     } catch (error) {
       console.log('error signing in', error);
