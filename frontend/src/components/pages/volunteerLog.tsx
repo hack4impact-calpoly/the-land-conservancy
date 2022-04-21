@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ExportToCsv } from 'export-to-csv';
+import { ExportToCsv } from 'export-to-csv-fix-source-map';
 
 import {
   Container,
@@ -100,10 +100,12 @@ const options = {
   decimalSeparator: '.',
   showLabels: true,
   showTitle: true,
-  title: 'CSV Test',
+  title: 'Volunteer Log Test Data', // we can remove this from csv
+  filename: 'volunteer_totals', // title of downloaded csv
   useTextFile: false,
   useBom: true,
-  useKeysAsHeaders: true,
+  useKeysAsHeaders: false,
+  headers: ['id', 'Event Title', 'Location', 'Date', 'Hours', 'Name'],
 };
 
 const csvExporter = new ExportToCsv(options);
