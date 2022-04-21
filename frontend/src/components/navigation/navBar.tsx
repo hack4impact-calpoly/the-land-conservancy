@@ -24,14 +24,16 @@ type Props = {
 
 export default function NavBar({ children }: Props) {
   const [navOpen, setNavOpen] = useState(false);
-  const isAdmin = useContext(userContext);
+  const user = useContext(userContext);
+
+  // TODO: possibly have the navBar say the name, or "Hello, {user.name}"
 
   return (
     <Sidebar
       sidebar={
         <div>
           <LogoImage src={logo} />
-          {isAdmin ? (
+          {user.isAdmin ? (
             <div>
               <StyledLink to="/create-event">
                 <Path active={!!useMatch('/create-event')}>

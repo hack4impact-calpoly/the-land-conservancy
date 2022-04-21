@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../imgs/logo.png';
 import { AuthContainer } from './authComponents';
 import { Content, Form, Input } from '../styledComponents';
 import landscape from '../../imgs/tlc_background.jpeg';
+import { User } from '../../types';
 
 const Background = styled.div`
   background-image: url(${landscape});
@@ -79,10 +80,11 @@ const FLink = styled(Link)`
 export default function LoginPage({
   setUser,
 }: {
-  setUser: (val: string) => void;
+  setUser: (val: User) => void;
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   // "required" attribute on input validates
 
@@ -111,6 +113,7 @@ export default function LoginPage({
     try {
       // first get cognitoUser
       const user = await Auth.signIn(username, password);
+      setUser(user.userSub);
       console.log(user);
       // note: the user id is stored in the username
       // attribute of object returned by signIn
@@ -118,6 +121,7 @@ export default function LoginPage({
       // then get mongoUser
       await getMongoUser(user.username);
       console.log(`Successful sign in for user: ${username}`);
+      navigate('/');
     } catch (error) {
       console.log('error signing in', error);
       window.alert(error);

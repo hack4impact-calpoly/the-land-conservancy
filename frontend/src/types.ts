@@ -15,4 +15,14 @@ interface Shift {
   user: string;
 }
 
-export type { Event, Shift };
+interface User {
+  _id: string;
+  email: string;
+  name: string;
+  isAdmin: boolean;
+  pastShifts: Shift[];
+  phone: string;
+  totalHours: number;
+}
+
+export type { Event, Shift, User };
