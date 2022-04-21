@@ -105,7 +105,7 @@ function App() {
               }
             />
             <Route
-              path="/log-hours"
+              path="/log-hours/:eventId"
               element={
                 <ProtectedRoute setUser={setUser}>
                   <LogHours eventData={events} />
