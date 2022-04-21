@@ -11,6 +11,7 @@ import ProtectedRoute from './components/authentication/protectedRoute';
 import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
+import ThankYou from './components/pages/thankYou';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
@@ -142,6 +143,9 @@ function App() {
               path="/log-hours/:eventId"
               element={<LogHours eventData={events} />}
             />
+            <Route path="/thank-you" element={<ThankYou />} />
+            {/* _may_ need to add additional props */}
+            {/* hardcoding a shift for now */}
             <Route
               path="/past-shifts"
               element={<PastShifts pastShiftData={pastShifts} />}

@@ -11,10 +11,11 @@ const StyledEventContainer = styled(Container)`
   display: flex;
 `;
 
-const StyledTitle = styled.p`
+const StyledTitle = styled.div`
   font-weight: bold;
   font-size: 14px
   line-height: 21px;
+  margin-bottom: 10px;
 `;
 
 const LayoutDiv = styled.div`
@@ -35,8 +36,8 @@ export default function ShiftSlot({ title, date, hours }: ShiftSlotProps) {
       <LayoutDiv>
         <div>
           <StyledTitle>{title}</StyledTitle>
-          <p>{date}</p>
-          <p>{hours} Hours</p>
+          <div>{date}</div>
+          <div>{hours} Hours</div>
         </div>
       </LayoutDiv>
     </StyledEventContainer>
