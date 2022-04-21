@@ -40,6 +40,16 @@ const StyledDelete = styled(RiDeleteBin6Line)`
   cursor: pointer;
 `;
 
+const Form = styled.form`
+  float: right;
+`;
+
+const Export = styled(Submit)`
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0 10px 0 10px;
+`;
+
 function createData(
   _id: string,
   eventTitle: string,
@@ -115,15 +125,15 @@ export default function VolunteerLog() {
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
         <StyledContainer>
-          <form
+          <Form
             id="form"
             onSubmit={(e) => {
               e.preventDefault();
               csvExporter.generateCsv(rows);
             }}
           >
-            <Submit type="submit" value="Export" />
-          </form>
+            <Export type="submit" value="Export" />
+          </Form>
           <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
               <TableHead sx={{ fontSize: '100px' }}>
