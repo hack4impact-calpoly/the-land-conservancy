@@ -39,14 +39,14 @@ const Button = styled.button.attrs(
   color: ${(props) => props.c};
 `;
 
-const sendConfirmationcode = async (user: string) => {
-  try {
-    await Auth.resendSignUp(user);
-    console.log('code sent successfully!');
-  } catch (err) {
-    console.log('error resending code: ', err);
-  }
-};
+// const sendConfirmationcode = async (user: string) => {
+//   try {
+//     await Auth.resendSignUp(user);
+//     console.log('code sent successfully!');
+//   } catch (err) {
+//     console.log('error resending code: ', err);
+//   }
+// };
 
 // eslint-disable-next-line max-len
 export default function ConfirmEmailPage({
@@ -64,8 +64,8 @@ export default function ConfirmEmailPage({
   useEffect(() => {
     console.log('loaded confirm email page!');
     // check if the value is null, if so, set user to the empty string
-    const email: string = user !== null ? user : '';
-    sendConfirmationcode(email);
+    // const email: string = user !== null ? user : '';
+    // sendConfirmationcode(email);
   }, []);
 
   const confirmSignUp = async (userEmail: string, code: string) => {
