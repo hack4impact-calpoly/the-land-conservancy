@@ -114,6 +114,16 @@ function App() {
               }
             />
             <Route
+              path="/thank-you"
+              element={
+                <ProtectedRoute setUser={setUser}>
+                  <ThankYou />
+                  {/* _may_ need to add additional props */}
+                  {/* hardcoding shift details for now */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/create-event"
               element={
                 <ProtectedRoute setUser={setUser}>
@@ -137,25 +147,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* <Route path="/events" element={<Events eventData={events} />} />
-            <Route
-              path="/log-hours/:eventId"
-              element={<LogHours eventData={events} />}
-            />
-            <Route path="/thank-you" element={<ThankYou />} />
-            {/* _may_ need to add additional props */}
-            {/* hardcoding a shift for now */}
-            <Route
-              path="/past-shifts"
-              element={<PastShifts pastShiftData={pastShifts} />}
-            />
-            <Route
-              path="/create-event"
-              element={<CreateEvent eventData={events} setEvents={setEvents} />}
-            />
-            <Route path="/volunteer-log" element={<VolunteerLog />} />
-            <Route path="/progress-bar" element={<EditProgressBar />} /> */}
           </Routes>
         </BrowserRouter>
       </div>
