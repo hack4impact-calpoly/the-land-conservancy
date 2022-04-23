@@ -17,6 +17,7 @@ import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { Submit } from '../styledComponents';
 import Header from '../navigation/header';
+import { Shift } from '../../types';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
@@ -50,60 +51,6 @@ const Export = styled(Submit)`
   padding: 0 10px 0 10px;
 `;
 
-function createData(
-  _id: string,
-  eventTitle: string,
-  eventLocation: string,
-  date: string,
-  hours: number,
-  name: string
-) {
-  return { _id, eventTitle, eventLocation, date, hours, name };
-}
-
-const rows = [
-  createData(
-    '001',
-    'Trash pickup at Pismo Preserve',
-    '100 Pie Street',
-    '1/07/2022',
-    6,
-    'John Appleseed'
-  ),
-  createData(
-    '002',
-    'Event 1',
-    '100 Pie Street',
-    '1/07/2022',
-    6,
-    'John Appleseed'
-  ),
-  createData(
-    '003',
-    'Event 1',
-    '100 Pie Street',
-    '1/07/2022',
-    35,
-    'John Appleseed'
-  ),
-  createData(
-    '004',
-    'Event 1',
-    '100 Pie Street',
-    '1/07/2022',
-    10,
-    'John Appleseed'
-  ),
-  createData(
-    '005',
-    'Very long event title that is long 1',
-    '100 Pie Street',
-    '1/07/2022',
-    6,
-    'John Appleseed'
-  ),
-];
-
 const options = {
   fieldSeparator: ',',
   quoteStrings: '"',
@@ -120,7 +67,21 @@ const options = {
 
 const csvExporter = new ExportToCsv(options);
 
-export default function VolunteerLog() {
+type ShiftProps = {
+  allShiftData: Shift[];
+};
+
+export default function VolunteerLog({ allShiftData }: ShiftProps) {
+  allShiftData.sort((a: Shift, b: Shift) => {
+    if (a.event.start > b.event.start) {
+      return -1;
+    }
+    if (a.event.start < b.event.start) {
+      return 1;
+    }
+    return 0;
+  });
+
   return (
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
@@ -129,7 +90,7 @@ export default function VolunteerLog() {
             id="form"
             onSubmit={(e) => {
               e.preventDefault();
-              csvExporter.generateCsv(rows);
+              csvExporter.generateCsv(allShiftData);
             }}
           >
             <Export type="submit" value="Export" />
@@ -147,23 +108,26 @@ export default function VolunteerLog() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row._id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.eventTitle}
-                    </TableCell>
-                    <TableCell>{row.eventLocation}</TableCell>
-                    <TableCell>{row.date}</TableCell>
-                    <TableCell>{row.hours}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>
-                      <StyledEdit /> <StyledDelete />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {allShiftData ? (
+                  allShiftData.map((row) => (
+                    <TableRow
+                      key={row._id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.userName}
+                      </TableCell>
+                      <TableCell>{row.event.title}</TableCell>
+                      <TableCell>{row.event.start}</TableCell>
+                      <TableCell>{row.hours}</TableCell>
+                      <TableCell>
+                        <StyledEdit /> <StyledDelete />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <p key="load"> Loading ...</p>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

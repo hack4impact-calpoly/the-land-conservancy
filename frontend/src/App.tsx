@@ -81,9 +81,7 @@ function App() {
       await fetch(`http://localhost:3001/shifts`)
         .then((res) => res.json())
         .then((data) => {
-          console.log('data = ', data);
           setAllShifts(data);
-          console.log('not assigning', allShifts);
         })
         .catch((err) => console.log(err));
     };
@@ -156,7 +154,7 @@ function App() {
               path="/volunteer-log"
               element={
                 <ProtectedRoute setUser={setUser}>
-                  <VolunteerLog />
+                  <VolunteerLog allShiftData={allShifts} />
                 </ProtectedRoute>
               }
             />
