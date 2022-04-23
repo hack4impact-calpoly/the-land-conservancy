@@ -41,6 +41,7 @@ function App() {
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
   const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
   // loads in all events
   useEffect(() => {
@@ -63,6 +64,7 @@ function App() {
       await fetch(`http://localhost:3001/users/${currentUser._id}`)
         .then((res) => res.json())
         .then((data) => {
+          setUserInfo(data);
           setPastShifts(data.pastShifts);
         })
         .catch((err) => console.log(err));
@@ -89,7 +91,7 @@ function App() {
     if (userInfo?.isAdmin) {
       loadAllShifts();
     }
-  }, [currentUser]);
+  }, [userInfo]);
 
   // runs when currentUser is updated
   useEffect(() => {
