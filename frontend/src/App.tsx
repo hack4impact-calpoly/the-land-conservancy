@@ -36,7 +36,7 @@ function App() {
   // 'setUser' sets the 'currentUser' to the
   // mongodb user document fetched on login,
   // doc includes the users userSub
-  const [currentUser, setUser] = useState('');
+  const [currentUser, setUser] = useState({});
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
   const user = 'sam';
@@ -86,21 +86,41 @@ function App() {
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/forgot-password" element={<ForgotPasword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/events" element={<Events eventData={events} />} />
+            <Route
+              path="/events"
+              element={<Events eventData={events} setCurrentUser={setUser} />}
+            />
             <Route
               path="/log-hours/:eventId"
               element={<LogHours eventData={events} />}
             />
             <Route
               path="/past-shifts"
-              element={<PastShifts pastShiftData={pastShifts} />}
+              element={
+                <PastShifts
+                  pastShiftData={pastShifts}
+                  setCurrentUser={setUser}
+                />
+              }
             />
             <Route
               path="/create-event"
-              element={<CreateEvent eventData={events} setEvents={setEvents} />}
+              element={
+                <CreateEvent
+                  eventData={events}
+                  setEvents={setEvents}
+                  setCurrentUser={setUser}
+                />
+              }
             />
-            <Route path="/volunteer-log" element={<VolunteerLog />} />
-            <Route path="/progress-bar" element={<EditProgressBar />} />
+            <Route
+              path="/volunteer-log"
+              element={<VolunteerLog setCurrentUser={setUser} />}
+            />
+            <Route
+              path="/progress-bar"
+              element={<EditProgressBar setCurrentUser={setUser} />}
+            />
           </Routes>
         </BrowserRouter>
       </div>

@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
-import { Shift } from '../../types';
+import { Shift, User } from '../../types';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
+  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;
@@ -30,9 +30,13 @@ const convertDate = (date: string) => {
 
 type ShiftProps = {
   pastShiftData: Shift[];
+  setCurrentUser: (user: User) => void;
 };
 
-export default function PastShifts({ pastShiftData }: ShiftProps) {
+export default function PastShifts({
+  pastShiftData,
+  setCurrentUser,
+}: ShiftProps) {
   pastShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
       return -1;
@@ -44,7 +48,7 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
   });
 
   return (
-    <Header headerText="Past Shifts" navbar>
+    <Header headerText="Past Shifts" navbar setCurrentUser={setCurrentUser}>
       <StyledContainer>
         <StyledContainer maxWidth="md">
           {pastShiftData ? (

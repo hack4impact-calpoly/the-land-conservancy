@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useMatch } from 'react-router-dom';
 import Sidebar from 'react-sidebar';
+import { Auth } from 'aws-amplify';
 import {
   BarIcon,
   ClipboardIcon,
@@ -17,14 +18,26 @@ import {
 } from './navComponents';
 import logo from '../../imgs/logo.png';
 import userContext from '../../userContext';
+import { User } from '../../types';
 
 type Props = {
+  setCurrentUser: (user: User) => void;
   children: React.ReactChild;
 };
 
-export default function NavBar({ children }: Props) {
+export default function NavBar({ children, setCurrentUser }: Props) {
   const [navOpen, setNavOpen] = useState(false);
   const isAdmin = useContext(userContext);
+
+  const signUserOut = async () => {
+    try {
+      await Auth.signOut();
+      console.log('attempting user sign out');
+      setCurrentUser({});
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  };
 
   return (
     <Sidebar
@@ -74,8 +87,8 @@ export default function NavBar({ children }: Props) {
               </StyledLink>
             </div>
           )}
-          <StyledLink to="/">
-            <BottomPath>
+          <StyledLink to="/login">
+            <BottomPath onClick={() => signUserOut()}>
               <LogoutIcon />
               <Label>Sign out</Label>
             </BottomPath>

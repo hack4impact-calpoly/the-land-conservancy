@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
 import EventCard from './eventCard';
 import Header from '../navigation/header';
-import { Event } from '../../types';
+import { Event, User } from '../../types';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -40,9 +40,10 @@ const convertDate = (dateString: string) => {
 
 type EventProps = {
   eventData: Event[];
+  setCurrentUser: (user: User) => void;
 };
 
-export default function Events({ eventData }: EventProps) {
+export default function Events({ eventData, setCurrentUser }: EventProps) {
   eventData.sort((a: Event, b: Event) => {
     if (a.start > b.start) {
       return -1;
@@ -54,7 +55,7 @@ export default function Events({ eventData }: EventProps) {
   });
 
   return (
-    <Header headerText="Events" navbar>
+    <Header headerText="Events" navbar setCurrentUser={setCurrentUser}>
       <StyledContainer maxWidth="md">
         {eventData ? (
           eventData.map((event) => {

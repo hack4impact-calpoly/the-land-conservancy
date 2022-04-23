@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiArrowBack } from 'react-icons/bi';
 import NavBar from './navBar';
+import { User } from '../../types';
 
 const Navigation = styled.div`
   display: flex;
@@ -50,6 +51,7 @@ type headerPropTypes = {
   headerText: string;
   navbar?: boolean; // optional prop, default defined below
   back?: string;
+  setCurrentUser?: (user: User) => void;
   children: React.ReactChild;
 };
 
@@ -61,6 +63,7 @@ export default function Header({
   navbar,
   back,
   children,
+  setCurrentUser,
 }: headerPropTypes) {
   const navigate = useNavigate();
 
@@ -74,8 +77,8 @@ export default function Header({
 
   return (
     <Navigation>
-      {navbar ? (
-        <NavBar>
+      {navbar && setCurrentUser ? (
+        <NavBar setCurrentUser={setCurrentUser}>
           <Container>
             <StyledHeader>{headerText}</StyledHeader>
             {children}
@@ -94,4 +97,7 @@ export default function Header({
 Header.defaultProps = {
   navbar: false,
   back: '',
+  setCurrentUser: () => {
+    console.log('no user passed to header');
+  },
 };

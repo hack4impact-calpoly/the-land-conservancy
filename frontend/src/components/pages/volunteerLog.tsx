@@ -14,9 +14,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import Header from '../navigation/header';
+import { User } from '../../types';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
+  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;
@@ -67,9 +68,13 @@ const rows = [
   ),
 ];
 
-export default function VolunteerLog() {
+export default function VolunteerLog({
+  setCurrentUser,
+}: {
+  setCurrentUser: (user: User) => void;
+}) {
   return (
-    <Header headerText="Volunteer Log" navbar>
+    <Header headerText="Volunteer Log" navbar setCurrentUser={setCurrentUser}>
       <ThemeProvider theme={theme}>
         <StyledContainer>
           <TableContainer component={Paper}>

@@ -15,4 +15,17 @@ interface Shift {
   user: string;
 }
 
-export type { Event, Shift };
+// user interface for lifting state of user,
+// all optional so we can clear a user on sign out
+
+interface User {
+  _id?: string;
+  isAdmin?: boolean;
+  name?: string;
+  email?: string;
+  phone?: string;
+  pastShifts?: [string];
+  totalHours?: number;
+}
+
+export type { Event, Shift, User };
