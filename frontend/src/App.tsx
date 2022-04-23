@@ -40,6 +40,7 @@ function App() {
   // doc includes the users userSub
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
+  const [allShifts, setAllShifts] = useState<Shift[]>([]);
 
   // loads in all events
   useEffect(() => {
@@ -69,6 +70,24 @@ function App() {
 
     if (currentUser && currentUser._id) {
       loadPastShifts();
+    }
+  }, [currentUser]);
+
+  // get user's past shifts from db
+  useEffect(() => {
+    const loadAllShifts = async () => {
+      await fetch(`http://localhost:3001/shifts`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('data = ', data);
+          setAllShifts(data);
+          console.log('not assigning', allShifts);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (userInfo?.isAdmin) {
+      loadAllShifts();
     }
   }, [currentUser]);
 
