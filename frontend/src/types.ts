@@ -25,4 +25,11 @@ interface User {
   totalHours: number;
 }
 
-export type { Event, Shift, User };
+interface Prize {
+  _id: number;
+  itemName: string;
+  sponsorName: string;
+  sponsorImage: string;
+}
+
+export type { Event, Shift, User, Prize };
