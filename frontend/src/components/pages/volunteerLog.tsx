@@ -67,6 +67,21 @@ const options = {
 
 const csvExporter = new ExportToCsv(options);
 
+// creates a row of data for a shift
+function createData(
+  _id: string,
+  eventTitle: string,
+  eventLocation: string,
+  eventDate: string,
+  hours: number,
+  name: string
+) {
+  const date = new Date(eventDate).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  });
+  return { _id, eventTitle, eventLocation, date, hours, name };
+}
+
 type ShiftProps = {
   allShiftData: Shift[];
 };
@@ -82,6 +97,20 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
     return 0;
   });
 
+  // convert allShiftData to an array of rows that hold all atributes
+  // on same level, this also formats the rows for exporting to csv correctly
+  const rows = allShiftData.map((shift) => {
+    return createData(
+      shift._id,
+      shift.event.title,
+      shift.event.location,
+      // convert shift date from string to Date type so we can print it nicely
+      shift.event.start,
+      shift.hours,
+      shift.userName
+    );
+  });
+
   return (
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
@@ -90,7 +119,7 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
             id="form"
             onSubmit={(e) => {
               e.preventDefault();
-              csvExporter.generateCsv(allShiftData);
+              csvExporter.generateCsv(rows);
             }}
           >
             <Export type="submit" value="Export" />
@@ -109,17 +138,16 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
               </TableHead>
               <TableBody>
                 {allShiftData ? (
-                  allShiftData.map((row) => (
+                  rows.map((row) => (
                     <TableRow
                       key={row._id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <TableCell component="th" scope="row">
-                        {row.userName}
-                      </TableCell>
-                      <TableCell>{row.event.title}</TableCell>
-                      <TableCell>{row.event.start}</TableCell>
+                      <TableCell>{row.eventTitle}</TableCell>
+                      <TableCell>{row.eventLocation}</TableCell>
+                      <TableCell>{row.date}</TableCell>
                       <TableCell>{row.hours}</TableCell>
+                      <TableCell>{row.name}</TableCell>
                       <TableCell>
                         <StyledEdit /> <StyledDelete />
                       </TableCell>
