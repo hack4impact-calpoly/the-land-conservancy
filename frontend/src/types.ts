@@ -19,13 +19,13 @@ interface Shift {
 // all optional so we can clear a user on sign out
 
 interface User {
-  _id?: string;
-  isAdmin?: boolean;
-  name?: string;
-  email?: string;
-  phone?: string;
-  pastShifts?: [string];
-  totalHours?: number;
+  _id: string;
+  email: string;
+  name: string;
+  isAdmin: boolean;
+  pastShifts: Shift[];
+  phone: string;
+  totalHours: number;
 }
 
 export type { Event, Shift, User };

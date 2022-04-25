@@ -4,7 +4,6 @@ import { eachWeekOfInterval, getDay } from 'date-fns';
 import Header from '../navigation/header';
 import Container from './formComponents';
 import { Form, Input, Submit, Label, GreenLink } from '../styledComponents';
-import { User } from '../../types';
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
@@ -48,11 +47,9 @@ interface Event {
 export default function CreateEvent({
   eventData,
   setEvents,
-  setCurrentUser,
 }: {
   eventData: Event[];
   setEvents: (val: Event[]) => void;
-  setCurrentUser: (user: User) => void;
 }) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
@@ -161,12 +158,7 @@ export default function CreateEvent({
     }
   };
   return (
-    <Header
-      headerText="Create Event"
-      back="/events"
-      navbar
-      setCurrentUser={setCurrentUser}
-    >
+    <Header headerText="Create Event" back="/events" navbar>
       <Container>
         <div>
           <Form

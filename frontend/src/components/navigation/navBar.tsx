@@ -17,23 +17,24 @@ import {
   LogoImage,
 } from './navComponents';
 import logo from '../../imgs/logo.png';
-import userContext from '../../userContext';
+import UserContext from '../../userContext';
 import { User } from '../../types';
 
 type Props = {
-  setCurrentUser: (user: User) => void;
   children: React.ReactChild;
 };
 
-export default function NavBar({ children, setCurrentUser }: Props) {
+export default function NavBar({ children }: Props) {
   const [navOpen, setNavOpen] = useState(false);
-  const isAdmin = useContext(userContext);
+  const { currentUser, setUser } = useContext(UserContext);
+
+  // TODO: possibly have the navBar say the name, or "Hello, {user.name}"
 
   const signUserOut = async () => {
     try {
       await Auth.signOut();
       console.log('attempting user sign out');
-      setCurrentUser({});
+      setUser({} as User);
     } catch (error) {
       console.log('error signing out: ', error);
     }
@@ -44,7 +45,7 @@ export default function NavBar({ children, setCurrentUser }: Props) {
       sidebar={
         <div>
           <LogoImage src={logo} />
-          {isAdmin ? (
+          {currentUser.isAdmin ? (
             <div>
               <StyledLink to="/create-event">
                 <Path active={!!useMatch('/create-event')}>
