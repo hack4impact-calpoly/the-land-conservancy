@@ -13,6 +13,7 @@ interface Shift {
   event: Event;
   hours: number;
   user: string;
+  userName: string;
 }
 
 // user interface for lifting state of user,

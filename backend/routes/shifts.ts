@@ -7,7 +7,7 @@ const router = express.Router();
 // get all shifts
 router.get('/', async (req: any, res: any) => {
   try {
-    const temp = await Shift.find({});
+    const temp = await Shift.find({}).populate('event');
     res.send(temp);
   } catch (error) {
     res.status(400).send(error);
@@ -28,11 +28,12 @@ router.use(express.json());
 
 // posts a new shift to the database
 router.post('/', async (req: any, res: any) => {
-  const { event, hours, user } = req.body;
+  const { event, hours, user, userName } = req.body;
   let shift = new Shift({
     event,
     hours,
     user,
+    userName,
   });
 
   try {
