@@ -1,4 +1,6 @@
 import Shift from '../models/shiftSchema';
+import Event from '../models/eventSchema';
+import User from '../models/userSchema';
 
 const express = require('express');
 
@@ -40,6 +42,39 @@ router.post('/', async (req: any, res: any) => {
     shift = await shift.save();
     console.log(shift);
     res.json(shift);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// update a shift in the database
+router.patch('/:id', async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const newShift = await Shift.findByIdAndUpdate(id, updates, {
+      new: true,
+    });
+    res.json(newShift);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// delete shift by id + its references
+router.delete('/:shiftId', async (req: any, res: any) => {
+  try {
+    const { shiftId } = req.params;
+    const temp = await Shift.findByIdAndDelete(shiftId);
+    // also remove this shift reference from the event's shifts
+    await Event.findByIdAndUpdate(temp.event, {
+      $pull: { shifts: { _id: shiftId } },
+    });
+    // and from the user's pastShifts
+    await User.findByIdAndUpdate(temp.user, {
+      $pull: { pastShifts: { _id: shiftId } },
+    });
+    res.send(temp);
   } catch (error) {
     res.status(400).send(error);
   }
