@@ -17,6 +17,7 @@ import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { Submit } from '../styledComponents';
 import Header from '../navigation/header';
+import { Shift } from '../../types';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
@@ -50,60 +51,6 @@ const Export = styled(Submit)`
   padding: 0 10px 0 10px;
 `;
 
-function createData(
-  _id: string,
-  eventTitle: string,
-  eventLocation: string,
-  date: string,
-  hours: number,
-  name: string
-) {
-  return { _id, eventTitle, eventLocation, date, hours, name };
-}
-
-const rows = [
-  createData(
-    '001',
-    'Trash pickup at Pismo Preserve',
-    '100 Pie Street',
-    '1/07/2022',
-    6,
-    'John Appleseed'
-  ),
-  createData(
-    '002',
-    'Event 1',
-    '100 Pie Street',
-    '1/07/2022',
-    6,
-    'John Appleseed'
-  ),
-  createData(
-    '003',
-    'Event 1',
-    '100 Pie Street',
-    '1/07/2022',
-    35,
-    'John Appleseed'
-  ),
-  createData(
-    '004',
-    'Event 1',
-    '100 Pie Street',
-    '1/07/2022',
-    10,
-    'John Appleseed'
-  ),
-  createData(
-    '005',
-    'Very long event title that is long 1',
-    '100 Pie Street',
-    '1/07/2022',
-    6,
-    'John Appleseed'
-  ),
-];
-
 const options = {
   fieldSeparator: ',',
   quoteStrings: '"',
@@ -120,7 +67,50 @@ const options = {
 
 const csvExporter = new ExportToCsv(options);
 
-export default function VolunteerLog() {
+// creates a row of data for a shift
+function createData(
+  _id: string,
+  eventTitle: string,
+  eventLocation: string,
+  eventDate: string,
+  hours: number,
+  name: string
+) {
+  const date = new Date(eventDate).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  });
+  return { _id, eventTitle, eventLocation, date, hours, name };
+}
+
+type ShiftProps = {
+  allShiftData: Shift[];
+};
+
+export default function VolunteerLog({ allShiftData }: ShiftProps) {
+  allShiftData.sort((a: Shift, b: Shift) => {
+    if (a.event.start > b.event.start) {
+      return -1;
+    }
+    if (a.event.start < b.event.start) {
+      return 1;
+    }
+    return 0;
+  });
+
+  // convert allShiftData to an array of rows that hold all atributes
+  // on same level, this also formats the rows for exporting to csv correctly
+  const rows = allShiftData.map((shift) => {
+    return createData(
+      shift._id,
+      shift.event.title,
+      shift.event.location,
+      // convert shift date from string to Date type so we can print it nicely
+      shift.event.start,
+      shift.hours,
+      shift.userName
+    );
+  });
+
   return (
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
@@ -147,23 +137,25 @@ export default function VolunteerLog() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row._id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.eventTitle}
-                    </TableCell>
-                    <TableCell>{row.eventLocation}</TableCell>
-                    <TableCell>{row.date}</TableCell>
-                    <TableCell>{row.hours}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>
-                      <StyledEdit /> <StyledDelete />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {allShiftData ? (
+                  rows.map((row) => (
+                    <TableRow
+                      key={row._id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell>{row.eventTitle}</TableCell>
+                      <TableCell>{row.eventLocation}</TableCell>
+                      <TableCell>{row.date}</TableCell>
+                      <TableCell>{row.hours}</TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>
+                        <StyledEdit /> <StyledDelete />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <p key="load"> Loading ...</p>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

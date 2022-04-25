@@ -40,6 +40,8 @@ function App() {
   // doc includes the users userSub
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
+  const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
   // loads in all events
   useEffect(() => {
@@ -62,6 +64,7 @@ function App() {
       await fetch(`http://localhost:3001/users/${currentUser._id}`)
         .then((res) => res.json())
         .then((data) => {
+          setUserInfo(data);
           setPastShifts(data.pastShifts);
         })
         .catch((err) => console.log(err));
@@ -71,6 +74,22 @@ function App() {
       loadPastShifts();
     }
   }, [currentUser]);
+
+  // get user's past shifts from db
+  useEffect(() => {
+    const loadAllShifts = async () => {
+      await fetch(`http://localhost:3001/shifts`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAllShifts(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (userInfo?.isAdmin) {
+      loadAllShifts();
+    }
+  }, [userInfo]);
 
   // runs when currentUser is updated
   useEffect(() => {
@@ -135,7 +154,7 @@ function App() {
               path="/volunteer-log"
               element={
                 <ProtectedRoute setUser={setUser}>
-                  <VolunteerLog />
+                  <VolunteerLog allShiftData={allShifts} />
                 </ProtectedRoute>
               }
             />
