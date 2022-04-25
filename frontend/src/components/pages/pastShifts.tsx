@@ -4,6 +4,7 @@ import { Container } from '@mui/material';
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
 import { Shift } from '../../types';
+import ProgressBar from './progressBar';
 
 const StyledContainer = styled(Container)`
   border radius: 7px;
@@ -33,6 +34,11 @@ type ShiftProps = {
 };
 
 export default function PastShifts({ pastShiftData }: ShiftProps) {
+  const totalHours = pastShiftData
+    ? pastShiftData.reduce((hours, shift) => hours + shift.hours, 0)
+    : 0;
+  console.log(totalHours);
+
   pastShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
       return -1;
@@ -46,6 +52,7 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
   return (
     <Header headerText="Past Shifts" navbar>
       <StyledContainer>
+        <ProgressBar hours={totalHours} />
         <StyledContainer maxWidth="md">
           {pastShiftData ? (
             pastShiftData.map((shift) => {
