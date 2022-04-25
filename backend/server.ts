@@ -3,6 +3,7 @@ const mongoose = require('mongoose'); // include mongoose
 const eventEndpoints = require('./routes/events');
 const shiftEnpoints = require('./routes/shifts');
 const userEndpoints = require('./routes/users');
+const prizeEndpoints = require('./routes/prizes');
 require('dotenv').config(); // loads .env into process.env
 
 const app = express(); // initializes Express
@@ -36,6 +37,7 @@ app.use((req: any, res: any, next: any) => {
 app.use('/events', eventEndpoints);
 app.use('/shifts', shiftEnpoints);
 app.use('/users', userEndpoints);
+app.use('/prizes', prizeEndpoints);
 
 // app.get('/', (req: any, res: any) => {
 //   res.send('Hello world!');
