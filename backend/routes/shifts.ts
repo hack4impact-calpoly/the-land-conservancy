@@ -58,11 +58,9 @@ router.patch('/:id', async (req: any, res: any) => {
     const newTotalHours = updates.hours - oldShift.hours;
     const newShift = { ...oldShift, hours: newTotalHours };
     // update user's totalHours
-    const userResult = await User.findByIdAndUpdate(oldShift.user, {
+    await User.findByIdAndUpdate(oldShift.user, {
       $inc: { totalHours: newTotalHours },
     });
-    console.log('new totalHours:', newTotalHours);
-    console.log(userResult);
     res.json(newShift);
   } catch (error) {
     res.status(400).send(error);
@@ -75,7 +73,6 @@ router.delete('/:shiftId', async (req: any, res: any) => {
     const { shiftId } = req.params;
     const temp = await Shift.findByIdAndDelete(shiftId);
     const removedHours = temp.hours;
-    console.log(removedHours);
     // remove this shift reference from the event's shifts
     await Event.findByIdAndUpdate(temp.event, {
       $pull: { shifts: { $in: [shiftId] } },
