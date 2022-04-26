@@ -52,9 +52,17 @@ router.patch('/:id', async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-    const newShift = await Shift.findByIdAndUpdate(id, updates, {
-      new: true,
+    // returns the deleted document
+    const oldShift = await Shift.findByIdAndUpdate(id, updates);
+    // get old & new hours for user update later
+    const newTotalHours = updates.hours - oldShift.hours;
+    const newShift = { ...oldShift, hours: newTotalHours };
+    // update user's totalHours
+    const userResult = await User.findByIdAndUpdate(oldShift.user, {
+      $inc: { totalHours: newTotalHours },
     });
+    console.log('new totalHours:', newTotalHours);
+    console.log(userResult);
     res.json(newShift);
   } catch (error) {
     res.status(400).send(error);
@@ -66,13 +74,16 @@ router.delete('/:shiftId', async (req: any, res: any) => {
   try {
     const { shiftId } = req.params;
     const temp = await Shift.findByIdAndDelete(shiftId);
-    // also remove this shift reference from the event's shifts
+    const removedHours = temp.hours;
+    console.log(removedHours);
+    // remove this shift reference from the event's shifts
     await Event.findByIdAndUpdate(temp.event, {
-      $pull: { shifts: { _id: shiftId } },
+      $pull: { shifts: { $in: [shiftId] } },
     });
     // and from the user's pastShifts
     await User.findByIdAndUpdate(temp.user, {
       $pull: { pastShifts: { _id: shiftId } },
+      $inc: { totalHours: -removedHours },
     });
     res.send(temp);
   } catch (error) {
