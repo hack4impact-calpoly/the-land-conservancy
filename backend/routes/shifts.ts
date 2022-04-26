@@ -79,7 +79,7 @@ router.delete('/:shiftId', async (req: any, res: any) => {
     });
     // and from the user's pastShifts
     await User.findByIdAndUpdate(temp.user, {
-      $pull: { pastShifts: { _id: shiftId } },
+      $pull: { pastShifts: { $in: [shiftId] } },
       $inc: { totalHours: -removedHours },
     });
     res.send(temp);
