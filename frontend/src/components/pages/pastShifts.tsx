@@ -6,7 +6,7 @@ import Header from '../navigation/header';
 import { Shift } from '../../types';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
+  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;

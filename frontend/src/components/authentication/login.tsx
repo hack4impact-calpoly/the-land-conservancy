@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import logo from '../../imgs/logo.png';
 import { AuthContainer } from './authComponents';
 import { Content, Form, Input } from '../styledComponents';
 import landscape from '../../imgs/tlc_background.jpeg';
-import { User } from '../../types';
+import UserContext from '../../userContext';
 
 const Background = styled.div`
   background-image: url(${landscape});
@@ -77,13 +77,10 @@ const FLink = styled(Link)`
   text-decoration: none;
 `;
 
-export default function LoginPage({
-  setUser,
-}: {
-  setUser: (val: User) => void;
-}) {
+export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   // "required" attribute on input validates
