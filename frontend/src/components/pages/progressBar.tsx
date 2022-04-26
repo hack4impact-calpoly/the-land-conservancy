@@ -1,6 +1,5 @@
 import React from 'react';
-import { ProgressBar as PBar } from 'react-step-progress-bar';
-// import { Step } from 'react-step-progress-bar';
+import { ProgressBar as PBar, Step } from 'react-step-progress-bar';
 import 'react-step-progress-bar/styles.css';
 import styled from 'styled-components';
 
@@ -33,9 +32,37 @@ const StyledHours = styled.span`
 //   box-sizing: border-box;
 // `;
 
+// copied styling from the website example
+// TODO: change accordingly or remove and use your above components instead
+const IndexedStep = styled.div.attrs((props: { acc: boolean }) => props)`
+  color: white;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  background-color: ${({ acc }) =>
+    acc ? 'rgba(0, 116, 217, 1)' : 'rgba(211, 211, 211, 0.8)'};
+  
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+`;
+
 type PBarPropTypes = {
   hours: number;
 };
+
+/* eslint-disable react/no-unused-prop-types */
+
+// feel free to add more fields if needed
+type StepProps = {
+  accomplished: boolean;
+  position: number;
+};
+// getting an unused prop-type error... if you can't fix it, no worries
+// I have just disabled the rule (see above) for now
 
 // interface StepPropTypes {
 //   accomplished: boolean;
@@ -54,10 +81,22 @@ export default function ProgressBar({ hours }: PBarPropTypes) {
       </StyledCount>
       <PBar
         filledBackground="linear-gradient(to right, #c0cfb1, #5f8f3e)"
-        percent={percent}
+        percent={20}
         height={19}
-        // stepPositions={[8]}
+        // TODO: add the rest of the correct stepPositions
+        stepPositions={[8, 25]}
       >
+        {/* TODO: add the rest of the correct steps */}
+        <Step>
+          {({ accomplished, position }: StepProps) => (
+            <IndexedStep acc={accomplished}>{position}</IndexedStep>
+          )}
+        </Step>
+        <Step>
+          {({ accomplished, position }: StepProps) => (
+            <IndexedStep acc={accomplished}>{position}</IndexedStep>
+          )}
+        </Step>
         {/* <Step position={8}>
           {({ accomplished }: StepPropTypes) => {
             return accomplished ? <StepAcc /> : <StepNoAcc />;
