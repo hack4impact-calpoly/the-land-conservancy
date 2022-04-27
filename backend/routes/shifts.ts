@@ -38,7 +38,7 @@ router.post('/', async (req: any, res: any) => {
   try {
     shift = await shift.save();
     console.log(shift);
-    res.json(shift);
+    //res.json(shift);
   } catch (error) {
     res.status(400).send(error);
   }

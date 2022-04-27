@@ -62,6 +62,52 @@ const convertDate = (date: string) => {
   })}`;
 };
 
+
+
+const addShift = async () => {
+
+  const shift = {
+    event: "624dd5a1998b0ff52b173d48",
+    hours: 10,
+    user: "awsUserId"
+  };
+
+  console.log(shift);
+
+
+
+  await fetch(`http://localhost:3001/shifts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(shift)
+
+  });
+
+  await fetch(`http://localhost:3001/users/"b6872dfe-f84d-4632-b2f8-d25c580f295f"`, {
+
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify("625e3b4257bc82c8bdb30d63"),
+  });
+
+  await fetch(`http://localhost:3001/events/"624f1eee35ef5ddd8c1812c5"`, {
+
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify("625e3b4257bc82c8bdb30d63"),
+  });
+
+};
+
+
+
+
 export default function LogHours({ eventData }: LogHoursProps) {
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
@@ -118,6 +164,8 @@ export default function LogHours({ eventData }: LogHoursProps) {
           onSubmit={(e) => {
             e.preventDefault();
             submitHours();
+            addShift();
+
           }}
         >
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>

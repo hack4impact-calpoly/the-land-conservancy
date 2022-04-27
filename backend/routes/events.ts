@@ -41,4 +41,18 @@ router.post('/', async (req: any, res: any) => {
   }
 });
 
+//should put new shift into shifts array
+router.put('/:eventId', async (req: any, res: any) =>{
+
+  try {
+    const event = req.params.eventId
+    const shift = req.body
+    const updateEvent = await Event.findByIdAndUpdate(event, {$push: {shifts: shift}})
+    res.send(`Added Shift:`)
+  } catch(error){
+    res.status(400).send(error)
+    console.log(`Could not add `)
+  }
+})
+
 module.exports = router;
