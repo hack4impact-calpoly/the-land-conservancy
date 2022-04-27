@@ -38,7 +38,7 @@ const IndexedStepPosition = styled.p`
   color: black;
   font-weight: 600;
   font-family: 'Poppins';
-  padding-top: 100px;
+  margin-top: 100px;
 `;
 
 type PBarPropTypes = {
