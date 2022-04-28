@@ -27,10 +27,11 @@ interface User {
 }
 
 interface Prize {
-  _id: number;
+  _id: string;
   itemName: string;
   sponsorName: string;
   sponsorImage: string;
+  hoursNeeded: number;
 }
 
 export type { Event, Shift, User, Prize };

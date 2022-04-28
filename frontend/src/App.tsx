@@ -15,6 +15,7 @@ import ThankYou from './components/pages/thankYou';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
+import EditPrizes from './components/pages/editPrizes';
 import userContext from './userContext';
 import { Event, Shift, User } from './types';
 // import awsconfig from './aws-exports';
@@ -96,6 +97,26 @@ function App() {
     console.log('currentUser has been updated: ', currentUser);
   }, [currentUser]);
 
+  // dummy data for edit prizes
+  // I built in the props and everything so
+  // backend people don't have to deal with it :)
+  const prizeData = [
+    {
+      _id: 'aa8dsada9dah',
+      itemName: '$400 gift card',
+      sponsorName: 'jeff',
+      sponsorImage: 'jeff img',
+      hoursNeeded: 1,
+    },
+    {
+      _id: 'aa8dsada9daasdadsh',
+      itemName: 'chicken nuggs',
+      sponsorName: 'vgs',
+      sponsorImage: 'vgs img',
+      hoursNeeded: 400,
+    },
+  ];
+
   // TODO: value={currentUser} when we get auth finalized
   return (
     <userContext.Provider value={currentUser}>
@@ -163,6 +184,14 @@ function App() {
               element={
                 <ProtectedRoute setUser={setUser}>
                   <EditProgressBar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes"
+              element={
+                <ProtectedRoute setUser={setUser}>
+                  <EditPrizes prizeData={prizeData} />
                 </ProtectedRoute>
               }
             />
