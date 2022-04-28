@@ -1,7 +1,5 @@
 {
-  "providers": [
-    "awscloudformation"
-  ],
+  "providers": ["awscloudformation"],
   "projectName": "thelandconservancy",
   "version": "3.1",
   "frontend": "javascript",

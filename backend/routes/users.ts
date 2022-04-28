@@ -63,19 +63,36 @@ router.patch('/:userId', async (req: any, res: any) => {
   }
 });
 
-//put new shift into user's past shifts
-router.put('/:userId', async (req: any, res: any) =>{
-  const user = req.params.userId
-  const shift = req.body
-
+router.put('/:userId/test', async (req: any, res: any) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(user, {$push: {pastShifts: shift}})
-    res.send(`New ingredient:`)
-  } catch(error){
-    res.status(400).send(error)
-    console.log(`Could not add `)
+    const { userId } = req.params;
+    const updates = req.body;
+    console.log(userId.totalHours);
+    console.log(updates.numHours);
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      $inc: { totalHours: updates.numHours },
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(400).send(error);
   }
-})
+});
+
+// put new shift into user's past shifts
+router.put('/:userId', async (req: any, res: any) => {
+  try {
+    const user = req.params.userId;
+    console.log(user);
+    const shift = req.body;
+    const updatedUser = await User.findByIdAndUpdate(user, {
+      $push: { pastShifts: shift.shiftId },
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(400).send(error);
+    console.log(`Could not add x`);
+  }
+});
 
 // delete user by id
 router.delete('/:userId', async (req: any, res: any) => {

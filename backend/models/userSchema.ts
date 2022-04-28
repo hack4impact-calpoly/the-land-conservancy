@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
     name: String,
     email: String,
     phone: String,
-    pastShifts: [String],//{ type: mongoose.Schema.Types.ObjectId, ref: 'Shift' }],
+    pastShifts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Shift' }],
     totalHours: Number,
   },
   { collection: 'Users' }

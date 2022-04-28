@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
-import { Event } from '../../types';
+import { Event, Shift } from '../../types';
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -40,6 +40,8 @@ const Feedback = styled.div`
 
 type LogHoursProps = {
   eventData: Event[];
+  pastShifts: Shift[];
+  setPastShifts: (val: Shift[]) => void;
 };
 
 const convertDate = (date: string) => {
@@ -62,54 +64,12 @@ const convertDate = (date: string) => {
   })}`;
 };
 
-
-
-const addShift = async () => {
-
-  const shift = {
-    event: "624dd5a1998b0ff52b173d48",
-    hours: 10,
-    user: "awsUserId"
-  };
-
-  console.log(shift);
-
-
-
-  await fetch(`http://localhost:3001/shifts`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(shift)
-
-  });
-
-  await fetch(`http://localhost:3001/users/"b6872dfe-f84d-4632-b2f8-d25c580f295f"`, {
-
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify("625e3b4257bc82c8bdb30d63"),
-  });
-
-  await fetch(`http://localhost:3001/events/"624f1eee35ef5ddd8c1812c5"`, {
-
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify("625e3b4257bc82c8bdb30d63"),
-  });
-
-};
-
-
-
-
-export default function LogHours({ eventData }: LogHoursProps) {
-  const [hours, setHours] = React.useState('');
+export default function LogHours({
+  eventData,
+  pastShifts,
+  setPastShifts,
+}: LogHoursProps) {
+  const [hours, setHours] = React.useState(' ');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [link, setLink] = React.useState(' ');
@@ -117,6 +77,62 @@ export default function LogHours({ eventData }: LogHoursProps) {
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
+  const user = 'sam';
+
+  const addToUser = async (id: string) => {
+    await fetch(`http://localhost:3001/users/${user}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ shiftId: id }),
+    });
+  };
+
+  const updateUserHours = async () => {
+    await fetch(`http://localhost:3001/users/${user}/test`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ numHours: hours }),
+    });
+  };
+
+  const addToEvent = async (id: string) => {
+    await fetch(`http://localhost:3001/events/${eventId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ shiftId: id }),
+    });
+  };
+
+  const addShift = async () => {
+    const shift = {
+      event: eventId,
+      hours,
+      user,
+    };
+
+    console.log(shift);
+
+    await fetch(`http://localhost:3001/shifts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(shift),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const id = data._id;
+        addToUser(id);
+        addToEvent(id);
+        setPastShifts([...pastShifts, data]);
+        console.log(pastShifts);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const validateHours = () => {
     // check: filled, isNumber, is > 0
@@ -165,7 +181,7 @@ export default function LogHours({ eventData }: LogHoursProps) {
             e.preventDefault();
             submitHours();
             addShift();
-
+            updateUserHours();
           }}
         >
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>

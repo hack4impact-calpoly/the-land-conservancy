@@ -89,7 +89,13 @@ function App() {
           />
           <Route
             path="/log-hours/:eventId"
-            element={<LogHours eventData={events} />}
+            element={
+              <LogHours
+                eventData={events}
+                pastShifts={pastShifts}
+                setPastShifts={setPastShifts}
+              />
+            }
           />
           <Route
             path="/past-shifts"
