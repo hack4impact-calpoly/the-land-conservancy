@@ -67,8 +67,6 @@ router.put('/:userId/test', async (req: any, res: any) => {
   try {
     const { userId } = req.params;
     const updates = req.body;
-    console.log(userId.totalHours);
-    console.log(updates.numHours);
     const updatedUser = await User.findByIdAndUpdate(userId, {
       $inc: { totalHours: updates.numHours },
     });
@@ -82,7 +80,6 @@ router.put('/:userId/test', async (req: any, res: any) => {
 router.put('/:userId', async (req: any, res: any) => {
   try {
     const user = req.params.userId;
-    console.log(user);
     const shift = req.body;
     const updatedUser = await User.findByIdAndUpdate(user, {
       $push: { pastShifts: shift.shiftId },
