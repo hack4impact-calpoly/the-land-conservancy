@@ -27,7 +27,7 @@ type PrizeProps = {
 export default function EditPrizes({ prizeData }: PrizeProps) {
   return (
     <Header headerText="Edit Prizes" navbar>
-      <StyledContainer maxWidth="md">
+      <StyledContainer maxWidth="lg">
         {prizeData ? (
           prizeData.map((prize: Prize) => {
             return (

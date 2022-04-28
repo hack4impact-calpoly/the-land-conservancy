@@ -1,46 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { RiArrowRightSLine } from 'react-icons/ri';
 
 const StyledContainer = styled(Container)`
   background-color: #f1f1f1;
   border-radius: 6px;
-  padding: 14px;
-  padding-left: 25px;
   margin-bottom: 10px;
 `;
 
 const PrizeName = styled.p`
   font-weight: bold;
-  font-size: 20px;
-  color: black;
+  font-size: 22px;
 `;
 
 const SponsorName = styled.p`
   font-size: 15px;
-  color: black;
-`;
-
-const StyledArrow = styled(RiArrowRightSLine)`
-  color: #6c6b6b;
-  font-size: 60px;
-`;
-
-const TextDiv = styled.div`
-  text-align: left;
-  color: black;
-`;
-
-const ArrowDiv = styled.div`
-  text-align: right;
 `;
 
 const LayoutDiv = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
+  flex-direction: row;
+  align-items: left;
+  color: black;
+  border-radius: 6px;
+`;
+
+const TextDiv = styled.div`
+  text-align: left;
+  padding: 5px;
 `;
 
 const StyledDiv = styled.div`
@@ -50,10 +37,16 @@ const StyledDiv = styled.div`
   }
 `;
 
-// const HoursFlag = styled.p`
-//     transform: rotate(270deg);
-//     background-color: #5F8F3E;
-// `
+const HoursFlag = styled.p`
+  writing-mode: vertical-rl;
+  background-color: #5f8f3e;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 0px;
+  border-radius: 6px 0px 0px 6px;
+  padding: 3px;
+`;
 
 type PrizeCardProps = {
   itemName: string;
@@ -68,19 +61,16 @@ export default function PrizeCard({
   sponsorImage,
   hoursNeeded,
 }: PrizeCardProps) {
+  console.log(sponsorImage);
   return (
     <StyledDiv>
-      <StyledContainer>
+      <StyledContainer disableGutters>
         <LayoutDiv>
+          <HoursFlag>{hoursNeeded} Hours</HoursFlag>
           <TextDiv>
             <PrizeName>{itemName}</PrizeName>
-            <SponsorName>{sponsorName}</SponsorName>
-            <p>{hoursNeeded}</p>
-            <p>{sponsorImage}</p>
+            <SponsorName>Sponsor: {sponsorName}</SponsorName>
           </TextDiv>
-          <ArrowDiv>
-            <StyledArrow />
-          </ArrowDiv>
         </LayoutDiv>
       </StyledContainer>
     </StyledDiv>
