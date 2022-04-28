@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
@@ -6,6 +6,7 @@ import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
 import { Event, Shift } from '../../types';
+import UserContext from '../../userContext';
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -40,8 +41,8 @@ const Feedback = styled.div`
 
 type LogHoursProps = {
   eventData: Event[];
-  pastShifts: Shift[];
-  setPastShifts: (val: Shift[]) => void;
+  setPastShifts: (val: (prev: Shift[]) => Shift[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
 };
 
 const convertDate = (date: string) => {
@@ -66,10 +67,11 @@ const convertDate = (date: string) => {
 
 export default function LogHours({
   eventData,
-  pastShifts,
   setPastShifts,
+  setAllShifts,
 }: LogHoursProps) {
-  const [hours, setHours] = React.useState(' ');
+  const { currentUser } = useContext(UserContext);
+  const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [link, setLink] = React.useState(' ');
@@ -77,10 +79,9 @@ export default function LogHours({
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
-  const user = 'sam';
 
   const addToUser = async (id: string) => {
-    await fetch(`http://localhost:3001/users/${user}`, {
+    await fetch(`http://localhost:3001/users/${currentUser._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ export default function LogHours({
   };
 
   const updateUserHours = async () => {
-    await fetch(`http://localhost:3001/users/${user}/test`, {
+    await fetch(`http://localhost:3001/users/${currentUser._id}/test`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +114,8 @@ export default function LogHours({
     const shift = {
       event: eventId,
       hours,
-      user,
+      user: currentUser._id,
+      userName: currentUser.name,
     };
 
     console.log(shift);
@@ -128,8 +130,9 @@ export default function LogHours({
         const id = data._id;
         addToUser(id);
         addToEvent(id);
-        setPastShifts([...pastShifts, data]);
-        console.log(pastShifts);
+        setPastShifts((prev: Shift[]) => [...prev, data]);
+        // TODO: if admin, update allShifts for the volunteer log
+        setAllShifts((prev: Shift[]) => [...prev, data]);
       })
       .catch((err) => console.log(err));
   };
