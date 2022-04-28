@@ -20,14 +20,15 @@ const SponsorName = styled.p`
 const LayoutDiv = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: left;
+  align-items: space-between;
+  justify-content: space-between;
   color: black;
   border-radius: 6px;
 `;
 
 const TextDiv = styled.div`
   text-align: left;
-  padding: 5px;
+  padding: 10px 5px 5px 30px;
 `;
 
 const StyledDiv = styled.div`
@@ -45,7 +46,14 @@ const HoursFlag = styled.p`
   font-weight: bold;
   margin-left: 0px;
   border-radius: 6px 0px 0px 6px;
-  padding: 3px;
+  padding: 1px 10px 1px 10px;
+`;
+
+const CardImage = styled.img`
+  max-width: 100px;
+  max-height: 100px;
+  text-align: right;
+  padding: 50px 200px 50px 10px;
 `;
 
 type PrizeCardProps = {
@@ -66,11 +74,14 @@ export default function PrizeCard({
     <StyledDiv>
       <StyledContainer disableGutters>
         <LayoutDiv>
-          <HoursFlag>{hoursNeeded} Hours</HoursFlag>
-          <TextDiv>
-            <PrizeName>{itemName}</PrizeName>
-            <SponsorName>Sponsor: {sponsorName}</SponsorName>
-          </TextDiv>
+          <LayoutDiv>
+            <HoursFlag>{hoursNeeded} Hours</HoursFlag>
+            <TextDiv>
+              <PrizeName>{itemName}</PrizeName>
+              <SponsorName>Sponsor: {sponsorName}</SponsorName>
+            </TextDiv>
+          </LayoutDiv>
+          <CardImage src={sponsorImage} alt="sponsor" />
         </LayoutDiv>
       </StyledContainer>
     </StyledDiv>

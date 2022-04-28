@@ -106,14 +106,16 @@ function App() {
       _id: 'aa8dsada9dah',
       itemName: '$400 gift card',
       sponsorName: 'jeff',
-      sponsorImage: 'jeff img',
+      sponsorImage:
+        'https://m.media-amazon.com/images/I/61OdJeN2lFL._SY445_.jpg',
       hoursNeeded: 1,
     },
     {
       _id: 'aa8dsada9daasdadsh',
       itemName: 'chicken nuggs',
-      sponsorName: 'vgs',
-      sponsorImage: 'vgs img',
+      sponsorName: 'McDonalds (TM)',
+      sponsorImage:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Chicken_Nuggets.jpg/640px-Chicken_Nuggets.jpg',
       hoursNeeded: 400,
     },
   ];
