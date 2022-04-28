@@ -55,11 +55,11 @@ router.patch('/:id', async (req: any, res: any) => {
     // returns the deleted document
     const oldShift = await Shift.findByIdAndUpdate(id, updates);
     // get old & new hours for user update later
-    const newTotalHours = updates.hours - oldShift.hours;
-    const newShift = { ...oldShift, hours: newTotalHours };
+    const hoursDiff = updates.hours - oldShift.hours;
+    const newShift = { ...oldShift._doc, hours: updates.hours };
     // update user's totalHours
     await User.findByIdAndUpdate(oldShift.user, {
-      $inc: { totalHours: newTotalHours },
+      $inc: { totalHours: hoursDiff },
     });
     res.json(newShift);
   } catch (error) {
