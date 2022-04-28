@@ -14,6 +14,7 @@ import {
   Label,
   StyledLink,
   LogoImage,
+  EditPrizeIcon,
 } from './navComponents';
 import logo from '../../imgs/logo.png';
 import userContext from '../../userContext';
@@ -57,6 +58,12 @@ export default function NavBar({ children }: Props) {
                 <Path active={!!useMatch('/progress-bar')}>
                   <ClipboardIcon />
                   <Label>Progress bar</Label>
+                </Path>
+              </StyledLink>
+              <StyledLink to="/edit-prizes">
+                <Path active={!!useMatch('/edit-prizes')}>
+                  <EditPrizeIcon />
+                  <Label>Edit Prizes</Label>
                 </Path>
               </StyledLink>
             </div>

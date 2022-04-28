@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaRegEdit } from 'react-icons/fa';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import { GiBackwardTime } from 'react-icons/gi';
 import { MdLogout } from 'react-icons/md';
@@ -120,6 +120,14 @@ const LogoImage = styled.img`
   height: 113px;
 `;
 
+const EditPrizeIcon = styled(FaRegEdit)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 45px;
+  display: inline-block;
+`;
+
 export {
   BarIcon,
   ClipboardIcon,
@@ -133,4 +141,5 @@ export {
   Label,
   StyledLink,
   LogoImage,
+  EditPrizeIcon,
 };
