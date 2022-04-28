@@ -16,6 +16,7 @@ import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
 import EditPrizes from './components/pages/editPrizes';
+import EditOnePrize from './components/pages/editOnePrize';
 import userContext from './userContext';
 import { Event, Shift, User } from './types';
 // import awsconfig from './aws-exports';
@@ -184,6 +185,14 @@ function App() {
               element={
                 <ProtectedRoute setUser={setUser}>
                   <EditProgressBar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes/:prizeId"
+              element={
+                <ProtectedRoute setUser={setUser}>
+                  <EditOnePrize />
                 </ProtectedRoute>
               }
             />
