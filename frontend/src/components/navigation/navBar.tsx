@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useMatch } from 'react-router-dom';
 import Sidebar from 'react-sidebar';
+import { Auth } from 'aws-amplify';
 import {
   BarIcon,
   ClipboardIcon,
@@ -16,7 +17,8 @@ import {
   LogoImage,
 } from './navComponents';
 import logo from '../../imgs/logo.png';
-import userContext from '../../userContext';
+import UserContext from '../../userContext';
+import { User } from '../../types';
 
 type Props = {
   children: React.ReactChild;
@@ -24,16 +26,26 @@ type Props = {
 
 export default function NavBar({ children }: Props) {
   const [navOpen, setNavOpen] = useState(false);
-  const user = useContext(userContext);
+  const { currentUser, setUser } = useContext(UserContext);
 
   // TODO: possibly have the navBar say the name, or "Hello, {user.name}"
+
+  const signUserOut = async () => {
+    try {
+      await Auth.signOut();
+      console.log('attempting user sign out');
+      setUser({} as User);
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  };
 
   return (
     <Sidebar
       sidebar={
         <div>
           <LogoImage src={logo} />
-          {user.isAdmin ? (
+          {currentUser.isAdmin ? (
             <div>
               <StyledLink to="/create-event">
                 <Path active={!!useMatch('/create-event')}>
@@ -76,8 +88,8 @@ export default function NavBar({ children }: Props) {
               </StyledLink>
             </div>
           )}
-          <StyledLink to="/">
-            <BottomPath>
+          <StyledLink to="/login">
+            <BottomPath onClick={() => signUserOut()}>
               <LogoutIcon />
               <Label>Sign out</Label>
             </BottomPath>

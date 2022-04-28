@@ -1,7 +1,13 @@
 import React from 'react';
 import { User } from './types';
-// init with default value
-// TODO: change later to empty object when we load user instead of string
-const userContext = React.createContext({} as User);
 
-export default userContext;
+const defaultFields = {
+  currentUser: {} as User,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setUser: (() => {}) as (user: User) => void,
+};
+
+// init with default value
+const UserContext = React.createContext(defaultFields);
+
+export default UserContext;

@@ -16,6 +16,9 @@ interface Shift {
   userName: string;
 }
 
+// user interface for lifting state of user,
+// all optional so we can clear a user on sign out
+
 interface User {
   _id: string;
   email: string;

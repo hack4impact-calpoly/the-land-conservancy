@@ -1,14 +1,14 @@
 import { Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { User } from '../../types';
+import UserContext from '../../userContext';
 
 export type ProtectedRouteProps = {
   children: JSX.Element;
-  setUser: (val: User) => void;
 };
 
-function ProtectedRoute({ children, setUser }: ProtectedRouteProps) {
+function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { setUser } = useContext(UserContext);
   const [pending, setPending] = useState(true);
   const [found, setFound] = useState();
   const location = useLocation();
@@ -58,7 +58,7 @@ function ProtectedRoute({ children, setUser }: ProtectedRouteProps) {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    console.log('in auth statement');
+    console.log('redirecting');
     return <Navigate to="/login" state={{ from: location }} />;
   }
 
