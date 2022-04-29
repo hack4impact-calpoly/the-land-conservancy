@@ -12,6 +12,7 @@ const StyledCount = styled.h1`
   text-align: left;
   font-size: 40px;
   font-weight: 600;
+  margin: 0 0 20px 0;
 `;
 
 const StyledTotal = styled.span`

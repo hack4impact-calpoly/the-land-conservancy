@@ -151,7 +151,11 @@ function App() {
               path="/log-hours/:eventId"
               element={
                 <ProtectedRoute>
-                  <LogHours eventData={events} />
+                  <LogHours
+                    eventData={events}
+                    setPastShifts={setPastShifts}
+                    setAllShifts={setAllShifts}
+                  />
                 </ProtectedRoute>
               }
             />
