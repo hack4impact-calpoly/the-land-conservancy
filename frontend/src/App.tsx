@@ -17,7 +17,7 @@ import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
 import EditPrizes from './components/pages/editPrizes';
 import EditOnePrize from './components/pages/editOnePrize';
-import userContext from './userContext';
+import UserContext from './userContext';
 import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
@@ -115,14 +115,18 @@ function App() {
     console.log('currentUser has been updated: ', currentUser);
   }, [currentUser]);
 
-  // TODO: value={currentUser} when we get auth finalized
+  const userContextFields = React.useMemo(
+    () => ({ currentUser, setUser }),
+    [currentUser]
+  );
+
   return (
-    <userContext.Provider value={currentUser}>
+    <UserContext.Provider value={userContextFields}>
       <div className="App">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate replace to="/events" />} />
-            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/forgot-password" element={<ForgotPasword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -130,7 +134,7 @@ function App() {
             <Route
               path="/past-shifts"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <PastShifts pastShiftData={pastShifts} />
                 </ProtectedRoute>
               }
@@ -138,7 +142,7 @@ function App() {
             <Route
               path="/events"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <Events eventData={events} />
                 </ProtectedRoute>
               }
@@ -146,7 +150,7 @@ function App() {
             <Route
               path="/log-hours/:eventId"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <LogHours eventData={events} />
                 </ProtectedRoute>
               }
@@ -154,7 +158,7 @@ function App() {
             <Route
               path="/thank-you"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <ThankYou />
                   {/* _may_ need to add additional props */}
                   {/* hardcoding shift details for now */}
@@ -164,7 +168,7 @@ function App() {
             <Route
               path="/create-event"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <CreateEvent eventData={events} setEvents={setEvents} />
                 </ProtectedRoute>
               }
@@ -172,7 +176,7 @@ function App() {
             <Route
               path="/volunteer-log"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <VolunteerLog allShiftData={allShifts} />
                 </ProtectedRoute>
               }
@@ -180,7 +184,7 @@ function App() {
             <Route
               path="/progress-bar"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <EditProgressBar />
                 </ProtectedRoute>
               }
@@ -188,7 +192,7 @@ function App() {
             <Route
               path="/edit-prizes/:prizeId"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <EditOnePrize />
                 </ProtectedRoute>
               }
@@ -196,7 +200,7 @@ function App() {
             <Route
               path="/edit-prizes"
               element={
-                <ProtectedRoute setUser={setUser}>
+                <ProtectedRoute>
                   <EditPrizes prizeData={prizes} />
                 </ProtectedRoute>
               }
@@ -204,7 +208,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
-    </userContext.Provider>
+    </UserContext.Provider>
   );
 }
 

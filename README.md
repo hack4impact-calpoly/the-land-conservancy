@@ -3,21 +3,17 @@ A volunteer management program to track/ log hours and access volunteer informat
 
 ## Table of Contents
 - [Getting Started for Developers](#getting-started-for-developers)
-  - [Add ESLint and Prettier into your IDE](#add-eslint-and-prettier-into-your-ide)
   - [Clone the repository](#clone-the-repository)
   - [Run the frontend](#running-the-frontend)
   - [Run the backend](#running-the-backend)
+  - [Add ESLint and Prettier into your IDE](#add-eslint-and-prettier-into-your-ide)
 - [Contributing](#contributing)
   - [Making Changes](#making-changes)
   - [Commiting Changes](#commiting-changes)
   - [Making Pull Requests](#making-pull-requests)
 
   
-## Getting Started for Developers 
-
-### Add ESLint and Prettier into your IDE  
-If your are using VSCode or another IDE, go to Extensions and install ESLint and Prettier.  
-This will ensure that your code follows a standard style and will be easier for other developers to read :)  
+## Getting Started for Developers  
 
 ### Clone the repository
 ``` git clone https://github.com/hack4impact-calpoly/the-land-conservancy.git ```  
@@ -31,11 +27,21 @@ This will ensure that your code follows a standard style and will be easier for 
 ```cd ../backend```  
 ```npm i```  
 
+
 ### Running the frontend
-1. ```npm start ``` (if its your first time, you might need to run ```npm i```)  
+   -  ```npm start ``` (every time you pull, you might need to run ```npm i```)  
 
 ### Running the backend
-1. ```npm run dev ``` (if its your first time, you might need to run ```npm i```)
+   -  ```npm run dev ``` (every time you pull, you might need to run ```npm i```)
+
+
+### Add ESLint and Prettier into your IDE  
+If your are using VSCode or another IDE, go to Extensions and install ESLint and Prettier.  
+This will ensure that your code follows a standard style and will be easier for other developers to read :)   
+**You may nee to run the linting scripts in the frontend and backend folders to get the IDE to show formatting errors**.  
+`npm run lint`  
+also recommended: enable the "format on save" setting in your vscode settings if that is your editor of choice  
+
 
 ## Contributing 
 
