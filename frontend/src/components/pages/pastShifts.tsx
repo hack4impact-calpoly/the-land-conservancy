@@ -7,7 +7,7 @@ import { Shift } from '../../types';
 import ProgressBar from './progressBar';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
+  border-radius: 7px;
   margin: 5px;
   padding: 10px;
 `;
