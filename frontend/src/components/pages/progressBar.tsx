@@ -3,6 +3,10 @@ import { ProgressBar as PBar, Step } from 'react-step-progress-bar';
 import 'react-step-progress-bar/styles.css';
 import styled from 'styled-components';
 
+const PBarContainer = styled.div`
+  margin-bottom: 60px;
+`;
+
 const StyledCount = styled.h1`
   color: #8f8f8f;
   text-align: left;
@@ -21,24 +25,34 @@ const StyledHours = styled.span`
 `;
 
 const IndexedStep = styled.div.attrs((props: { acc: boolean }) => props)`
-  width: 40px;
-  height: 38px;
-  background-color: ${({ acc }) => (acc ? '#5f8f3e' : '#ffffff')};
+  width: 13px;
+  height: 13px;
+  background-color: ${({ acc }) => (acc ? '#80ba59' : '#ffffff')};
   
-  border: 4px solid #C1C1C1;
+  border: 2px solid #C1C1C1;
+  border-color: ${({ acc }) => (acc ? '#DDE4DD' : '#DDDDDD')};
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media screen and (min-width: 768px) {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+  }
 }
 `;
 
 const IndexedStepPosition = styled.p`
-  font-size: 20px;
+  font-size: 15px;
   color: black;
   font-weight: 600;
   font-family: 'Poppins';
-  margin-top: 100px;
+  margin-top: 50px;
+  @media screen and (min-width: 768px) {
+    font-size: 20px;
+    margin-top: 80px;
+  }
 `;
 
 type PBarPropTypes = {
@@ -58,7 +72,7 @@ export default function ProgressBar({ hours }: PBarPropTypes) {
     percent = 0;
   }
   return (
-    <div>
+    <PBarContainer>
       <StyledCount>
         {hours} / <StyledTotal>150</StyledTotal>
         <StyledHours>hours</StyledHours>
@@ -142,6 +156,6 @@ export default function ProgressBar({ hours }: PBarPropTypes) {
           )}
         </Step>
       </PBar>
-    </div>
+    </PBarContainer>
   );
 }
