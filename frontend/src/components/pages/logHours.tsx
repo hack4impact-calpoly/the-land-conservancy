@@ -86,17 +86,10 @@ export default function LogHours({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ shiftId: id }),
-    });
-  };
-
-  const updateUserHours = async () => {
-    await fetch(`http://localhost:3001/users/${currentUser._id}/test`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ numHours: hours }),
+      body: JSON.stringify({
+        shiftId: id,
+        numHours: hours,
+      }),
     });
   };
 
@@ -184,7 +177,6 @@ export default function LogHours({
             e.preventDefault();
             submitHours();
             addShift();
-            updateUserHours();
           }}
         >
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
