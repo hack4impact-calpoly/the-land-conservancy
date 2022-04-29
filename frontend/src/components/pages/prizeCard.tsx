@@ -82,7 +82,6 @@ export default function PrizeCard({
   sponsorImage,
   hoursNeeded,
 }: PrizeCardProps) {
-  console.log(sponsorImage);
   return (
     <StyledDiv>
       <StyledContainer disableGutters>
