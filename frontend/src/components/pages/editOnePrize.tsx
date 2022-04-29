@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import Header from '../navigation/header';
 import Container from './formComponents';
 import { Form, Input, Submit, Label } from '../styledComponents';
@@ -15,6 +16,7 @@ export default function EditOnePrize() {
   const [itemName, setItemName] = useState('');
   const [sponsorName, setSponsorName] = useState('');
   const [sponsorImg, setSponsorImg] = useState('');
+  const { prizeId } = useParams();
 
   const submitEdits = () => {
     console.log(itemName);
@@ -23,9 +25,9 @@ export default function EditOnePrize() {
   };
 
   return (
-    <Header headerText="Edit Prize" navbar>
+    <Header headerText="Edit Prize" back="/edit-prizes">
       <Container>
-        <StyledHours>X hours</StyledHours>
+        <StyledHours>{prizeId} hours</StyledHours>
         <div>
           <Form
             onSubmit={(e) => {

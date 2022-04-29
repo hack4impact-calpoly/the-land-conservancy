@@ -18,7 +18,7 @@ import EditProgressBar from './components/pages/editProgressBar';
 import EditPrizes from './components/pages/editPrizes';
 import EditOnePrize from './components/pages/editOnePrize';
 import userContext from './userContext';
-import { Event, Shift, User } from './types';
+import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
 // Amplify.configure(awsconfig);
@@ -43,6 +43,7 @@ function App() {
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
   const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [prizes, setPrizes] = useState<Prize[]>([]);
   const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
   // loads in all events
@@ -93,32 +94,26 @@ function App() {
     }
   }, [userInfo]);
 
+  // get prizes from db
+  useEffect(() => {
+    const loadPrizes = async () => {
+      await fetch(`http://localhost:3001/prizes`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPrizes(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (userInfo?.isAdmin) {
+      loadPrizes();
+    }
+  }, [userInfo]);
+
   // runs when currentUser is updated
   useEffect(() => {
     console.log('currentUser has been updated: ', currentUser);
   }, [currentUser]);
-
-  // dummy data for edit prizes
-  // I built in the props and everything so
-  // backend people don't have to deal with it :)
-  const prizeData = [
-    {
-      _id: 'aa8dsada9dah',
-      itemName: '$400 gift card',
-      sponsorName: 'jeff',
-      sponsorImage:
-        'https://m.media-amazon.com/images/I/61OdJeN2lFL._SY445_.jpg',
-      hoursNeeded: 1,
-    },
-    {
-      _id: 'aa8dsada9daasdadsh',
-      itemName: 'chicken nuggs',
-      sponsorName: 'McDonalds (TM)',
-      sponsorImage:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Chicken_Nuggets.jpg/640px-Chicken_Nuggets.jpg',
-      hoursNeeded: 400,
-    },
-  ];
 
   // TODO: value={currentUser} when we get auth finalized
   return (
@@ -202,7 +197,7 @@ function App() {
               path="/edit-prizes"
               element={
                 <ProtectedRoute setUser={setUser}>
-                  <EditPrizes prizeData={prizeData} />
+                  <EditPrizes prizeData={prizes} />
                 </ProtectedRoute>
               }
             />

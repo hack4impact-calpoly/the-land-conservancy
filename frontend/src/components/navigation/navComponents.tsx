@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { FaBars, FaRegEdit } from 'react-icons/fa';
+import { BiEdit } from 'react-icons/bi';
+import { FaBars } from 'react-icons/fa';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import { GiBackwardTime } from 'react-icons/gi';
 import { MdLogout } from 'react-icons/md';
@@ -40,6 +41,14 @@ const AddIcon = styled(IoMdAddCircleOutline)`
 `;
 
 const CalendarIcon = styled(FiCalendar)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
+`;
+
+const EditPrizeIcon = styled(BiEdit)`
   color: white;
   text-align: left;
   display: block;
@@ -118,14 +127,6 @@ const LogoImage = styled.img`
   padding-bottom: 50px;
   width: 113px;
   height: 113px;
-`;
-
-const EditPrizeIcon = styled(FaRegEdit)`
-  color: white;
-  text-align: left;
-  display: block;
-  font-size: 45px;
-  display: inline-block;
 `;
 
 export {

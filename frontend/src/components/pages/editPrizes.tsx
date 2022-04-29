@@ -36,7 +36,7 @@ export default function EditPrizes({ prizeData }: PrizeProps) {
                   itemName={prize.itemName}
                   sponsorName={prize.sponsorName}
                   sponsorImage={prize.sponsorImage}
-                  hoursNeeded={prize.hoursNeeded}
+                  hoursNeeded={prize._id}
                 />
               </StyledLink>
             );

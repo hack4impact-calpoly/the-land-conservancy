@@ -8,12 +8,16 @@ const StyledContainer = styled(Container)`
   margin-bottom: 10px;
 `;
 
-const PrizeName = styled.p`
+const PrizeName = styled.div`
   font-weight: bold;
-  font-size: 22px;
+  font-size: 18px;
+  @media screen and (min-width: 768px) {
+    padding: 0 0 15px 0;
+    font-size: 22px;
+  }
 `;
 
-const SponsorName = styled.p`
+const SponsorName = styled.div`
   font-size: 15px;
 `;
 
@@ -28,7 +32,10 @@ const LayoutDiv = styled.div`
 
 const TextDiv = styled.div`
   text-align: left;
-  padding: 10px 5px 5px 30px;
+  padding: 10px 5px 5px 10px;
+  @media screen and (min-width: 768px) {
+    padding: 10px 5px 5px 30px;
+  }
 `;
 
 const StyledDiv = styled.div`
@@ -40,20 +47,26 @@ const StyledDiv = styled.div`
 
 const HoursFlag = styled.p`
   writing-mode: vertical-rl;
+  transform: rotate(-180deg);
   background-color: #5f8f3e;
   color: white;
   font-size: 18px;
   font-weight: bold;
   margin-left: 0px;
-  border-radius: 6px 0px 0px 6px;
+  border-radius: 0px 6px 6px 0px;
   padding: 1px 10px 1px 10px;
 `;
 
 const CardImage = styled.img`
-  max-width: 100px;
+  max-width: 120px;
   max-height: 100px;
   text-align: right;
-  padding: 50px 200px 50px 10px;
+  padding: 15px 15px 15px 10px;
+  @media screen and (min-width: 768px) {
+    padding: 20px 150px 20px 10px;
+    max-width: 140px;
+    max-height: 130px;
+  }
 `;
 
 type PrizeCardProps = {

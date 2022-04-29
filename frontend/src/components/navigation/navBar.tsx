@@ -54,12 +54,6 @@ export default function NavBar({ children }: Props) {
                   <Label>Volunteer log</Label>
                 </Path>
               </StyledLink>
-              <StyledLink to="/progress-bar">
-                <Path active={!!useMatch('/progress-bar')}>
-                  <ClipboardIcon />
-                  <Label>Progress bar</Label>
-                </Path>
-              </StyledLink>
               <StyledLink to="/edit-prizes">
                 <Path active={!!useMatch('/edit-prizes')}>
                   <EditPrizeIcon />
