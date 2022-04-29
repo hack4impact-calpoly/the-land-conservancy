@@ -37,7 +37,6 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
   const totalHours = pastShiftData
     ? pastShiftData.reduce((hours, shift) => hours + shift.hours, 0)
     : 0;
-  console.log(totalHours);
 
   pastShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
