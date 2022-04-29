@@ -15,8 +15,10 @@ import ThankYou from './components/pages/thankYou';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
+import EditPrizes from './components/pages/editPrizes';
+import EditOnePrize from './components/pages/editOnePrize';
 import UserContext from './userContext';
-import { Event, Shift, User } from './types';
+import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
 // Amplify.configure(awsconfig);
@@ -41,6 +43,7 @@ function App() {
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
   const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [prizes, setPrizes] = useState<Prize[]>([]);
   const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
   // loads in all events
@@ -88,6 +91,22 @@ function App() {
 
     if (userInfo?.isAdmin) {
       loadAllShifts();
+    }
+  }, [userInfo]);
+
+  // get prizes from db
+  useEffect(() => {
+    const loadPrizes = async () => {
+      await fetch(`http://localhost:3001/prizes`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPrizes(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (userInfo?.isAdmin) {
+      loadPrizes();
     }
   }, [userInfo]);
 
@@ -167,6 +186,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <EditProgressBar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes/:prizeId"
+              element={
+                <ProtectedRoute>
+                  <EditOnePrize />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes"
+              element={
+                <ProtectedRoute>
+                  <EditPrizes prizeData={prizes} />
                 </ProtectedRoute>
               }
             />
