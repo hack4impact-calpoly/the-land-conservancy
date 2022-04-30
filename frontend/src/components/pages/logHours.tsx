@@ -181,7 +181,7 @@ export default function LogHours({
           }}
         >
           {currentUser.isAdmin ? (
-            <div>
+            <>
               <StyledLabel htmlFor="volunteer">Volunteer name</StyledLabel>
               <StyledInput
                 id="volunteerName"
@@ -189,7 +189,7 @@ export default function LogHours({
                 value={volunteer}
                 onChange={(e) => setVolunteer(e.target.value)}
               />
-            </div>
+            </>
           ) : (
             <div />
           )}
