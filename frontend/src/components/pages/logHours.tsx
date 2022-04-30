@@ -74,6 +74,7 @@ export default function LogHours({
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
+  const [volunteer, setVolunteer] = React.useState('');
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => {
@@ -179,6 +180,20 @@ export default function LogHours({
             addShift();
           }}
         >
+          {currentUser.isAdmin ? (
+            <>
+              <StyledLabel htmlFor="volunteerName">Volunteer name</StyledLabel>
+              <StyledInput
+                id="volunteerName"
+                type="text"
+                value={volunteer}
+                onChange={(e) => setVolunteer(e.target.value)}
+              />
+            </>
+          ) : (
+            <div />
+          )}
+
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
           <StyledInput
             id="hours"
@@ -188,7 +203,6 @@ export default function LogHours({
             onChange={(e) => setHours(e.target.value)}
             required
           />
-
           <Feedback>{valid}</Feedback>
           <Submit type="submit" value="Submit" />
           <p>{submit}</p>
