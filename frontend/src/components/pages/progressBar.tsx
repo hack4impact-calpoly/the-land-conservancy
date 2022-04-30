@@ -68,10 +68,8 @@ type StepProps = {
 };
 
 export default function ProgressBar({ hours }: PBarPropTypes) {
-  let percent = (hours / 150) * 100;
-  if (percent > 150) {
-    percent = 0;
-  }
+  const percent = ((hours % 150) / 150) * 100;
+
   return (
     <PBarContainer>
       <StyledCount>
