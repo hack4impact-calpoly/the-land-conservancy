@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BiEdit } from 'react-icons/bi';
 import { FaBars } from 'react-icons/fa';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import { GiBackwardTime } from 'react-icons/gi';
@@ -40,6 +41,14 @@ const AddIcon = styled(IoMdAddCircleOutline)`
 `;
 
 const CalendarIcon = styled(FiCalendar)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
+`;
+
+const EditPrizeIcon = styled(BiEdit)`
   color: white;
   text-align: left;
   display: block;
@@ -133,4 +142,5 @@ export {
   Label,
   StyledLink,
   LogoImage,
+  EditPrizeIcon,
 };

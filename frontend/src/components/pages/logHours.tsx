@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
-import { Event } from '../../types';
+import { Event, Shift } from '../../types';
+import UserContext from '../../userContext';
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -40,6 +41,8 @@ const Feedback = styled.div`
 
 type LogHoursProps = {
   eventData: Event[];
+  setPastShifts: (val: (prev: Shift[]) => Shift[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
 };
 
 const convertDate = (date: string) => {
@@ -62,15 +65,71 @@ const convertDate = (date: string) => {
   })}`;
 };
 
-export default function LogHours({ eventData }: LogHoursProps) {
+export default function LogHours({
+  eventData,
+  setPastShifts,
+  setAllShifts,
+}: LogHoursProps) {
+  const { currentUser } = useContext(UserContext);
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
+  const [volunteer, setVolunteer] = React.useState('');
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
+
+  const addToUser = async (id: string) => {
+    await fetch(`http://localhost:3001/users/${currentUser._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        shiftId: id,
+        numHours: hours,
+      }),
+    });
+  };
+
+  const addToEvent = async (id: string) => {
+    await fetch(`http://localhost:3001/events/${eventId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ shiftId: id }),
+    });
+  };
+
+  const addShift = async () => {
+    const shift = {
+      event: eventId,
+      hours,
+      user: currentUser._id,
+      userName: currentUser.name,
+    };
+
+    console.log(shift);
+
+    await fetch(`http://localhost:3001/shifts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(shift),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const id = data._id;
+        addToUser(id);
+        addToEvent(id);
+        setPastShifts((prev: Shift[]) => [...prev, data]);
+        // TODO: if admin, update allShifts for the volunteer log
+        setAllShifts((prev: Shift[]) => [...prev, data]);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const validateHours = () => {
     // check: filled, isNumber, is > 0
@@ -118,8 +177,23 @@ export default function LogHours({ eventData }: LogHoursProps) {
           onSubmit={(e) => {
             e.preventDefault();
             submitHours();
+            addShift();
           }}
         >
+          {currentUser.isAdmin ? (
+            <>
+              <StyledLabel htmlFor="volunteerName">Volunteer name</StyledLabel>
+              <StyledInput
+                id="volunteerName"
+                type="text"
+                value={volunteer}
+                onChange={(e) => setVolunteer(e.target.value)}
+              />
+            </>
+          ) : (
+            <div />
+          )}
+
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
           <StyledInput
             id="hours"
@@ -129,7 +203,6 @@ export default function LogHours({ eventData }: LogHoursProps) {
             onChange={(e) => setHours(e.target.value)}
             required
           />
-
           <Feedback>{valid}</Feedback>
           <Submit type="submit" value="Submit" />
           <p>{submit}</p>

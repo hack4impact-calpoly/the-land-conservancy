@@ -40,8 +40,8 @@ router.post('/', async (req: any, res: any) => {
 
   try {
     shift = await shift.save();
-    console.log(shift);
-    res.json(shift);
+    const final = await shift.populate('event');
+    res.json(final);
   } catch (error) {
     res.status(400).send(error);
   }
