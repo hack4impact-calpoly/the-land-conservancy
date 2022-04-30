@@ -182,10 +182,10 @@ export default function LogHours({
         >
           {currentUser.isAdmin ? (
             <>
-              <StyledLabel htmlFor="volunteer">Volunteer name</StyledLabel>
+              <StyledLabel htmlFor="volunteerName">Volunteer name</StyledLabel>
               <StyledInput
                 id="volunteerName"
-                type="string"
+                type="text"
                 value={volunteer}
                 onChange={(e) => setVolunteer(e.target.value)}
               />
