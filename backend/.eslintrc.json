@@ -25,6 +25,7 @@
     "semi": ["warn", "always"],
     "no-trailing-spaces": "warn",
     "no-console": "off",
+    "no-underscore-dangle": "off",
     "indent": "warn",
     "react/react/in/jsx/scope": 0,
     "import/no-import-module-exports": 0,
