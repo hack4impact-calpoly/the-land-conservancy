@@ -1,12 +1,37 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Container } from '@mui/material';
+import { Container, Autocomplete, TextField, Box } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
-import { Event, Shift } from '../../types';
+import { Event, Shift, User } from '../../types';
 import UserContext from '../../userContext';
+
+const theme = createTheme({
+  components: {
+    // Name of the component
+    MuiTextField: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          '& fieldset': {
+            borderRadius: '10px',
+            boxSizing: 'border-box',
+            border: '1px solid #c4c4c4',
+            paddingLeft: '10px',
+          },
+          margin: '5px 0 20px 0',
+        },
+      },
+    },
+  },
+  typography: {
+    fontFamily: 'Poppins',
+    fontSize: 16,
+  },
+});
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -14,12 +39,7 @@ const StyledContainer = styled(Container)`
 `;
 
 const StyledInput = styled(Input)`
-  font-size: 20px;
-  text-align: left;
-
-  margin-top: 11px;
-  margin-bottom: 22px;
-
+  height: 40px;
   max-width: 100px;
 `;
 
@@ -39,10 +59,25 @@ const Feedback = styled.div`
   color: red;
 `;
 
+const NameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Email = styled.div`
+  font-size: 0.85rem;
+`;
+
 type LogHoursProps = {
   eventData: Event[];
   setPastShifts: (val: (prev: Shift[]) => Shift[]) => void;
   setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
+  allUsers: User[];
+};
+
+type AutoCompleteProps = {
+  setVolunteer: (val: string) => void;
+  allUsers: User[];
 };
 
 const convertDate = (date: string) => {
@@ -65,23 +100,67 @@ const convertDate = (date: string) => {
   })}`;
 };
 
+function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
+  return (
+    <ThemeProvider theme={theme}>
+      <Autocomplete
+        id="country-select-demo"
+        sx={{ maxWidth: 400 }}
+        options={allUsers}
+        onChange={(e, value) => setVolunteer(value ? value._id : '')}
+        autoHighlight
+        getOptionLabel={(option) => option.name}
+        renderOption={(props, option) => (
+          <Box component="li" {...props} key={option._id}>
+            <NameBox>
+              {option.name}
+              <Email>({option.email})</Email>
+            </NameBox>
+          </Box>
+        )}
+        renderInput={(params) => (
+          <StyledLabel htmlFor="voluntee">
+            Volunteer name
+            <TextField
+              {...params}
+              size="small"
+              variant="outlined"
+              required
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+              }}
+            />
+          </StyledLabel>
+        )}
+      />
+    </ThemeProvider>
+  );
+}
+
 export default function LogHours({
   eventData,
   setPastShifts,
   setAllShifts,
+  allUsers,
 }: LogHoursProps) {
   const { currentUser } = useContext(UserContext);
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
-  const [volunteer, setVolunteer] = React.useState('');
+  const [volunteerId, setVolunteer] = React.useState('');
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
 
+  // TODO: remove this console log later
+  console.log(volunteerId);
+
   const addToUser = async (id: string) => {
+    // TODO: if admin submitting, use volunteerId
+    //  instead of currentUser._id
     await fetch(`http://localhost:3001/users/${currentUser._id}`, {
       method: 'PUT',
       headers: {
@@ -104,7 +183,11 @@ export default function LogHours({
     });
   };
 
+  // TODO: probably write a separate function
+  // to handle admin submitting and edditing
   const addShift = async () => {
+    // TODO: if admin submitting, use user: volunteerId
+    //  instead of user: currentUser._id
     const shift = {
       event: eventId,
       hours,
@@ -125,7 +208,7 @@ export default function LogHours({
         addToUser(id);
         addToEvent(id);
         setPastShifts((prev: Shift[]) => [...prev, data]);
-        // TODO: if admin, update allShifts for the volunteer log
+        // (if admin) update allShifts for the volunteer log
         setAllShifts((prev: Shift[]) => [...prev, data]);
       })
       .catch((err) => console.log(err));
@@ -181,15 +264,7 @@ export default function LogHours({
           }}
         >
           {currentUser.isAdmin ? (
-            <>
-              <StyledLabel htmlFor="volunteerName">Volunteer name</StyledLabel>
-              <StyledInput
-                id="volunteerName"
-                type="text"
-                value={volunteer}
-                onChange={(e) => setVolunteer(e.target.value)}
-              />
-            </>
+            <UserSelect allUsers={allUsers} setVolunteer={setVolunteer} />
           ) : (
             <div />
           )}

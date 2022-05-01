@@ -44,8 +44,8 @@ const Input = styled.input`
   font-size: 20px;
   text-align: left;
 
-  margin-top: 11px;
-  margin-bottom: 22px;
+  margin-top: 5px;
+  margin-bottom: 20px;
 
   width: 100%;
 `;
