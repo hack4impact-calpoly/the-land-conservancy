@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Container, Autocomplete, TextField, Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
@@ -76,7 +76,7 @@ type LogHoursProps = {
 };
 
 type AutoCompleteProps = {
-  setVolunteer: (val: string) => void;
+  setVolunteer: (val: User) => void;
   allUsers: User[];
 };
 
@@ -100,14 +100,32 @@ const convertDate = (date: string) => {
   })}`;
 };
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+interface LogHoursState {
+  user: User;
+}
+
 function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
+  const editing = useQuery().get('editing');
+  const location = useLocation();
+  let user = null;
+  if (location.state) {
+    user = (location.state as LogHoursState).user;
+  }
   return (
     <ThemeProvider theme={theme}>
       <Autocomplete
         id="country-select-demo"
         sx={{ maxWidth: 400 }}
         options={allUsers}
-        onChange={(e, value) => setVolunteer(value ? value._id : '')}
+        defaultValue={user || null}
+        disabled={editing === 'true'}
+        onChange={(e, value) => setVolunteer(value || ({} as User))}
         autoHighlight
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => (
@@ -128,7 +146,7 @@ function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
               required
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
+                autoComplete: 'off', // disable autocomplete and autofill
               }}
             />
           </StyledLabel>
@@ -148,20 +166,22 @@ export default function LogHours({
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
-  const [volunteerId, setVolunteer] = React.useState('');
+  const [volunteer, setVolunteer] = React.useState({} as User);
+  // if admin, submit for entered user, else submit for this user
+  const submittingUser = currentUser.isAdmin ? volunteer : currentUser;
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
 
+  console.log(currentUser._id === submittingUser._id);
+
   // TODO: remove this console log later
-  console.log(volunteerId);
+  console.log('submittingUser:', submittingUser);
 
   const addToUser = async (id: string) => {
-    // TODO: if admin submitting, use volunteerId
-    //  instead of currentUser._id
-    await fetch(`http://localhost:3001/users/${currentUser._id}`, {
+    await fetch(`http://localhost:3001/users/${submittingUser._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -183,16 +203,12 @@ export default function LogHours({
     });
   };
 
-  // TODO: probably write a separate function
-  // to handle admin submitting and edditing
   const addShift = async () => {
-    // TODO: if admin submitting, use user: volunteerId
-    //  instead of user: currentUser._id
     const shift = {
       event: eventId,
       hours,
-      user: currentUser._id,
-      userName: currentUser.name,
+      user: submittingUser._id,
+      userName: submittingUser.name,
     };
 
     console.log(shift);
@@ -207,7 +223,10 @@ export default function LogHours({
         const id = data._id;
         addToUser(id);
         addToEvent(id);
-        setPastShifts((prev: Shift[]) => [...prev, data]);
+        if (currentUser._id === submittingUser._id) {
+          // update pastShifts for /past-shifts page
+          setPastShifts((prev: Shift[]) => [...prev, data]);
+        }
         // (if admin) update allShifts for the volunteer log
         setAllShifts((prev: Shift[]) => [...prev, data]);
       })
