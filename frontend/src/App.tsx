@@ -43,6 +43,7 @@ function App() {
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
   const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [prizes, setPrizes] = useState<Prize[]>([]);
   const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
@@ -78,7 +79,7 @@ function App() {
     }
   }, [currentUser]);
 
-  // get user's past shifts from db
+  // get all shifts from db
   useEffect(() => {
     const loadAllShifts = async () => {
       await fetch(`http://localhost:3001/shifts`)
@@ -93,6 +94,22 @@ function App() {
       loadAllShifts();
     }
   }, [userInfo]);
+
+  // get all users from db
+  useEffect(() => {
+    const loadAllUsers = async () => {
+      await fetch(`http://localhost:3001/users`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAllUsers(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (currentUser?.isAdmin) {
+      loadAllUsers();
+    }
+  }, [currentUser]);
 
   // get prizes from db
   useEffect(() => {
@@ -155,6 +172,7 @@ function App() {
                     eventData={events}
                     setPastShifts={setPastShifts}
                     setAllShifts={setAllShifts}
+                    allUsers={allUsers}
                   />
                 </ProtectedRoute>
               }

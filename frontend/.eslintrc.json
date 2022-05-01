@@ -31,6 +31,7 @@
     "no-console": "off",
     "indent": "warn",
     "react/react/in/jsx/scope": 0,
+    "react/jsx-props-no-spreading": 0,
     "linebreak-style": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-fragments": 0,
