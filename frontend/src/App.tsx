@@ -15,8 +15,10 @@ import ThankYou from './components/pages/thankYou';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
 import EditProgressBar from './components/pages/editProgressBar';
+import EditPrizes from './components/pages/editPrizes';
+import EditOnePrize from './components/pages/editOnePrize';
 import UserContext from './userContext';
-import { Event, Shift, User } from './types';
+import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
 // Amplify.configure(awsconfig);
@@ -41,6 +43,8 @@ function App() {
   const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
   const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [prizes, setPrizes] = useState<Prize[]>([]);
   const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
   // loads in all events
@@ -75,7 +79,7 @@ function App() {
     }
   }, [currentUser]);
 
-  // get user's past shifts from db
+  // get all shifts from db
   useEffect(() => {
     const loadAllShifts = async () => {
       await fetch(`http://localhost:3001/shifts`)
@@ -88,6 +92,38 @@ function App() {
 
     if (userInfo?.isAdmin) {
       loadAllShifts();
+    }
+  }, [userInfo]);
+
+  // get all users from db
+  useEffect(() => {
+    const loadAllUsers = async () => {
+      await fetch(`http://localhost:3001/users`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAllUsers(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (currentUser?.isAdmin) {
+      loadAllUsers();
+    }
+  }, [currentUser]);
+
+  // get prizes from db
+  useEffect(() => {
+    const loadPrizes = async () => {
+      await fetch(`http://localhost:3001/prizes`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPrizes(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (userInfo?.isAdmin) {
+      loadPrizes();
     }
   }, [userInfo]);
 
@@ -132,7 +168,12 @@ function App() {
               path="/log-hours/:eventId"
               element={
                 <ProtectedRoute>
-                  <LogHours eventData={events} />
+                  <LogHours
+                    eventData={events}
+                    setPastShifts={setPastShifts}
+                    setAllShifts={setAllShifts}
+                    allUsers={allUsers}
+                  />
                 </ProtectedRoute>
               }
             />
@@ -167,6 +208,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <EditProgressBar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes/:prizeId"
+              element={
+                <ProtectedRoute>
+                  <EditOnePrize />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes"
+              element={
+                <ProtectedRoute>
+                  <EditPrizes prizeData={prizes} />
                 </ProtectedRoute>
               }
             />

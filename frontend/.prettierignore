@@ -1,0 +1,6 @@
+**/amplify/**
+build/
+dist/
+node_modules/
+aws-exports.js
+

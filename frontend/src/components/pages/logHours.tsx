@@ -1,11 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Container } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Container, Autocomplete, TextField, Box } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
-import { Event } from '../../types';
+import { Event, Shift, User } from '../../types';
+import UserContext from '../../userContext';
+
+const theme = createTheme({
+  components: {
+    // Name of the component
+    MuiTextField: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          '& fieldset': {
+            borderRadius: '10px',
+            boxSizing: 'border-box',
+            border: '1px solid #c4c4c4',
+            paddingLeft: '10px',
+          },
+          margin: '5px 0 20px 0',
+        },
+      },
+    },
+  },
+  typography: {
+    fontFamily: 'Poppins',
+    fontSize: 16,
+  },
+});
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -13,12 +39,7 @@ const StyledContainer = styled(Container)`
 `;
 
 const StyledInput = styled(Input)`
-  font-size: 20px;
-  text-align: left;
-
-  margin-top: 11px;
-  margin-bottom: 22px;
-
+  height: 40px;
   max-width: 100px;
 `;
 
@@ -38,8 +59,25 @@ const Feedback = styled.div`
   color: red;
 `;
 
+const NameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Email = styled.div`
+  font-size: 0.85rem;
+`;
+
 type LogHoursProps = {
   eventData: Event[];
+  setPastShifts: (val: (prev: Shift[]) => Shift[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
+  allUsers: User[];
+};
+
+type AutoCompleteProps = {
+  setVolunteer: (val: User) => void;
+  allUsers: User[];
 };
 
 const convertDate = (date: string) => {
@@ -62,15 +100,138 @@ const convertDate = (date: string) => {
   })}`;
 };
 
-export default function LogHours({ eventData }: LogHoursProps) {
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+interface LogHoursState {
+  user: User;
+}
+
+function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
+  const editing = useQuery().get('editing');
+  const location = useLocation();
+  let user = null;
+  if (location.state) {
+    user = (location.state as LogHoursState).user;
+  }
+  return (
+    <ThemeProvider theme={theme}>
+      <Autocomplete
+        id="country-select-demo"
+        sx={{ maxWidth: 400 }}
+        options={allUsers}
+        defaultValue={user || null}
+        disabled={editing === 'true'}
+        onChange={(e, value) => setVolunteer(value || ({} as User))}
+        autoHighlight
+        getOptionLabel={(option) => option.name}
+        renderOption={(props, option) => (
+          <Box component="li" {...props} key={option._id}>
+            <NameBox>
+              {option.name}
+              <Email>({option.email})</Email>
+            </NameBox>
+          </Box>
+        )}
+        renderInput={(params) => (
+          <StyledLabel htmlFor="voluntee">
+            Volunteer name
+            <TextField
+              {...params}
+              size="small"
+              variant="outlined"
+              required
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'off', // disable autocomplete and autofill
+              }}
+            />
+          </StyledLabel>
+        )}
+      />
+    </ThemeProvider>
+  );
+}
+
+export default function LogHours({
+  eventData,
+  setPastShifts,
+  setAllShifts,
+  allUsers,
+}: LogHoursProps) {
+  const { currentUser } = useContext(UserContext);
   const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
+  const [volunteer, setVolunteer] = React.useState({} as User);
+  // if admin, submit for entered user, else submit for this user
+  const submittingUser = currentUser.isAdmin ? volunteer : currentUser;
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
+
+  console.log(currentUser._id === submittingUser._id);
+
+  // TODO: remove this console log later
+  console.log('submittingUser:', submittingUser);
+
+  const addToUser = async (id: string) => {
+    await fetch(`http://localhost:3001/users/${submittingUser._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        shiftId: id,
+        numHours: hours,
+      }),
+    });
+  };
+
+  const addToEvent = async (id: string) => {
+    await fetch(`http://localhost:3001/events/${eventId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ shiftId: id }),
+    });
+  };
+
+  const addShift = async () => {
+    const shift = {
+      event: eventId,
+      hours,
+      user: submittingUser._id,
+      userName: submittingUser.name,
+    };
+
+    console.log(shift);
+
+    await fetch(`http://localhost:3001/shifts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(shift),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const id = data._id;
+        addToUser(id);
+        addToEvent(id);
+        if (currentUser._id === submittingUser._id) {
+          // update pastShifts for /past-shifts page
+          setPastShifts((prev: Shift[]) => [...prev, data]);
+        }
+        // (if admin) update allShifts for the volunteer log
+        setAllShifts((prev: Shift[]) => [...prev, data]);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const validateHours = () => {
     // check: filled, isNumber, is > 0
@@ -118,8 +279,15 @@ export default function LogHours({ eventData }: LogHoursProps) {
           onSubmit={(e) => {
             e.preventDefault();
             submitHours();
+            addShift();
           }}
         >
+          {currentUser.isAdmin ? (
+            <UserSelect allUsers={allUsers} setVolunteer={setVolunteer} />
+          ) : (
+            <div />
+          )}
+
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
           <StyledInput
             id="hours"
@@ -129,7 +297,6 @@ export default function LogHours({ eventData }: LogHoursProps) {
             onChange={(e) => setHours(e.target.value)}
             required
           />
-
           <Feedback>{valid}</Feedback>
           <Submit type="submit" value="Submit" />
           <p>{submit}</p>
