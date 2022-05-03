@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
-import { Shift } from '../../types';
+import { Prize, Shift } from '../../types';
 import ProgressBar from './progressBar';
+import RewardModal from './rewardModal';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
-  margin: 5px;
-  padding: 10px;
+  padding-top: 0;
 `;
 
 const convertDate = (date: string) => {
@@ -31,9 +31,10 @@ const convertDate = (date: string) => {
 
 type ShiftProps = {
   pastShiftData: Shift[];
+  prizes: Prize[];
 };
 
-export default function PastShifts({ pastShiftData }: ShiftProps) {
+export default function PastShifts({ pastShiftData, prizes }: ShiftProps) {
   const totalHours = pastShiftData
     ? pastShiftData.reduce((hours, shift) => hours + shift.hours, 0)
     : 0;
@@ -52,6 +53,7 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
     <Header headerText="Past Shifts" navbar>
       <StyledContainer>
         <ProgressBar hours={totalHours} />
+        <RewardModal hours={totalHours} prizes={prizes} />
         <StyledContainer maxWidth="md">
           {pastShiftData ? (
             pastShiftData.map((shift) => {

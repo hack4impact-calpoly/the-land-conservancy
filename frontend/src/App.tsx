@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Amplify from 'aws-amplify';
-
 import './App.css';
 import Login from './components/authentication/login';
 import CreateAccount from './components/authentication/createAccount';
@@ -14,12 +13,13 @@ import LogHours from './components/pages/logHours';
 import ThankYou from './components/pages/thankYou';
 import CreateEvent from './components/pages/createEvent';
 import VolunteerLog from './components/pages/volunteerLog';
-import EditProgressBar from './components/pages/editProgressBar';
 import EditPrizes from './components/pages/editPrizes';
 import EditOnePrize from './components/pages/editOnePrize';
 import UserContext from './userContext';
 import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
+
+const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
 
 // Amplify.configure(awsconfig);
 Amplify.configure({
@@ -45,12 +45,11 @@ function App() {
   const [allShifts, setAllShifts] = useState<Shift[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [prizes, setPrizes] = useState<Prize[]>([]);
-  const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
 
   // loads in all events
   useEffect(() => {
     const loadEvents = async () => {
-      await fetch('http://localhost:3001/events')
+      await fetch(`${PORT}/events`)
         .then((res) => res.json())
         .then((data) => {
           setEvents(data);
@@ -65,10 +64,9 @@ function App() {
   // get user's past shifts from db
   useEffect(() => {
     const loadPastShifts = async () => {
-      await fetch(`http://localhost:3001/users/${currentUser._id}`)
+      await fetch(`${PORT}/users/${currentUser._id}`)
         .then((res) => res.json())
         .then((data) => {
-          setUserInfo(data);
           setPastShifts(data.pastShifts);
         })
         .catch((err) => console.log(err));
@@ -82,7 +80,7 @@ function App() {
   // get all shifts from db
   useEffect(() => {
     const loadAllShifts = async () => {
-      await fetch(`http://localhost:3001/shifts`)
+      await fetch(`${PORT}/shifts`)
         .then((res) => res.json())
         .then((data) => {
           setAllShifts(data);
@@ -90,15 +88,15 @@ function App() {
         .catch((err) => console.log(err));
     };
 
-    if (userInfo?.isAdmin) {
+    if (currentUser?.isAdmin) {
       loadAllShifts();
     }
-  }, [userInfo]);
+  }, [currentUser]);
 
   // get all users from db
   useEffect(() => {
     const loadAllUsers = async () => {
-      await fetch(`http://localhost:3001/users`)
+      await fetch(`${PORT}/users`)
         .then((res) => res.json())
         .then((data) => {
           setAllUsers(data);
@@ -106,6 +104,7 @@ function App() {
         .catch((err) => console.log(err));
     };
 
+    console.log(currentUser.isAdmin);
     if (currentUser?.isAdmin) {
       loadAllUsers();
     }
@@ -114,7 +113,7 @@ function App() {
   // get prizes from db
   useEffect(() => {
     const loadPrizes = async () => {
-      await fetch(`http://localhost:3001/prizes`)
+      await fetch(`${PORT}/prizes`)
         .then((res) => res.json())
         .then((data) => {
           setPrizes(data);
@@ -122,10 +121,8 @@ function App() {
         .catch((err) => console.log(err));
     };
 
-    if (userInfo?.isAdmin) {
-      loadPrizes();
-    }
-  }, [userInfo]);
+    loadPrizes();
+  }, [currentUser]);
 
   // runs when currentUser is updated
   useEffect(() => {
@@ -152,7 +149,7 @@ function App() {
               path="/past-shifts"
               element={
                 <ProtectedRoute>
-                  <PastShifts pastShiftData={pastShifts} />
+                  <PastShifts pastShiftData={pastShifts} prizes={prizes} />
                 </ProtectedRoute>
               }
             />
@@ -203,14 +200,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/progress-bar"
-              element={
-                <ProtectedRoute>
-                  <EditProgressBar />
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/edit-prizes/:prizeId"
               element={
