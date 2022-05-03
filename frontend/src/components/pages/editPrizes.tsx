@@ -7,13 +7,8 @@ import Header from '../navigation/header';
 import { Prize } from '../../types';
 
 const StyledContainer = styled(Container)`
-  border-radius: 7px;
-  font-family: Poppins;
   margin: 5px;
   padding: 20px;
-  align-items: left;
-  justify-content: left;
-  text-decoration: none;
 `;
 
 const StyledLink = styled(Link)`

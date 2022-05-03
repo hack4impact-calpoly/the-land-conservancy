@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import { Container } from '@mui/material';
 import Header from '../navigation/header';
-import Container from './formComponents';
 import { Form, Input, Submit, Label } from '../styledComponents';
+
+const StyledContainer = styled(Container)`
+  margin: 5px;
+  padding: 20px;
+  text-align: left;
+`;
 
 const StyledHours = styled.p`
   font-size: 30px;
@@ -26,7 +32,7 @@ export default function EditOnePrize() {
 
   return (
     <Header headerText="Edit Prize" back="/edit-prizes">
-      <Container>
+      <StyledContainer maxWidth="sm">
         <StyledHours>{prizeId} hours</StyledHours>
         <div>
           <Form
@@ -63,7 +69,7 @@ export default function EditOnePrize() {
           </Form>
         </div>
         <div />
-      </Container>
+      </StyledContainer>
     </Header>
   );
 }
