@@ -4,15 +4,23 @@ import 'react-step-progress-bar/styles.css';
 import styled from 'styled-components';
 
 const PBarContainer = styled.div`
-  margin-bottom: 60px;
+  margin-bottom: 40px;
+  margin-right: 10px;
+  @media only screen and (min-width: 768px) {
+    margin-right: 20px;
+  }
 `;
 
 const StyledCount = styled.h1`
   color: #8f8f8f;
   text-align: left;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 600;
-  margin: 0 0 20px 0;
+  margin: 0 15px 10px 0;
+  @media screen and (min-width: 768px) {
+    font-size: 40px;
+    margin: 0 15px 20px 0;
+  }
 `;
 
 const StyledTotal = styled.span`
@@ -56,6 +64,15 @@ const IndexedStepPosition = styled.p`
   }
 `;
 
+export function HoursCount({ hours }: { hours: number }) {
+  return (
+    <StyledCount>
+      {hours} / <StyledTotal>150</StyledTotal>
+      <StyledHours>hours</StyledHours>
+    </StyledCount>
+  );
+}
+
 type PBarPropTypes = {
   hours: number;
 };
@@ -72,10 +89,7 @@ export default function ProgressBar({ hours }: PBarPropTypes) {
 
   return (
     <PBarContainer>
-      <StyledCount>
-        {hours} / <StyledTotal>150</StyledTotal>
-        <StyledHours>hours</StyledHours>
-      </StyledCount>
+      <HoursCount hours={hours % 150} />
       <PBar
         filledBackground="linear-gradient(to right, #c0cfb1, #5f8f3e)"
         percent={percent}

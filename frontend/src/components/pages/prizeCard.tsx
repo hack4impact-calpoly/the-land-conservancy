@@ -55,6 +55,7 @@ const HoursFlag = styled.p`
   margin-left: 0px;
   border-radius: 0px 6px 6px 0px;
   padding: 1px 10px 1px 10px;
+  text-align: center;
 `;
 
 const CardImage = styled.img`

@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import UserContext from '../../userContext';
 
+const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
+
 export type ProtectedRouteProps = {
   children: JSX.Element;
 };
@@ -17,7 +19,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   // fetches Mongo user who signed in
   const getMongoUser = async (id: string) => {
     try {
-      fetch(`http://localhost:3001/users/${id}`)
+      fetch(`${PORT}/users/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setUser(data);
