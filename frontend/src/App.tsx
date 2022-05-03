@@ -71,8 +71,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     };
-
-    if (currentUser && currentUser._id) {
+    if (currentUser?.isAdmin !== undefined && currentUser._id) {
       loadPastShifts();
     }
   }, [currentUser]);
@@ -88,7 +87,7 @@ function App() {
         .catch((err) => console.log(err));
     };
 
-    if (currentUser?.isAdmin) {
+    if (currentUser?.isAdmin !== undefined && currentUser?.isAdmin) {
       loadAllShifts();
     }
   }, [currentUser]);
@@ -104,8 +103,7 @@ function App() {
         .catch((err) => console.log(err));
     };
 
-    console.log(currentUser.isAdmin);
-    if (currentUser?.isAdmin) {
+    if (currentUser?.isAdmin !== undefined && currentUser?.isAdmin) {
       loadAllUsers();
     }
   }, [currentUser]);
