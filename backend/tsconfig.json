@@ -11,7 +11,8 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": false,
+    "rootDir": "./"
   },
   "include": ["server.ts", "routes", "models"]
 }
