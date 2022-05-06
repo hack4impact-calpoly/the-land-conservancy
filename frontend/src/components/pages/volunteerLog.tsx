@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ExportToCsv } from 'export-to-csv-fix-source-map';
 
@@ -18,6 +18,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { Submit } from '../styledComponents';
 import Header from '../navigation/header';
 import { Shift } from '../../types';
+import DeleteModal from './deleteModal';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -84,9 +85,16 @@ function createData(
 
 type ShiftProps = {
   allShiftData: Shift[];
+  setAllShifts: (val: Shift[]) => void;
 };
 
-export default function VolunteerLog({ allShiftData }: ShiftProps) {
+export default function VolunteerLog({
+  allShiftData,
+  setAllShifts,
+}: ShiftProps) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [shiftId, setShift] = useState('');
+
   allShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
       return -1;
@@ -96,6 +104,11 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
     }
     return 0;
   });
+
+  const setDeleteStates = (id: string) => {
+    setDeleteOpen(true);
+    setShift(id);
+  };
 
   // convert allShiftData to an array of rows that hold all atributes
   // on same level, this also formats the rows for exporting to csv correctly
@@ -149,7 +162,10 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
                       <TableCell>{row.hours}</TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>
-                        <StyledEdit /> <StyledDelete />
+                        <StyledEdit />
+                        <StyledDelete
+                          onClick={() => setDeleteStates(row._id)}
+                        />
                       </TableCell>
                     </TableRow>
                   ))
@@ -160,6 +176,13 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
             </Table>
           </TableContainer>
         </StyledContainer>
+        <DeleteModal
+          deleteOpen={deleteOpen}
+          setDeleteOpen={setDeleteOpen}
+          shiftId={shiftId}
+          allShiftData={allShiftData}
+          setAllShifts={setAllShifts}
+        />
       </ThemeProvider>
     </Header>
   );
