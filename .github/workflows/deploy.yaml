@@ -18,7 +18,7 @@ jobs:
           aws-region: us-west-1
 
       - id: backend-deployment
-        uses: hack4impact-calpoly/express-deployment-aws-typescript@v1.0.0
+        uses: hack4impact-calpoly/express-deployment-aws-typescript@v0.10.1
         with:
           s3-bucket: "the-land-conservancy"
           stack-name: "the-land-conservancy-stack"
