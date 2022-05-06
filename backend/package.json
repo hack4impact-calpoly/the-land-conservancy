@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.ts dev",
+    "dev": "ts-node server.ts --dev",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx . && prettier --check .",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix && prettier --write ."
   },
