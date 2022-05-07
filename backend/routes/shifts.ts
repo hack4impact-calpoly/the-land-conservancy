@@ -1,8 +1,8 @@
+import express from 'express';
+
 import Shift from '../models/shiftSchema';
 import Event from '../models/eventSchema';
 import User from '../models/userSchema';
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -88,4 +88,5 @@ router.delete('/:shiftId', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

@@ -1,8 +1,7 @@
+import express from 'express';
 import Event from '../models/eventSchema';
 
 export {};
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -56,4 +55,5 @@ router.put('/:eventId', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

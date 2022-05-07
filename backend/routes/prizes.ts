@@ -1,8 +1,7 @@
+import express from 'express';
 import Prize from '../models/prizeSchema';
 
 export {};
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -32,4 +31,5 @@ router.patch('/:id', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

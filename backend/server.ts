@@ -1,10 +1,12 @@
-const express = require('express'); // includes express
-const mongoose = require('mongoose'); // include mongoose
-const eventEndpoints = require('./routes/events');
-const shiftEnpoints = require('./routes/shifts');
-const userEndpoints = require('./routes/users');
-const prizeEndpoints = require('./routes/prizes');
-require('dotenv').config(); // loads .env into process.env
+import express from 'express'; // includes express
+import dotenv from 'dotenv';
+import mongoose from 'mongoose'; // include mongoose
+import eventEndpoints from './routes/events';
+import shiftEnpoints from './routes/shifts';
+import userEndpoints from './routes/users';
+import prizeEndpoints from './routes/prizes';
+
+dotenv.config(); // loads .env into process.env
 
 const app = express(); // initializes Express
 
@@ -12,7 +14,7 @@ const app = express(); // initializes Express
 if (!process.env.DATABASE_URL) {
   console.warn('DATABASE_URL not found');
 }
-mongoose.connect(process.env.DATABASE_URL).then(
+mongoose.connect(process.env.DATABASE_URL!).then(
   () => {
     console.log('Connected to server successfully!');
   },
@@ -39,9 +41,9 @@ app.use('/shifts', shiftEnpoints);
 app.use('/users', userEndpoints);
 app.use('/prizes', prizeEndpoints);
 
-// app.get('/', (req: any, res: any) => {
-//   res.send('Hello world!');
-// });
+app.get('/', (req: any, res: any) => {
+  res.send('Hello world!');
+});
 
 if (process.argv.includes('--dev')) {
   const PORT = process.env.PORT || 3001;
@@ -49,5 +51,5 @@ if (process.argv.includes('--dev')) {
 }
 // app.listen(3001); // 3. runs Express
 
-module.exports = app;
+// module.exports = app;
 export default app;
