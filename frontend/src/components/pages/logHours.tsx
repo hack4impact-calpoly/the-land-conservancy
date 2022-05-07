@@ -110,12 +110,15 @@ interface LogHoursState {
   user: User;
 }
 
-function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
+function UserSelect({ setVolunteer, setHours, allUsers }: AutoCompleteProps) {
   const editing = useQuery().get('editing');
   const location = useLocation();
   let user = null;
   if (location.state) {
-    user = (location.state as LogHoursState).user;
+    user = allUsers.find((u) => {
+      return u._id === (location.state as LogHoursState).user._id;
+    });
+    console.log((location.state as LogHoursState).user);
   }
   return (
     <ThemeProvider theme={theme}>
@@ -298,7 +301,10 @@ export default function LogHours({
             required
           />
           <Feedback>{valid}</Feedback>
-          <Submit type="submit" value="Submit" />
+          <Submit
+            type="submit"
+            value={currentUser.isAdmin ? 'Update hours' : 'Submit'}
+          />
           <p>{submit}</p>
           <Link to="/past-shifts">{link}</Link>
         </form>

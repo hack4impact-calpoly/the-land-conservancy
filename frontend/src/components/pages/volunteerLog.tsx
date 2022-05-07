@@ -15,6 +15,7 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 import { Submit } from '../styledComponents';
 import Header from '../navigation/header';
 import { Shift } from '../../types';
@@ -40,6 +41,10 @@ const StyledEdit = styled(BiEdit)`
 const StyledDelete = styled(RiDeleteBin6Line)`
   font-size: 20px;
   cursor: pointer;
+`;
+
+const BlackLink = styled(Link)`
+  color: #000000;
 `;
 
 const Form = styled.form`
@@ -71,16 +76,18 @@ const csvExporter = new ExportToCsv(options);
 // creates a row of data for a shift
 function createData(
   _id: string,
+  eventId: string,
   eventTitle: string,
   eventLocation: string,
   eventDate: string,
   hours: number,
+  user: string,
   name: string
 ) {
   const date = new Date(eventDate).toLocaleDateString('en-US', {
     timeZone: 'UTC',
   });
-  return { _id, eventTitle, eventLocation, date, hours, name };
+  return { _id, eventId, eventTitle, eventLocation, date, hours, user, name };
 }
 
 type ShiftProps = {
@@ -115,11 +122,13 @@ export default function VolunteerLog({
   const rows = allShiftData.map((shift) => {
     return createData(
       shift._id,
+      shift.event._id,
       shift.event.title,
       shift.event.location,
       // convert shift date from string to Date type so we can print it nicely
       shift.event.start,
       shift.hours,
+      shift.user,
       shift.userName
     );
   });
@@ -162,7 +171,12 @@ export default function VolunteerLog({
                       <TableCell>{row.hours}</TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>
-                        <StyledEdit />
+                        <BlackLink
+                          to={`/log-hours/${row.eventId}?editing=true`}
+                          state={{ user: { _id: row.user } }}
+                        >
+                          <StyledEdit />
+                        </BlackLink>
                         <StyledDelete
                           onClick={() => setDeleteStates(row._id)}
                         />
