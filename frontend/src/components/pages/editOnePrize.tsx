@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 import Header from '../navigation/header';
 import { Form, Input, Submit, Label } from '../styledComponents';
+import { Prize } from '../../types';
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -18,16 +19,45 @@ const StyledHours = styled.p`
   margin-bottom: 40px;
 `;
 
-export default function EditOnePrize() {
+type EditPrizeProps = {
+  setPrizes: (val: (prev: Prize[]) => Prize[]) => void;
+  PORT: string;
+};
+
+export default function EditOnePrize({ setPrizes, PORT }: EditPrizeProps) {
   const [itemName, setItemName] = useState('');
   const [sponsorName, setSponsorName] = useState('');
   const [sponsorImg, setSponsorImg] = useState('');
   const { prizeId } = useParams();
+  const navigate = useNavigate();
 
   const submitEdits = () => {
     console.log(itemName);
     console.log(sponsorName);
     console.log(sponsorImg);
+  };
+
+  const addToPrize = async (iName: string, sName: string, sUrl: string) => {
+    await fetch(`http://localhost:3001/prizes/${prizeId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        itemName: iName,
+        sponsorName: sName,
+        sponsorImage: sUrl,
+      }),
+    });
+  };
+
+  const loadPrizes = async () => {
+    await fetch(`${PORT}/prizes`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPrizes(data);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -39,6 +69,9 @@ export default function EditOnePrize() {
             onSubmit={(e) => {
               e.preventDefault();
               submitEdits();
+              addToPrize(itemName, sponsorName, sponsorImg)
+                .then(loadPrizes)
+                .then(() => navigate('/edit-prizes'));
             }}
           >
             <Label htmlFor="itemName">Item Name</Label>

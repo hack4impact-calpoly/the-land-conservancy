@@ -203,7 +203,7 @@ function App() {
               path="/edit-prizes/:prizeId"
               element={
                 <ProtectedRoute>
-                  <EditOnePrize />
+                  <EditOnePrize setPrizes={setPrizes} PORT={PORT} />
                 </ProtectedRoute>
               }
             />
