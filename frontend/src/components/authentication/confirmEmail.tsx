@@ -39,15 +39,6 @@ const Button = styled.button.attrs(
   color: ${(props) => props.c};
 `;
 
-// const sendConfirmationcode = async (user: string) => {
-//   try {
-//     await Auth.resendSignUp(user);
-//     console.log('code sent successfully!');
-//   } catch (err) {
-//     console.log('error resending code: ', err);
-//   }
-// };
-
 // eslint-disable-next-line max-len
 export default function ConfirmEmailPage({
   user,
@@ -84,6 +75,15 @@ export default function ConfirmEmailPage({
     codeAttempt = e.target.value;
   };
 
+  const sendConfirmationcode = async () => {
+    try {
+      await Auth.resendSignUp(user);
+      console.log('code sent successfully!');
+    } catch (err) {
+      console.log('error resending code: ', err);
+    }
+  };
+
   return (
     <AuthContainer>
       <Link to="/create-account">
@@ -111,6 +111,17 @@ export default function ConfirmEmailPage({
           <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="100%">
             {' '}
             Confirm{' '}
+          </Button>
+          <br />
+          <br />
+          <Button
+            onClick={sendConfirmationcode}
+            bc="#5F8F3E"
+            c="#ffffff"
+            wid="100%"
+          >
+            {' '}
+            Resend Confirmation Code{' '}
           </Button>
         </Form>
       </Content>

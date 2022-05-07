@@ -89,17 +89,30 @@ export default function LoginPage({
     console.log(password);
   };
 
+  const sendConfirmationcode = async (user: string) => {
+    try {
+      await Auth.resendSignUp(user);
+      console.log('code sent successfully!');
+    } catch (err) {
+      console.log('error resending code: ', err);
+    }
+  };
+
   // authenticate sign in
   const signIn = async () => {
     try {
       const user = await Auth.signIn(username, password);
+      console.log(user);
       setUser(user.userSub);
-      if (!user.userConfirmed) {
+      if (!user.attributes.email_verified) {
         navigate('/confirm-email');
       }
       console.log(`Successful sign in for user: ${username}`);
     } catch (error) {
       console.log('error signing in', error);
+      setUser(username);
+      sendConfirmationcode(username);
+      navigate('/confirm-email');
     }
   };
 
