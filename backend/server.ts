@@ -51,5 +51,4 @@ if (process.argv.includes('--dev')) {
 }
 // app.listen(3001); // 3. runs Express
 
-// module.exports = app;
 export default app;
