@@ -37,27 +37,39 @@ export default function EditOnePrize({ setPrizes, PORT }: EditPrizeProps) {
     console.log(sponsorImg);
   };
 
-  const addToPrize = async (iName: string, sName: string, sUrl: string) => {
-    await fetch(`http://localhost:3001/prizes/${prizeId}`, {
+  const addToPrize = async (
+    item: string,
+    sponsor: string,
+    imageUrl: string
+  ) => {
+    // only pass in fields that have been filled out
+    const prizeToAdd: { [k: string]: string | undefined } = {};
+    if (item !== '') {
+      prizeToAdd.itemName = item;
+    }
+    if (sponsor !== '') {
+      prizeToAdd.sponsorName = sponsor;
+    }
+    if (imageUrl !== '') {
+      prizeToAdd.sponsorImage = imageUrl;
+    }
+
+    // post to backend
+    const response = await fetch(`${PORT}/prizes/${prizeId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        itemName: iName,
-        sponsorName: sName,
-        sponsorImage: sUrl,
-      }),
+      body: JSON.stringify(prizeToAdd),
     });
-  };
+    const newPrize = await response.json();
 
-  const loadPrizes = async () => {
-    await fetch(`${PORT}/prizes`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPrizes(data);
-      })
-      .catch((err) => console.log(err));
+    // set updated prizes on the frontend
+    setPrizes((prev) => {
+      return prev.map((prize) =>
+        prize._id === newPrize._id ? newPrize : prize
+      );
+    });
   };
 
   return (
@@ -69,9 +81,9 @@ export default function EditOnePrize({ setPrizes, PORT }: EditPrizeProps) {
             onSubmit={(e) => {
               e.preventDefault();
               submitEdits();
-              addToPrize(itemName, sponsorName, sponsorImg)
-                .then(loadPrizes)
-                .then(() => navigate('/edit-prizes'));
+              addToPrize(itemName, sponsorName, sponsorImg).then(() =>
+                navigate('/edit-prizes')
+              );
             }}
           >
             <Label htmlFor="itemName">Item Name</Label>
