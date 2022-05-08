@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 import Header from '../navigation/header';
 import { Form, Input, Submit, Label } from '../styledComponents';
+import { Prize } from '../../types';
 
 const StyledContainer = styled(Container)`
   margin: 5px;
@@ -18,16 +19,57 @@ const StyledHours = styled.p`
   margin-bottom: 40px;
 `;
 
-export default function EditOnePrize() {
+type EditPrizeProps = {
+  setPrizes: (val: (prev: Prize[]) => Prize[]) => void;
+  PORT: string;
+};
+
+export default function EditOnePrize({ setPrizes, PORT }: EditPrizeProps) {
   const [itemName, setItemName] = useState('');
   const [sponsorName, setSponsorName] = useState('');
   const [sponsorImg, setSponsorImg] = useState('');
   const { prizeId } = useParams();
+  const navigate = useNavigate();
 
   const submitEdits = () => {
     console.log(itemName);
     console.log(sponsorName);
     console.log(sponsorImg);
+  };
+
+  const addToPrize = async (
+    item: string,
+    sponsor: string,
+    imageUrl: string
+  ) => {
+    // only pass in fields that have been filled out
+    const prizeToAdd: { [k: string]: string | undefined } = {};
+    if (item !== '') {
+      prizeToAdd.itemName = item;
+    }
+    if (sponsor !== '') {
+      prizeToAdd.sponsorName = sponsor;
+    }
+    if (imageUrl !== '') {
+      prizeToAdd.sponsorImage = imageUrl;
+    }
+
+    // post to backend
+    const response = await fetch(`${PORT}/prizes/${prizeId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(prizeToAdd),
+    });
+    const newPrize = await response.json();
+
+    // set updated prizes on the frontend
+    setPrizes((prev) => {
+      return prev.map((prize) =>
+        prize._id === newPrize._id ? newPrize : prize
+      );
+    });
   };
 
   return (
@@ -39,6 +81,9 @@ export default function EditOnePrize() {
             onSubmit={(e) => {
               e.preventDefault();
               submitEdits();
+              addToPrize(itemName, sponsorName, sponsorImg).then(() =>
+                navigate('/edit-prizes')
+              );
             }}
           >
             <Label htmlFor="itemName">Item Name</Label>
