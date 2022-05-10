@@ -62,18 +62,18 @@ const options = {
   quoteStrings: '"',
   decimalSeparator: '.',
   showLabels: true,
-  showTitle: true,
+  showTitle: false,
   title: 'Volunteer Log Test Data', // we can remove this from csv
   filename: 'volunteer_totals', // title of downloaded csv
   useTextFile: false,
   useBom: true,
   useKeysAsHeaders: false,
-  headers: ['id', 'Event Title', 'Location', 'Date', 'Hours', 'Name'],
+  headers: ['Event Title', 'Location', 'Date', 'Hours', 'Name'],
 };
 
 const csvExporter = new ExportToCsv(options);
 
-// creates a row of data for a shift
+// creates a row of data for the volunteer log table
 function createData(
   _id: string,
   eventId: string,
@@ -90,9 +90,23 @@ function createData(
   return { _id, eventId, eventTitle, eventLocation, date, hours, user, name };
 }
 
+// creates a row of data for the csv file
+function createCsvRow(
+  eventTitle: string,
+  eventLocation: string,
+  eventDate: string,
+  hours: number,
+  name: string
+) {
+  const date = new Date(eventDate).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  });
+  return { eventTitle, eventLocation, date, hours, name };
+}
+
 type ShiftProps = {
   allShiftData: Shift[];
-  setAllShifts: (val: Shift[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
 };
 
 export default function VolunteerLog({
@@ -133,6 +147,17 @@ export default function VolunteerLog({
     );
   });
 
+  const csvRows = allShiftData.map((shift) => {
+    return createCsvRow(
+      shift.event.title,
+      shift.event.location,
+      // convert shift date from string to Date type so we can print it nicely
+      shift.event.start,
+      shift.hours,
+      shift.userName
+    );
+  });
+
   return (
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
@@ -141,7 +166,7 @@ export default function VolunteerLog({
             id="form"
             onSubmit={(e) => {
               e.preventDefault();
-              csvExporter.generateCsv(rows);
+              csvExporter.generateCsv(csvRows);
             }}
           >
             <Export type="submit" value="Export" />
@@ -173,7 +198,11 @@ export default function VolunteerLog({
                       <TableCell>
                         <BlackLink
                           to={`/log-hours/${row.eventId}?editing=true`}
-                          state={{ user: { _id: row.user } }}
+                          state={{
+                            user: { _id: row.user },
+                            oldHours: row.hours,
+                            shiftId: row._id,
+                          }}
                         >
                           <StyledEdit />
                         </BlackLink>
@@ -194,7 +223,6 @@ export default function VolunteerLog({
           deleteOpen={deleteOpen}
           setDeleteOpen={setDeleteOpen}
           shiftId={shiftId}
-          allShiftData={allShiftData}
           setAllShifts={setAllShifts}
         />
       </ThemeProvider>

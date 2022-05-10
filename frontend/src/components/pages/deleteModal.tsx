@@ -49,8 +49,7 @@ type DeleteModalProps = {
   deleteOpen: boolean;
   setDeleteOpen: (val: boolean) => void;
   shiftId: string;
-  allShiftData: Shift[];
-  setAllShifts: (val: Shift[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
 };
 
 // future: may consider passing obj-to-delete infor or a delete function prop
@@ -58,7 +57,6 @@ export default function DeleteModal({
   deleteOpen,
   setDeleteOpen,
   shiftId,
-  allShiftData,
   setAllShifts,
 }: DeleteModalProps) {
   const deleteShift = async () => {
@@ -69,7 +67,7 @@ export default function DeleteModal({
       },
     })
       .then(() => {
-        setAllShifts(allShiftData.filter((shift) => shift._id !== shiftId));
+        setAllShifts((prev) => prev.filter((shift) => shift._id !== shiftId));
       })
       .catch((error) => {
         console.error('Error:', error);
