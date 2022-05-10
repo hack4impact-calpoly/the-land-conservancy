@@ -1,6 +1,5 @@
+import express from 'express';
 import User from '../models/userSchema';
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -88,4 +87,4 @@ router.delete('/:userId', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+export default router;
