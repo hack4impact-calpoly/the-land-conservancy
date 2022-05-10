@@ -194,7 +194,10 @@ function App() {
               path="/volunteer-log"
               element={
                 <ProtectedRoute>
-                  <VolunteerLog allShiftData={allShifts} />
+                  <VolunteerLog
+                    allShiftData={allShifts}
+                    setAllShifts={setAllShifts}
+                  />
                 </ProtectedRoute>
               }
             />
