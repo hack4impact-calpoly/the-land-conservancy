@@ -118,8 +118,9 @@ function App() {
         })
         .catch((err) => console.log(err));
     };
-
-    loadPrizes();
+    if (currentUser?.isAdmin !== undefined && currentUser._id) {
+      loadPrizes();
+    }
   }, [currentUser]);
 
   // runs when currentUser is updated
