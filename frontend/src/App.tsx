@@ -53,7 +53,7 @@ function App() {
   const [confirmed, setConfirmed] = useState(false);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
 
-  const user = 'sam';
+  const user = '171f3454-25a4-4990-a44b-b42225291ffd';
 
   console.log(currentUser);
 

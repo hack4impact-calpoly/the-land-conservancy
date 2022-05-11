@@ -104,15 +104,17 @@ export default function LoginPage({
       const user = await Auth.signIn(username, password);
       console.log(user);
       setUser(user.userSub);
-      if (!user.attributes.email_verified) {
-        navigate('/confirm-email');
-      }
+
       console.log(`Successful sign in for user: ${username}`);
     } catch (error) {
       console.log('error signing in', error);
-      setUser(username);
-      sendConfirmationcode(username);
-      navigate('/confirm-email');
+      if ((error as Error).name === 'UserNotConfirmedException') {
+        setUser(username);
+        sendConfirmationcode(username);
+        navigate('/confirm-email');
+      } else {
+        window.alert((error as Error).message);
+      }
     }
   };
 
