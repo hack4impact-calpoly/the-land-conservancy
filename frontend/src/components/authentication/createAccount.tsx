@@ -59,8 +59,13 @@ export default function CreateAccount() {
 
   const signUp = async (newAccount: Account) => {
     try {
+      /* Auth.signUp() returns an ISignUpResult {
+        user: CognitoUser;
+        userConfirmed: boolean;
+        userSub: string;
+      } */
       // make cognito user
-      const { user, userSub } = await Auth.signUp({
+      const { userSub } = await Auth.signUp({
         username: newAccount.Email,
         password: newAccount.Password,
         attributes: {
@@ -71,8 +76,6 @@ export default function CreateAccount() {
         },
       });
       // now make mongodb user, once AWS user is made
-      console.log(user);
-      console.log(userSub);
       try {
         await addUserToDb(userSub);
       } catch (error) {

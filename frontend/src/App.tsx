@@ -47,7 +47,6 @@ function App() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [prizes, setPrizes] = useState<Prize[]>([]);
 
-  const user = '171f3454-25a4-4990-a44b-b42225291ffd';
   // loads in all events
   useEffect(() => {
     const loadEvents = async () => {
@@ -55,7 +54,6 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           setEvents(data);
-          // console.log(data);
         })
         .catch((err) => console.log(err));
     };

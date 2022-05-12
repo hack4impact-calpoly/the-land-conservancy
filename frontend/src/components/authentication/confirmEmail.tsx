@@ -27,12 +27,8 @@ export default function ConfirmEmailPage() {
   let codeAttempt = '';
   const navigate = useNavigate();
 
-  // send code to specified email
   useEffect(() => {
     console.log('loaded confirm email page!');
-    // check if the value is null, if so, set user to the empty string
-    // const email: string = user !== null ? user : '';
-    // sendConfirmationcode(email);
   }, []);
 
   const confirmSignUp = async (userEmail: string, code: string) => {

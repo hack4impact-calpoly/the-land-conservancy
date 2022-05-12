@@ -102,12 +102,10 @@ export default function LoginPage() {
 
   // fetches Mongo user who signed in
   const getMongoUser = async (id: string) => {
-    console.log(id);
     try {
       fetch(`http://localhost:3001/users/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setUser(data);
         })
         .catch((err) => console.log(err));
@@ -121,12 +119,11 @@ export default function LoginPage() {
     try {
       // first get cognitoUser
       const user = await Auth.signIn(username, password);
-      console.log(user);
       setUser(user.attributes.sub);
-      console.log(user);
       // note: the user id is stored in the username when
       // user is not yet confirmed;
-      // when user is confirmed username is set to email
+      // when user is confirmed, email is stored in username
+      // and user id is in user.attributes.sub
 
       // then get mongoUser from userSub
       await getMongoUser(user.attributes.sub);
@@ -137,7 +134,6 @@ export default function LoginPage() {
     } catch (error) {
       console.log('error signing in', error);
       if ((error as Error).name === 'UserNotConfirmedException') {
-        console.log('going to navigate to /confirm-email...');
         setUser({ email: `${username}` } as User);
         sendConfirmationcode(username).then(() => {
           navigate('/confirm-email');
