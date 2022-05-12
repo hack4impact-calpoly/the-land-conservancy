@@ -1,8 +1,7 @@
+import express from 'express';
 import Event from '../models/eventSchema';
 
 export {};
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -41,4 +40,19 @@ router.post('/', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+// should put new shift into shifts array
+router.put('/:eventId', async (req: any, res: any) => {
+  try {
+    const event = req.params.eventId;
+    const shift = req.body;
+    const updateEvent = await Event.findByIdAndUpdate(event, {
+      $push: { shifts: shift.shiftId },
+    });
+    res.json(updateEvent);
+  } catch (error) {
+    res.status(400).send(error);
+    console.log(`Could not add `);
+  }
+});
+
+export default router;

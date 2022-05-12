@@ -8,4 +8,6 @@ declare module '*.svg' {
   export default src;
 }
 
+declare module 'react-step-progress-bar';
 declare module '*.png';
+declare module '*.jpeg';

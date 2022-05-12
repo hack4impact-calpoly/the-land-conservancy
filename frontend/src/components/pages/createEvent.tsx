@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { eachWeekOfInterval, getDay } from 'date-fns';
 import Header from '../navigation/header';
 import Container from './formComponents';
-import { Content, Form, Input, Submit, Label } from '../styledComponents';
+import { Form, Input, Submit, Label, GreenLink } from '../styledComponents';
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
@@ -27,41 +28,139 @@ const Select = styled.select`
   font-size: 20px;
   text-align: left;
 
-  margin-top: 11px;
-  margin-bottom: 22px;
+  margin-top: 5px;
+  margin-bottom: 20px;
 
   width: 100%;
 `;
 
-export default function CreateEvent() {
-  const [title, setTitle] = React.useState(' ');
-  const [date, setDate] = React.useState(' ');
-  const [startTime, setSTime] = React.useState(' ');
-  const [endTime, setETime] = React.useState(' ');
-  const [repeat, setRepeat] = React.useState('false');
-  const [endAfter, setEnd] = React.useState(' ');
-  const [location, setLocation] = React.useState(' ');
-  const [notes, setNotes] = React.useState(' ');
-  const [submit, setSubmit] = React.useState(' ');
+interface Event {
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
 
-  const submitEvent = () => {
-    console.log(title);
-    console.log(date);
-    console.log(startTime);
-    console.log(endTime);
-    console.log(repeat);
-    console.log(endAfter);
-    console.log(location);
-    console.log(notes);
+export default function CreateEvent({
+  eventData,
+  setEvents,
+}: {
+  eventData: Event[];
+  setEvents: (val: Event[]) => void;
+}) {
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [startTime, setSTime] = useState('');
+  const [endTime, setETime] = useState('');
+  const [repeat, setRepeat] = useState('false');
+  const [endAfter, setEnd] = useState('');
+  const [location, setLocation] = useState('');
+  const [notes, setNotes] = useState('');
+  const [submit, setSubmit] = useState('');
+  const [link, setLink] = useState('');
 
-    setSubmit('Your event has been created');
+  const clearForm = () => {
+    setTitle('');
+    setDate('');
+    setSTime('');
+    setETime('');
+    setRepeat('false');
+    setEnd('');
+    setLocation('');
+    setNotes('');
   };
 
+  const postEvent = async (
+    curDate: string,
+    startH: string,
+    startM: string,
+    endH: string,
+    endM: string
+  ) => {
+    const startTimeDate = new Date(curDate);
+    const [sYear, sMonth, sDay] = [
+      startTimeDate.getFullYear(),
+      startTimeDate.getMonth(),
+      startTimeDate.getUTCDate(),
+    ];
+    const convertedStart = new Date(
+      Date.UTC(sYear, sMonth, sDay, +startH, +startM)
+    );
+
+    const endTimeDate = new Date(curDate);
+    const [eYear, eMonth, eDay] = [
+      endTimeDate.getFullYear(),
+      endTimeDate.getMonth(),
+      endTimeDate.getUTCDate(),
+    ];
+    const convertedEnd = new Date(Date.UTC(eYear, eMonth, eDay, +endH, +endM));
+
+    const newEvent = {
+      title,
+      start: convertedStart,
+      end: convertedEnd,
+      location,
+      notes,
+      shifts: [],
+    };
+
+    clearForm(); // clear form first to prevent multiple clicks => multiple submits
+    fetch('http://localhost:3001/events/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newEvent),
+    })
+      .then((response) => response.json())
+      .then((data) => setEvents([...eventData, data]))
+      .then(() => {
+        setSubmit('Your event has been created. ');
+        setLink('Back to events');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setSubmit('Error submitting event');
+      });
+  };
+
+  const submitEvent = async () => {
+    const [startH, startM] = startTime.split(':');
+    const [endH, endM] = endTime.split(':');
+
+    if (repeat === 'false') {
+      postEvent(date, startH, startM, endH, endM);
+    } else {
+      // need times to make sure date is correct
+      const startDate = new Date(date.concat(' ', startTime));
+      const endDate = new Date(endAfter.concat(' ', endTime));
+      try {
+        // get range of dates between the start and end dates
+        const dates = eachWeekOfInterval(
+          {
+            start: startDate,
+            end: endDate,
+          },
+          { weekStartsOn: getDay(startDate) }
+        );
+        // console.log(dates); // the dates of all the repeat events
+        dates.forEach((curDate) => {
+          postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+        });
+      } catch (RangeError) {
+        setSubmit(
+          'Invalid date range, make sure starting date is before end date'
+        );
+      }
+    }
+  };
   return (
-    <>
-      <Header headerText="Create Event" back="/events" />
+    <Header headerText="Create Event" back="/events" navbar>
       <Container>
-        <Content>
+        <div>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -72,6 +171,7 @@ export default function CreateEvent() {
               type="text"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Event Title"
+              value={title}
               required
             />
             <Label htmlFor="date">Date</Label>
@@ -80,6 +180,7 @@ export default function CreateEvent() {
               type="date"
               onChange={(e) => setDate(e.target.value)}
               placeholder="Date"
+              value={date}
               required
             />
 
@@ -90,6 +191,7 @@ export default function CreateEvent() {
                 type="time"
                 onChange={(e) => setSTime(e.target.value)}
                 placeholder="Start Time"
+                value={startTime}
                 required
               />
               <To>to</To>
@@ -97,17 +199,19 @@ export default function CreateEvent() {
                 type="time"
                 onChange={(e) => setETime(e.target.value)}
                 placeholder="End Time"
+                value={endTime}
                 required
               />
             </Flex>
 
             <Flex dir="row">
               <Flex dir="column">
-                <Label htmlFor="repeat-select">Repeats</Label>
+                <Label htmlFor="repeat-select">Weekly Repeat</Label>
                 <Select
                   name="repeat"
                   id="repeat-select"
                   onChange={(e) => setRepeat(e.target.value)}
+                  value={repeat}
                   required
                 >
                   <option value="false">Does not repeat</option>
@@ -121,6 +225,7 @@ export default function CreateEvent() {
                   type="date"
                   onChange={(e) => setEnd(e.target.value)}
                   placeholder="ends after"
+                  value={endAfter}
                   required
                   disabled={repeat === 'false'}
                 />
@@ -133,6 +238,7 @@ export default function CreateEvent() {
               type="text"
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Location"
+              value={location}
               required
             />
             <Label htmlFor="notes">Additional Notes</Label>
@@ -141,14 +247,20 @@ export default function CreateEvent() {
               type="text"
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Notes"
+              value={notes}
               required
             />
             <Submit type="submit" value="Create" />
-            <p>{submit}</p>
+            <p>
+              <b>
+                {submit}
+                <GreenLink to="/events">{link}</GreenLink>
+              </b>
+            </p>
           </Form>
-        </Content>
+        </div>
         <div> </div>
       </Container>
-    </>
+    </Header>
   );
 }

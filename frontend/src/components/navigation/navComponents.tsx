@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import { BiEdit } from 'react-icons/bi';
 import { FaBars } from 'react-icons/fa';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import { GiBackwardTime } from 'react-icons/gi';
 import { MdLogout } from 'react-icons/md';
+import { IoMdAddCircleOutline } from 'react-icons/io';
+import { FiCalendar } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 const BarIcon = styled(FaBars)`
@@ -29,6 +32,30 @@ const ClockIcon = styled(GiBackwardTime)`
   font-size: 50px;
 `;
 
+const AddIcon = styled(IoMdAddCircleOutline)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
+`;
+
+const CalendarIcon = styled(FiCalendar)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
+`;
+
+const EditPrizeIcon = styled(BiEdit)`
+  color: white;
+  text-align: left;
+  display: block;
+  font-size: 50px;
+  display: inline-block;
+`;
+
 const LogoutIcon = styled(MdLogout)`
   color: white;
   text-align: left;
@@ -41,8 +68,9 @@ const Button = styled.button`
   background: none;
   text-align: left;
   display: flex;
-  margin-left: 29px;
-  margin-top: 15px;
+  position: absolute;
+  left: 30px;
+  top: 15px;
 `;
 
 interface Props {
@@ -86,6 +114,12 @@ const Label = styled.h3`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    color: #5f8f3e;
+    text-decoration: underline;
+  }
 `;
 
 const LogoImage = styled.img`
@@ -99,6 +133,8 @@ export {
   BarIcon,
   ClipboardIcon,
   ClockIcon,
+  AddIcon,
+  CalendarIcon,
   LogoutIcon,
   Button,
   Path,
@@ -106,4 +142,5 @@ export {
   Label,
   StyledLink,
   LogoImage,
+  EditPrizeIcon,
 };

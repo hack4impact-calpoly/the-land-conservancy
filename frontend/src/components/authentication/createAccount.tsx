@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { AuthContainer, ErrorMsg } from './authComponents';
@@ -11,6 +11,8 @@ import {
   Submit,
   StyledBack,
 } from '../styledComponents';
+import UserContext from '../../userContext';
+import { User } from '../../types';
 
 // TODO: change to containr later and text-aling left
 // but that will probably go into styledComponenets as well
@@ -23,11 +25,7 @@ type Account = {
   Password: string;
 };
 
-export default function CreateAccount({
-  setUser,
-}: {
-  setUser: (val: string) => void;
-}) {
+export default function CreateAccount() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
@@ -35,11 +33,34 @@ export default function CreateAccount({
   const [pass2, setPass2] = useState('');
   const [badMsg, setBadMsg] = useState('');
   const [disabled, setDisabled] = useState(true);
+  const { setUser } = useContext(UserContext);
+
+  const addUserToDb = async (awsUserId: string) => {
+    const mongoUser = {
+      _id: awsUserId,
+      isAdmin: false, // defaulting to non-admin accounts
+      name,
+      email,
+      phone: number,
+      pastShifts: [], // no shifts or hours on init
+      totalHours: 0,
+    };
+    console.log(mongoUser);
+    await fetch(`http://localhost:3001/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mongoUser),
+    });
+  };
 
   // create new user based on inputted credentials, after the form is validated
-  const signUp = async (newAccount: Account): Promise<boolean> => {
+
+  const signUp = async (newAccount: Account) => {
     try {
-      const { user } = await Auth.signUp({
+      // make cognito user
+      const { user, userSub } = await Auth.signUp({
         username: newAccount.Email,
         password: newAccount.Password,
         attributes: {
@@ -49,13 +70,20 @@ export default function CreateAccount({
           // other custom attributes
         },
       });
+      // now make mongodb user, once AWS user is made
       console.log(user);
-      setUser(user.getUsername());
+      console.log(userSub);
+      try {
+        await addUserToDb(userSub);
+      } catch (error) {
+        console.log('error adding user to mongoDB:', error);
+      }
       return true;
     } catch (error) {
       console.log('error signing up:', error);
-      return false;
+      window.alert(error);
     }
+    return false;
   };
 
   // submit only calls when form meets requirements
@@ -66,7 +94,7 @@ export default function CreateAccount({
       Number: '+1'.concat(number),
       Password: pass1,
     };
-    console.log(account);
+    // console.log(account);
     return account;
     // print to console for now, call some backend/ cognito function later
   };
@@ -117,8 +145,9 @@ export default function CreateAccount({
         <Form
           onSubmit={async (e) => {
             e.preventDefault();
-            // if signup is successful, navigate to confirm email page
+            // if signup successful, set email & nav to confirm-email page
             if (await signUp(createAccount())) {
+              setUser({ email } as User);
               navigate('/confirm-email');
             }
           }}

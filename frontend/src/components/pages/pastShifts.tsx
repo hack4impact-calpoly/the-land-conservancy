@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
+import { Prize, Shift } from '../../types';
+import ProgressBar from './progressBar';
+import RewardModal from './rewardModal';
 
 const StyledContainer = styled(Container)`
-  border radius: 7px;
-
-  margin: 5px;
-  padding: 10px;
+  border-radius: 7px;
+  padding-top: 0;
 `;
 
 const convertDate = (date: string) => {
@@ -23,32 +24,21 @@ const convertDate = (date: string) => {
   ];
   const reformat = new Date(date);
 
-  return `${days[reformat.getDay()]} ${reformat.toLocaleDateString('en-US', {
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString('en-US', {
     timeZone: 'UTC',
   })}`;
 };
 
-interface Event {
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: [string];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
-
 type ShiftProps = {
   pastShiftData: Shift[];
+  prizes: Prize[];
 };
 
-export default function PastShifts({ pastShiftData }: ShiftProps) {
+export default function PastShifts({ pastShiftData, prizes }: ShiftProps) {
+  const totalHours = pastShiftData
+    ? pastShiftData.reduce((hours, shift) => hours + shift.hours, 0)
+    : 0;
+
   pastShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
       return -1;
@@ -60,9 +50,10 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
   });
 
   return (
-    <div>
-      <Header headerText="Past Shifts" navbar />
+    <Header headerText="Past Shifts" navbar>
       <StyledContainer>
+        <ProgressBar hours={totalHours} />
+        <RewardModal hours={totalHours} prizes={prizes} />
         <StyledContainer maxWidth="md">
           {pastShiftData ? (
             pastShiftData.map((shift) => {
@@ -80,6 +71,6 @@ export default function PastShifts({ pastShiftData }: ShiftProps) {
           )}
         </StyledContainer>
       </StyledContainer>
-    </div>
+    </Header>
   );
 }

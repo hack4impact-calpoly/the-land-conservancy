@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useContext } from 'react';
 import { Auth } from 'aws-amplify';
 import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { AuthContainer } from './authComponents';
 import {
   Content,
@@ -10,43 +10,19 @@ import {
   Header,
   Label,
   StyledBack,
+  Submit,
 } from '../styledComponents';
+import UserContext from '../../userContext';
 
-const Button = styled.button.attrs(
-  (props: { c: string; wid: string; bc: string }) => props
-)`
-  height: 47px;
-
-  border: 2px solid #5f8f3e;
-  box-sizing: border-box;
-  border-radius: 12px;
-
-  cursor: pointer;
-  background: ${({ bc }) => bc};
-
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 22px;
-  text-align: center;
-
-  width: 100%;
-  @media only screen and (min-width: 300px) {
-    width: ${({ wid }) => wid};
-  }
-
-  color: ${(props) => props.c};
+const Feedback = styled.div`
+  font-size: 1.15rem;
+  color: #2b7800;
+  font-weight: bold;
 `;
 
-// eslint-disable-next-line max-len
-export default function ConfirmEmailPage({
-  user,
-  setUser,
-}: {
-  user: string;
-  setUser: (val: string) => void;
-}) {
+export default function ConfirmEmailPage() {
+  const [feedback, setFeedback] = useState('');
+  const { currentUser } = useContext(UserContext);
   // "required" attribute on input validates
   let codeAttempt = '';
   const navigate = useNavigate();
@@ -61,13 +37,14 @@ export default function ConfirmEmailPage({
 
   const confirmSignUp = async (userEmail: string, code: string) => {
     try {
+      setFeedback('');
       await Auth.confirmSignUp(userEmail, code);
       console.log('user confirmed!');
-      setUser(user);
       navigate('/login');
     } catch (error) {
       console.log('error confirming sign up', error);
       // display invalid code error
+      window.alert((error as Error).message);
     }
   };
 
@@ -77,28 +54,31 @@ export default function ConfirmEmailPage({
 
   const sendConfirmationcode = async () => {
     try {
-      await Auth.resendSignUp(user);
+      setFeedback('');
+      await Auth.resendSignUp(currentUser.email);
       console.log('code sent successfully!');
+      setFeedback(`code resent to ${currentUser.email}`);
     } catch (err) {
       console.log('error resending code: ', err);
+      setFeedback(`${(err as Error).message}`);
     }
   };
 
   return (
     <AuthContainer>
-      <Link to="/create-account">
+      <Link to="/login">
         <StyledBack size="30" />
       </Link>
       <Content>
         <Header>Authenticate your account</Header>
         <Label>
           Please confirm your account by entering the confirmation code sent to{' '}
-          {user}
+          {currentUser.email}
         </Label>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            confirmSignUp(user, codeAttempt);
+            confirmSignUp(currentUser.email, codeAttempt);
           }}
         >
           <Input
@@ -108,21 +88,14 @@ export default function ConfirmEmailPage({
             placeholder="Enter code sent to email"
             required
           />
-          <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="100%">
-            {' '}
-            Confirm{' '}
-          </Button>
+          <Submit type="submit" value="Confirm" />
           <br />
-          <br />
-          <Button
+          <Submit
             onClick={sendConfirmationcode}
-            bc="#5F8F3E"
-            c="#ffffff"
-            wid="100%"
-          >
-            {' '}
-            Resend Confirmation Code{' '}
-          </Button>
+            type="button"
+            value="Resend confirmation code"
+          />
+          <Feedback>{feedback}</Feedback>
         </Form>
       </Content>
     </AuthContainer>

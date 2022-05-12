@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container } from '@mui/material';
 
 const StyledEventContainer = styled(Container)`
-  background: rgba(160, 166, 167, 0.31);
+  background-color: #f1f1f1;
   border-radius: 6px;
   padding: 14px;
   text-align: left;
@@ -11,10 +11,11 @@ const StyledEventContainer = styled(Container)`
   display: flex;
 `;
 
-const StyledTitle = styled.p`
+const StyledTitle = styled.div`
   font-weight: bold;
   font-size: 14px
   line-height: 21px;
+  margin-bottom: 10px;
 `;
 
 const LayoutDiv = styled.div`
@@ -35,8 +36,8 @@ export default function ShiftSlot({ title, date, hours }: ShiftSlotProps) {
       <LayoutDiv>
         <div>
           <StyledTitle>{title}</StyledTitle>
-          <p>{date}</p>
-          <p>{hours} Hours</p>
+          <div>{date}</div>
+          <div>{hours} Hours</div>
         </div>
       </LayoutDiv>
     </StyledEventContainer>

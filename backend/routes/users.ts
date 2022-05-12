@@ -1,6 +1,5 @@
+import express from 'express';
 import User from '../models/userSchema';
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -63,6 +62,21 @@ router.patch('/:userId', async (req: any, res: any) => {
   }
 });
 
+// put new shift into user's past shifts + update hours
+router.put('/:userId', async (req: any, res: any) => {
+  try {
+    const { userId } = req.params;
+    const updates = req.body;
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      $inc: { totalHours: updates.numHours },
+      $push: { pastShifts: updates.shiftId },
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 // delete user by id
 router.delete('/:userId', async (req: any, res: any) => {
   try {
@@ -73,4 +87,4 @@ router.delete('/:userId', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+export default router;

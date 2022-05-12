@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Amplify from 'aws-amplify';
-
 import './App.css';
 import Login from './components/authentication/login';
 import ConfirmEmail from './components/authentication/confirmEmail';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
+import ProtectedRoute from './components/authentication/protectedRoute';
 import PastShifts from './components/pages/pastShifts';
 import Events from './components/pages/events';
 import LogHours from './components/pages/logHours';
+import ThankYou from './components/pages/thankYou';
 import CreateEvent from './components/pages/createEvent';
-import awsconfig from './aws-exports';
+import VolunteerLog from './components/pages/volunteerLog';
+import EditPrizes from './components/pages/editPrizes';
+import EditOnePrize from './components/pages/editOnePrize';
+import UserContext from './userContext';
+import { Event, Shift, User, Prize } from './types';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
+
+// Amplify.configure(awsconfig);
 Amplify.configure({
   Auth: {
     // Amazon Cognito Region
@@ -28,51 +36,22 @@ Amplify.configure({
   },
 });
 
-interface Event {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  location: string;
-  notes: string;
-  shifts: [string];
-}
-
-interface Shift {
-  _id: string;
-  event: Event;
-  hours: number;
-  user: string;
-}
-
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
-  // 'setUser' sets the 'currentUser' to the 'userSub' value,
-  // which is a unique identifier
-  const [currentUser, setUser] = useState('');
-  const [confirmed, setConfirmed] = useState(false);
+  // 'setUser' sets the 'currentUser' to the
+  // mongodb user document fetched on login,
+  // doc includes the users userSub
+  const [currentUser, setUser] = useState<User>({} as User);
   const [pastShifts, setPastShifts] = useState<Shift[]>([]);
+  const [allShifts, setAllShifts] = useState<Shift[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [prizes, setPrizes] = useState<Prize[]>([]);
 
   const user = '171f3454-25a4-4990-a44b-b42225291ffd';
-
-  console.log(currentUser);
-
-  useEffect(() => {
-    const loadPastShifts = async () => {
-      await fetch(`http://localhost:3001/users/${user}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setPastShifts(data.pastShifts);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    loadPastShifts();
-  }, []);
-
+  // loads in all events
   useEffect(() => {
     const loadEvents = async () => {
-      await fetch('http://localhost:3001/events')
+      await fetch(`${PORT}/events`)
         .then((res) => res.json())
         .then((data) => {
           setEvents(data);
@@ -84,32 +63,169 @@ function App() {
     loadEvents();
   }, []);
 
+  // get user's past shifts from db
+  useEffect(() => {
+    const loadPastShifts = async () => {
+      await fetch(`${PORT}/users/${currentUser._id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPastShifts(data.pastShifts);
+        })
+        .catch((err) => console.log(err));
+    };
+    if (currentUser?.isAdmin !== undefined && currentUser._id) {
+      loadPastShifts();
+    }
+  }, [currentUser]);
+
+  // get all shifts from db
+  useEffect(() => {
+    const loadAllShifts = async () => {
+      await fetch(`${PORT}/shifts`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAllShifts(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (currentUser?.isAdmin !== undefined && currentUser?.isAdmin) {
+      loadAllShifts();
+    }
+  }, [currentUser]);
+
+  // get all users from db
+  useEffect(() => {
+    const loadAllUsers = async () => {
+      await fetch(`${PORT}/users`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAllUsers(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (currentUser?.isAdmin !== undefined && currentUser?.isAdmin) {
+      loadAllUsers();
+    }
+  }, [currentUser]);
+
+  // get prizes from db
+  useEffect(() => {
+    const loadPrizes = async () => {
+      await fetch(`${PORT}/prizes`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPrizes(data);
+        })
+        .catch((err) => console.log(err));
+    };
+    if (currentUser?.isAdmin !== undefined && currentUser._id) {
+      loadPrizes();
+    }
+  }, [currentUser]);
+
+  // runs when currentUser is updated
+  useEffect(() => {
+    console.log('currentUser has been updated: ', currentUser);
+  }, [currentUser]);
+
+  const userContextFields = React.useMemo(
+    () => ({ currentUser, setUser }),
+    [currentUser]
+  );
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/events" />} />
-          <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route
-            path="/confirm-email"
-            element={<ConfirmEmail user={currentUser} setUser={setUser} />}
-          />
-          <Route
-            path="/create-account"
-            element={<CreateAccount setUser={setUser} />}
-          />
-          <Route path="/forgot-password" element={<ForgotPasword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/past-shifts"
-            element={<PastShifts pastShiftData={pastShifts} />}
-          />
-          <Route path="/events" element={<Events eventData={events} />} />
-          <Route path="/log-hours" element={<LogHours />} />
-          <Route path="/create-event" element={<CreateEvent />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <UserContext.Provider value={userContextFields}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/events" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/forgot-password" element={<ForgotPasword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/confirm-email" element={<ConfirmEmail />} />
+
+            <Route
+              path="/past-shifts"
+              element={
+                <ProtectedRoute>
+                  <PastShifts pastShiftData={pastShifts} prizes={prizes} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events"
+              element={
+                <ProtectedRoute>
+                  <Events eventData={events} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/log-hours/:eventId"
+              element={
+                <ProtectedRoute>
+                  <LogHours
+                    eventData={events}
+                    setPastShifts={setPastShifts}
+                    setAllShifts={setAllShifts}
+                    allUsers={allUsers}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/thank-you"
+              element={
+                <ProtectedRoute>
+                  <ThankYou />
+                  {/* _may_ need to add additional props */}
+                  {/* hardcoding shift details for now */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-event"
+              element={
+                <ProtectedRoute>
+                  <CreateEvent eventData={events} setEvents={setEvents} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer-log"
+              element={
+                <ProtectedRoute>
+                  <VolunteerLog
+                    allShiftData={allShifts}
+                    setAllShifts={setAllShifts}
+                  />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/edit-prizes/:prizeId"
+              element={
+                <ProtectedRoute>
+                  <EditOnePrize setPrizes={setPrizes} PORT={PORT} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-prizes"
+              element={
+                <ProtectedRoute>
+                  <EditPrizes prizeData={prizes} />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </UserContext.Provider>
   );
 }
 
