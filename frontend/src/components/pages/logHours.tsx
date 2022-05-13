@@ -9,6 +9,8 @@ import { Input, Label, Submit } from '../styledComponents';
 import { Event, Shift, User } from '../../types';
 import UserContext from '../../userContext';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const theme = createTheme({
   components: {
     // Name of the component
@@ -196,7 +198,7 @@ export default function LogHours({
   });
 
   const addToUser = async (id: string) => {
-    await fetch(`http://localhost:3001/users/${submittingUser._id}`, {
+    await fetch(`${PORT}/users/${submittingUser._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -209,7 +211,7 @@ export default function LogHours({
   };
 
   const addToEvent = async (id: string) => {
-    await fetch(`http://localhost:3001/events/${eventId}`, {
+    await fetch(`${PORT}/events/${eventId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -228,7 +230,7 @@ export default function LogHours({
 
     console.log(shift);
 
-    await fetch(`http://localhost:3001/shifts`, {
+    await fetch(`${PORT}/shifts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(shift),
@@ -253,7 +255,7 @@ export default function LogHours({
       hours,
     };
 
-    await fetch(`http://localhost:3001/shifts/${shiftId}`, {
+    await fetch(`${PORT}/shifts/${shiftId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newShiftHours),
