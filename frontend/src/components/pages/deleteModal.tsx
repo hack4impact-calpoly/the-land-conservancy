@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Modal, ButtonBase } from '@mui/material';
 import { Shift } from '../../types';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const StyledModal = styled(Modal)`
   padding-left: 14px;
   padding-right: 14px;
@@ -60,7 +62,7 @@ export default function DeleteModal({
   setAllShifts,
 }: DeleteModalProps) {
   const deleteShift = async () => {
-    await fetch(`http://localhost:3001/shifts/${shiftId}`, {
+    await fetch(`${PORT}/shifts/${shiftId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

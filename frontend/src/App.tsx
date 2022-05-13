@@ -19,7 +19,7 @@ import UserContext from './userContext';
 import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
-const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
+const PORT = process.env.REACT_APP_API_URL; // 'http://localhost:3001';
 
 // Amplify.configure(awsconfig);
 Amplify.configure({
@@ -207,7 +207,7 @@ function App() {
               path="/edit-prizes/:prizeId"
               element={
                 <ProtectedRoute>
-                  <EditOnePrize setPrizes={setPrizes} PORT={PORT} />
+                  <EditOnePrize setPrizes={setPrizes} />
                 </ProtectedRoute>
               }
             />
