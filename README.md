@@ -1,5 +1,5 @@
 # the-land-conservancy
-A volunteer management program to track/ log hours and access volunteer information. Deployed at <a href="https://www.the-land-conservancy.h4i-cp.org/login" target="_blank">the-land-conservancy.h4i-cp.org</a>
+A volunteer management program to track/ log hours and access volunteer information. Deployed at [the-land-conservancy.h4i-cp.org](https://www.the-land-conservancy.h4i-cp.org/login).
 
 ## Table of Contents
 - [Getting Started for Developers](#getting-started-for-developers)
