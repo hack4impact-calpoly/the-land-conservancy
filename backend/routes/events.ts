@@ -55,4 +55,17 @@ router.put('/:eventId', async (req: any, res: any) => {
   }
 });
 
+// delete shift by id
+router.delete('/:eventId', async (req: any, res: any) => {
+  try {
+    const { eventId } = req.params;
+
+    const temp = await Event.findByIdAndDelete(eventId);
+
+    res.send(temp);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 export default router;
