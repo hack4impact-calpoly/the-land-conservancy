@@ -1,8 +1,8 @@
+import express from 'express';
+
 import Shift from '../models/shiftSchema';
 import Event from '../models/eventSchema';
 import User from '../models/userSchema';
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -52,15 +52,14 @@ router.patch('/:id', async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-    // returns the deleted document
-    const oldShift = await Shift.findByIdAndUpdate(id, updates);
-    // get old & new hours for user update later
-    const hoursDiff = updates.hours - oldShift.hours;
-    const newShift = { ...oldShift._doc, hours: updates.hours };
-    // update user's totalHours
-    await User.findByIdAndUpdate(oldShift.user, {
-      $inc: { totalHours: hoursDiff },
-    });
+    const options = { new: true };
+    // returns the updated document
+    const newShift = await Shift.findByIdAndUpdate(
+      id,
+      updates,
+      options
+    ).populate('event');
+
     res.json(newShift);
   } catch (error) {
     res.status(400).send(error);
@@ -88,4 +87,4 @@ router.delete('/:shiftId', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+export default router;

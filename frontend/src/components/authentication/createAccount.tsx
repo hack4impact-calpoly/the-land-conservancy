@@ -32,6 +32,8 @@ export default function CreateAccount() {
   const [badMsg, setBadMsg] = useState('');
   const [disabled, setDisabled] = useState(true);
 
+  const PORT = process.env.REACT_APP_API_URL;
+
   const addUserToDb = async (awsUserId: string) => {
     const mongoUser = {
       _id: awsUserId,
@@ -43,7 +45,7 @@ export default function CreateAccount() {
       totalHours: 0,
     };
     console.log(mongoUser);
-    await fetch(`http://localhost:3001/users`, {
+    await fetch(`${PORT}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

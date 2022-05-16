@@ -9,6 +9,8 @@ import { Input, Label, Submit } from '../styledComponents';
 import { Event, Shift, User } from '../../types';
 import UserContext from '../../userContext';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const theme = createTheme({
   components: {
     // Name of the component
@@ -106,8 +108,10 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-interface LogHoursState {
+interface LocationState {
   user: User;
+  oldHours: string;
+  shiftId: string;
 }
 
 function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
@@ -115,7 +119,9 @@ function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
   const location = useLocation();
   let user = null;
   if (location.state) {
-    user = (location.state as LogHoursState).user;
+    user = allUsers.find((u) => {
+      return u._id === (location.state as LocationState).user._id;
+    });
   }
   return (
     <ThemeProvider theme={theme}>
@@ -137,7 +143,7 @@ function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
           </Box>
         )}
         renderInput={(params) => (
-          <StyledLabel htmlFor="voluntee">
+          <StyledLabel htmlFor="volunteerName">
             Volunteer name
             <TextField
               {...params}
@@ -167,21 +173,32 @@ export default function LogHours({
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [volunteer, setVolunteer] = React.useState({} as User);
-  // if admin, submit for entered user, else submit for this user
-  const submittingUser = currentUser.isAdmin ? volunteer : currentUser;
+
   const [link, setLink] = React.useState(' ');
   const { eventId } = useParams();
+  const editing = useQuery().get('editing');
+  const location = useLocation();
+  // if admin, submit for entered user, else submit for this user
+  let submittingUser = currentUser.isAdmin ? volunteer : currentUser;
+  let oldHours = null;
+  let shiftId: string | null = null;
+  if (location.state) {
+    const user = allUsers.find((u) => {
+      return u._id === (location.state as LocationState).user._id;
+    });
+    if (user) {
+      submittingUser = user;
+    }
+    oldHours = (location.state as LocationState).oldHours;
+    shiftId = (location.state as LocationState).shiftId;
+  }
+
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
 
-  console.log(currentUser._id === submittingUser._id);
-
-  // TODO: remove this console log later
-  console.log('submittingUser:', submittingUser);
-
   const addToUser = async (id: string) => {
-    await fetch(`http://localhost:3001/users/${submittingUser._id}`, {
+    await fetch(`${PORT}/users/${submittingUser._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -194,7 +211,7 @@ export default function LogHours({
   };
 
   const addToEvent = async (id: string) => {
-    await fetch(`http://localhost:3001/events/${eventId}`, {
+    await fetch(`${PORT}/events/${eventId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -213,7 +230,7 @@ export default function LogHours({
 
     console.log(shift);
 
-    await fetch(`http://localhost:3001/shifts`, {
+    await fetch(`${PORT}/shifts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(shift),
@@ -233,13 +250,42 @@ export default function LogHours({
       .catch((err) => console.log(err));
   };
 
+  const editShift = async () => {
+    const newShiftHours = {
+      hours,
+    };
+
+    await fetch(`${PORT}/shifts/${shiftId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newShiftHours),
+    })
+      .then((res) => res.json())
+      .then((updatedShift) => {
+        if (currentUser._id === submittingUser._id) {
+          // update pastShifts for /past-shifts page
+          setPastShifts((prev) => {
+            return prev.map((shift) =>
+              shift._id === updatedShift._id ? updatedShift : shift
+            );
+          });
+        }
+        // (if admin) update allShifts for the volunteer log
+        setAllShifts((prev) => {
+          return prev.map((shift) =>
+            shift._id === updatedShift._id ? updatedShift : shift
+          );
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
   const validateHours = () => {
     // check: filled, isNumber, is > 0
     if (hours && (Number.isNaN(hours) || !(+hours > 0))) {
       console.log('invalid input');
       setValid('Please enter a positive number of hours');
     } else {
-      console.log(`good input: ${hours || 'empty'}`);
       setValid(' ');
     }
   };
@@ -260,7 +306,7 @@ export default function LogHours({
   }, [hours]);
 
   return (
-    <Header headerText="Log Hours" back="/events">
+    <Header headerText="Log Hours">
       <StyledContainer maxWidth="sm">
         {thisEvent ? (
           <EventDesc
@@ -278,8 +324,12 @@ export default function LogHours({
           id="form"
           onSubmit={(e) => {
             e.preventDefault();
+            if (editing) {
+              editShift();
+            } else {
+              addShift();
+            }
             submitHours();
-            addShift();
           }}
         >
           {currentUser.isAdmin ? (
@@ -294,7 +344,7 @@ export default function LogHours({
               id="hours"
               type="number"
               step="0.5"
-              value={hours}
+              defaultValue={oldHours || ''}
               onChange={(e) => setHours(e.target.value)}
               disabled={new Date(thisEvent.start) > new Date()}
               required
@@ -307,14 +357,16 @@ export default function LogHours({
           {thisEvent ? (
             <Submit
               type="submit"
-              value="Submit"
+              value={editing ? 'Update hours' : 'Submit'}
               disabled={new Date(thisEvent.start) > new Date()}
             />
           ) : (
             <div />
           )}
           <p>{submit}</p>
-          <Link to="/past-shifts">{link}</Link>
+          <Link to={currentUser.isAdmin ? '/volunteer-log' : '/past-shifts'}>
+            {link}
+          </Link>
         </form>
       </StyledContainer>
     </Header>

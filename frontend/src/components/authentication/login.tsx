@@ -8,6 +8,8 @@ import { Content, Form, Input } from '../styledComponents';
 import landscape from '../../imgs/tlc_background.jpeg';
 import UserContext from '../../userContext';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const Background = styled.div`
   background-image: url(${landscape});
   background-size: cover;
@@ -94,7 +96,7 @@ export default function LoginPage() {
   // fetches Mongo user who signed in
   const getMongoUser = async (id: string) => {
     try {
-      fetch(`http://localhost:3001/users/${id}`)
+      fetch(`${PORT}/users/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setUser(data);

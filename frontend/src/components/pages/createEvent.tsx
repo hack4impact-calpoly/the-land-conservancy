@@ -5,6 +5,8 @@ import Header from '../navigation/header';
 import Container from './formComponents';
 import { Form, Input, Submit, Label, GreenLink } from '../styledComponents';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
   align-items: left;
@@ -108,7 +110,7 @@ export default function CreateEvent({
     };
 
     clearForm(); // clear form first to prevent multiple clicks => multiple submits
-    fetch('http://localhost:3001/events/', {
+    fetch(`${PORT}/events/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

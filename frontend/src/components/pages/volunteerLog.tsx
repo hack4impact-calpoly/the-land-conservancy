@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ExportToCsv } from 'export-to-csv-fix-source-map';
 
@@ -15,9 +15,11 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 import { Submit } from '../styledComponents';
 import Header from '../navigation/header';
 import { Shift } from '../../types';
+import DeleteModal from './deleteModal';
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -41,6 +43,10 @@ const StyledDelete = styled(RiDeleteBin6Line)`
   cursor: pointer;
 `;
 
+const BlackLink = styled(Link)`
+  color: #000000;
+`;
+
 const Form = styled.form`
   float: right;
 `;
@@ -56,20 +62,36 @@ const options = {
   quoteStrings: '"',
   decimalSeparator: '.',
   showLabels: true,
-  showTitle: true,
+  showTitle: false,
   title: 'Volunteer Log Test Data', // we can remove this from csv
   filename: 'volunteer_totals', // title of downloaded csv
   useTextFile: false,
   useBom: true,
   useKeysAsHeaders: false,
-  headers: ['id', 'Event Title', 'Location', 'Date', 'Hours', 'Name'],
+  headers: ['Event Title', 'Location', 'Date', 'Hours', 'Name'],
 };
 
 const csvExporter = new ExportToCsv(options);
 
-// creates a row of data for a shift
+// creates a row of data for the volunteer log table
 function createData(
   _id: string,
+  eventId: string,
+  eventTitle: string,
+  eventLocation: string,
+  eventDate: string,
+  hours: number,
+  user: string,
+  name: string
+) {
+  const date = new Date(eventDate).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+  });
+  return { _id, eventId, eventTitle, eventLocation, date, hours, user, name };
+}
+
+// creates a row of data for the csv file
+function createCsvRow(
   eventTitle: string,
   eventLocation: string,
   eventDate: string,
@@ -79,14 +101,21 @@ function createData(
   const date = new Date(eventDate).toLocaleDateString('en-US', {
     timeZone: 'UTC',
   });
-  return { _id, eventTitle, eventLocation, date, hours, name };
+  return { eventTitle, eventLocation, date, hours, name };
 }
 
 type ShiftProps = {
   allShiftData: Shift[];
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
 };
 
-export default function VolunteerLog({ allShiftData }: ShiftProps) {
+export default function VolunteerLog({
+  allShiftData,
+  setAllShifts,
+}: ShiftProps) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [shiftId, setShift] = useState('');
+
   allShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
       return -1;
@@ -97,11 +126,29 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
     return 0;
   });
 
+  const setDeleteStates = (id: string) => {
+    setDeleteOpen(true);
+    setShift(id);
+  };
+
   // convert allShiftData to an array of rows that hold all atributes
   // on same level, this also formats the rows for exporting to csv correctly
   const rows = allShiftData.map((shift) => {
     return createData(
       shift._id,
+      shift.event._id,
+      shift.event.title,
+      shift.event.location,
+      // convert shift date from string to Date type so we can print it nicely
+      shift.event.start,
+      shift.hours,
+      shift.user,
+      shift.userName
+    );
+  });
+
+  const csvRows = allShiftData.map((shift) => {
+    return createCsvRow(
       shift.event.title,
       shift.event.location,
       // convert shift date from string to Date type so we can print it nicely
@@ -119,7 +166,7 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
             id="form"
             onSubmit={(e) => {
               e.preventDefault();
-              csvExporter.generateCsv(rows);
+              csvExporter.generateCsv(csvRows);
             }}
           >
             <Export type="submit" value="Export" />
@@ -149,7 +196,19 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
                       <TableCell>{row.hours}</TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>
-                        <StyledEdit /> <StyledDelete />
+                        <BlackLink
+                          to={`/log-hours/${row.eventId}?editing=true`}
+                          state={{
+                            user: { _id: row.user },
+                            oldHours: row.hours,
+                            shiftId: row._id,
+                          }}
+                        >
+                          <StyledEdit />
+                        </BlackLink>
+                        <StyledDelete
+                          onClick={() => setDeleteStates(row._id)}
+                        />
                       </TableCell>
                     </TableRow>
                   ))
@@ -160,6 +219,12 @@ export default function VolunteerLog({ allShiftData }: ShiftProps) {
             </Table>
           </TableContainer>
         </StyledContainer>
+        <DeleteModal
+          deleteOpen={deleteOpen}
+          setDeleteOpen={setDeleteOpen}
+          shiftId={shiftId}
+          setAllShifts={setAllShifts}
+        />
       </ThemeProvider>
     </Header>
   );

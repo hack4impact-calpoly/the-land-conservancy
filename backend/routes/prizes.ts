@@ -1,8 +1,7 @@
+import express from 'express';
 import Prize from '../models/prizeSchema';
 
 export {};
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -19,6 +18,7 @@ router.get('/', async (req: any, res: any) => {
 });
 
 // put a prize into the database
+// returns the updated prize
 router.patch('/:id', async (req: any, res: any) => {
   try {
     const { id } = req.params;
@@ -32,4 +32,4 @@ router.patch('/:id', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+export default router;

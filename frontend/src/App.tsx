@@ -19,7 +19,7 @@ import UserContext from './userContext';
 import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
-const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
+const PORT = process.env.REACT_APP_API_URL; // 'http://localhost:3001';
 
 // Amplify.configure(awsconfig);
 Amplify.configure({
@@ -118,8 +118,9 @@ function App() {
         })
         .catch((err) => console.log(err));
     };
-
-    loadPrizes();
+    if (currentUser?.isAdmin !== undefined && currentUser._id) {
+      loadPrizes();
+    }
   }, [currentUser]);
 
   // runs when currentUser is updated
@@ -194,7 +195,10 @@ function App() {
               path="/volunteer-log"
               element={
                 <ProtectedRoute>
-                  <VolunteerLog allShiftData={allShifts} />
+                  <VolunteerLog
+                    allShiftData={allShifts}
+                    setAllShifts={setAllShifts}
+                  />
                 </ProtectedRoute>
               }
             />
@@ -203,7 +207,7 @@ function App() {
               path="/edit-prizes/:prizeId"
               element={
                 <ProtectedRoute>
-                  <EditOnePrize />
+                  <EditOnePrize setPrizes={setPrizes} />
                 </ProtectedRoute>
               }
             />
