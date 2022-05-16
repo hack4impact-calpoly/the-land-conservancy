@@ -84,8 +84,8 @@ export default function CreateEvent({
   ) => {
     const startTimeDate = new Date(curDate);
     const [sYear, sMonth, sDay] = [
-      startTimeDate.getFullYear(),
-      startTimeDate.getMonth(),
+      startTimeDate.getUTCFullYear(),
+      startTimeDate.getUTCMonth(),
       startTimeDate.getUTCDate(),
     ];
     const convertedStart = new Date(
@@ -94,8 +94,8 @@ export default function CreateEvent({
 
     const endTimeDate = new Date(curDate);
     const [eYear, eMonth, eDay] = [
-      endTimeDate.getFullYear(),
-      endTimeDate.getMonth(),
+      endTimeDate.getUTCFullYear(),
+      endTimeDate.getUTCMonth(),
       endTimeDate.getUTCDate(),
     ];
     const convertedEnd = new Date(Date.UTC(eYear, eMonth, eDay, +endH, +endM));

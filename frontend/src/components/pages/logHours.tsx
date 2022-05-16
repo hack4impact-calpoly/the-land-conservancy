@@ -339,16 +339,30 @@ export default function LogHours({
           )}
 
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
-          <StyledInput
-            id="hours"
-            type="number"
-            step="0.5"
-            defaultValue={oldHours || ''}
-            onChange={(e) => setHours(e.target.value)}
-            required
-          />
+          {thisEvent ? (
+            <StyledInput
+              id="hours"
+              type="number"
+              step="0.5"
+              defaultValue={oldHours || ''}
+              onChange={(e) => setHours(e.target.value)}
+              disabled={new Date(thisEvent.start) > new Date()}
+              required
+            />
+          ) : (
+            <div />
+          )}
+
           <Feedback>{valid}</Feedback>
-          <Submit type="submit" value={editing ? 'Update hours' : 'Submit'} />
+          {thisEvent ? (
+            <Submit
+              type="submit"
+              value={editing ? 'Update hours' : 'Submit'}
+              disabled={new Date(thisEvent.start) > new Date()}
+            />
+          ) : (
+            <div />
+          )}
           <p>{submit}</p>
           <Link to={currentUser.isAdmin ? '/volunteer-log' : '/past-shifts'}>
             {link}
