@@ -8,7 +8,6 @@ const UserSchema = new mongoose.Schema(
     email: String,
     phone: String,
     pastShifts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Shift' }],
-    totalHours: Number,
   },
   { collection: 'Users' }
 );

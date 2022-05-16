@@ -45,7 +45,6 @@ export default function CreateAccount() {
       email,
       phone: number,
       pastShifts: [], // no shifts or hours on init
-      totalHours: 0,
     };
     console.log(mongoUser);
     await fetch(`${PORT}/users`, {
