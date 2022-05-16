@@ -114,6 +114,7 @@ export default function LoginPage() {
     } catch (error) {
       console.log('error getting user from mongodb', error);
     }
+    return true;
   };
 
   // authenticate sign in
