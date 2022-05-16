@@ -45,7 +45,6 @@ export default function CreateAccount() {
       email,
       phone: number,
       pastShifts: [], // no shifts or hours on init
-      totalHours: 0,
     };
     console.log(mongoUser);
     await fetch(`${PORT}/users`, {
@@ -181,6 +180,7 @@ export default function CreateAccount() {
             id="f3"
             onChange={(e) => setNumber(e.target.value)}
             placeholder="8053215678"
+            required
           />
           <Label htmlFor="f4">Password</Label>
           <Input

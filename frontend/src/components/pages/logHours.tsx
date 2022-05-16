@@ -169,7 +169,6 @@ export default function LogHours({
   allUsers,
 }: LogHoursProps) {
   const { currentUser } = useContext(UserContext);
-  const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [volunteer, setVolunteer] = React.useState({} as User);
@@ -192,6 +191,7 @@ export default function LogHours({
     oldHours = (location.state as LocationState).oldHours;
     shiftId = (location.state as LocationState).shiftId;
   }
+  const [hours, setHours] = React.useState(oldHours || '');
 
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
@@ -344,7 +344,7 @@ export default function LogHours({
               id="hours"
               type="number"
               step="0.5"
-              defaultValue={oldHours || ''}
+              value={hours}
               onChange={(e) => setHours(e.target.value)}
               disabled={new Date(thisEvent.start) > new Date()}
               required

@@ -2,13 +2,12 @@ import * as mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
-    _id: String,
+    _id: { type: String, required: true },
     isAdmin: Boolean,
-    name: String,
-    email: String,
-    phone: String,
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
     pastShifts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Shift' }],
-    totalHours: Number,
   },
   { collection: 'Users' }
 );

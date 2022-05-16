@@ -71,7 +71,6 @@ router.delete('/:shiftId', async (req: any, res: any) => {
   try {
     const { shiftId } = req.params;
     const temp = await Shift.findByIdAndDelete(shiftId);
-    const removedHours = temp.hours;
     // remove this shift reference from the event's shifts
     await Event.findByIdAndUpdate(temp.event, {
       $pull: { shifts: { $in: [shiftId] } },
@@ -79,7 +78,6 @@ router.delete('/:shiftId', async (req: any, res: any) => {
     // and from the user's pastShifts
     await User.findByIdAndUpdate(temp.user, {
       $pull: { pastShifts: { $in: [shiftId] } },
-      $inc: { totalHours: -removedHours },
     });
     res.send(temp);
   } catch (error) {
