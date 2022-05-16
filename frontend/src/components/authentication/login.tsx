@@ -128,8 +128,8 @@ export default function LoginPage() {
       // and user id is in user.attributes.sub
 
       // then get mongoUser from userSub
-      await getMongoUser(user.attributes.sub);
-      if (user) {
+      const mongoUser = await getMongoUser(user.attributes.sub);
+      if (user && mongoUser) {
         console.log(`Successful sign in for user: ${username}`);
         navigate('/');
       }
@@ -157,7 +157,7 @@ export default function LoginPage() {
             onSubmit={(e) => {
               e.preventDefault();
               retrieveUser();
-              signIn().then(() => navigate('/'));
+              signIn();
             }}
           >
             <Input
