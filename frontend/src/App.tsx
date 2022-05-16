@@ -188,7 +188,7 @@ function App() {
               path="/create-event"
               element={
                 <ProtectedRoute>
-                  <CreateEvent eventData={events} setEvents={setEvents} />
+                  <CreateEvent setEvents={setEvents} />
                 </ProtectedRoute>
               }
             />

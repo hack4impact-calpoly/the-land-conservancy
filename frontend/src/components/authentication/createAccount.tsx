@@ -180,6 +180,7 @@ export default function CreateAccount() {
             id="f3"
             onChange={(e) => setNumber(e.target.value)}
             placeholder="8053215678"
+            required
           />
           <Label htmlFor="f4">Password</Label>
           <Input

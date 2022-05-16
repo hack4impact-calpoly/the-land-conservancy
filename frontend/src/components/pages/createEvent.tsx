@@ -47,11 +47,9 @@ interface Event {
 }
 
 export default function CreateEvent({
-  eventData,
   setEvents,
 }: {
-  eventData: Event[];
-  setEvents: (val: Event[]) => void;
+  setEvents: (val: (prev: Event[]) => Event[]) => void;
 }) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
@@ -118,7 +116,7 @@ export default function CreateEvent({
       body: JSON.stringify(newEvent),
     })
       .then((response) => response.json())
-      .then((data) => setEvents([...eventData, data]))
+      .then((data) => setEvents((prev) => [...prev, data]))
       .then(() => {
         setSubmit('Your event has been created. ');
         setLink('Back to events');
