@@ -71,7 +71,7 @@ export default function Events({ eventData }: EventProps) {
                   ? event
                   : date <
                       new Date(
-                        currentDate.setDate(currentDate.getDate() + 7)
+                        currentDate.setDate(currentDate.getDate() + 14)
                       ) &&
                       date >
                         new Date(
