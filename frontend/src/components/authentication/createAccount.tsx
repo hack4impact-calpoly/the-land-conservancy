@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { AuthContainer, ErrorMsg } from './authComponents';
 import {
@@ -11,6 +11,8 @@ import {
   Submit,
   StyledBack,
 } from '../styledComponents';
+import UserContext from '../../userContext';
+import { User } from '../../types';
 
 // TODO: change to containr later and text-aling left
 // but that will probably go into styledComponenets as well
@@ -31,6 +33,7 @@ export default function CreateAccount() {
   const [pass2, setPass2] = useState('');
   const [badMsg, setBadMsg] = useState('');
   const [disabled, setDisabled] = useState(true);
+  const { setUser } = useContext(UserContext);
 
   const PORT = process.env.REACT_APP_API_URL;
 
@@ -58,8 +61,13 @@ export default function CreateAccount() {
 
   const signUp = async (newAccount: Account) => {
     try {
+      /* Auth.signUp() returns an ISignUpResult {
+        user: CognitoUser;
+        userConfirmed: boolean;
+        userSub: string;
+      } */
       // make cognito user
-      const { user, userSub } = await Auth.signUp({
+      const { userSub } = await Auth.signUp({
         username: newAccount.Email,
         password: newAccount.Password,
         attributes: {
@@ -70,18 +78,17 @@ export default function CreateAccount() {
         },
       });
       // now make mongodb user, once AWS user is made
-      console.log(user);
-      console.log(userSub);
       try {
         await addUserToDb(userSub);
       } catch (error) {
         console.log('error adding user to mongoDB:', error);
-        console.log('May have duplicate _id values');
       }
+      return true;
     } catch (error) {
       console.log('error signing up:', error);
       window.alert(error);
     }
+    return false;
   };
 
   // submit only calls when form meets requirements
@@ -131,6 +138,8 @@ export default function CreateAccount() {
     setDisabled(!validateForm());
   }, [email, number, pass1, pass2]);
 
+  const navigate = useNavigate();
+
   return (
     <AuthContainer>
       <Link to="/login">
@@ -139,9 +148,13 @@ export default function CreateAccount() {
       <Content>
         <Header>Create an account</Header>
         <Form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            signUp(createAccount());
+            // if signup successful, set email & nav to confirm-email page
+            if (await signUp(createAccount())) {
+              setUser({ email } as User);
+              navigate('/confirm-email');
+            }
           }}
         >
           <Label htmlFor="f1">First and Last Name</Label>

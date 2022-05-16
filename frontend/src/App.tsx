@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 import './App.css';
 import Login from './components/authentication/login';
+import ConfirmEmail from './components/authentication/confirmEmail';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
@@ -53,7 +54,6 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           setEvents(data);
-          // console.log(data);
         })
         .catch((err) => console.log(err));
     };
@@ -143,6 +143,7 @@ function App() {
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/forgot-password" element={<ForgotPasword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/confirm-email" element={<ConfirmEmail />} />
 
             <Route
               path="/past-shifts"

@@ -34,7 +34,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const checkAuth = async () => {
     try {
       const cognitoUser = await Auth.currentAuthenticatedUser();
-      await getMongoUser(cognitoUser.username);
+      await getMongoUser(cognitoUser.attributes.sub);
     } catch (err) {
       // error indicataes no user is logged in
       navigate('/login');
