@@ -66,19 +66,26 @@ router.patch('/:id', async (req: any, res: any) => {
   }
 });
 
+// to be used for deleting an event
+export async function deleteShift(shiftId: string) {
+  const temp = await Shift.findByIdAndDelete(shiftId);
+  // remove this shift reference from the event's shifts
+  await Event.findByIdAndUpdate(temp.event, {
+    $pull: { shifts: { $in: [shiftId] } },
+  });
+  // and from the user's pastShifts
+  await User.findByIdAndUpdate(temp.user, {
+    $pull: { pastShifts: { $in: [shiftId] } },
+  });
+  return temp;
+}
+
 // delete shift by id + its references
 router.delete('/:shiftId', async (req: any, res: any) => {
   try {
     const { shiftId } = req.params;
-    const temp = await Shift.findByIdAndDelete(shiftId);
-    // remove this shift reference from the event's shifts
-    await Event.findByIdAndUpdate(temp.event, {
-      $pull: { shifts: { $in: [shiftId] } },
-    });
-    // and from the user's pastShifts
-    await User.findByIdAndUpdate(temp.user, {
-      $pull: { pastShifts: { $in: [shiftId] } },
-    });
+    const temp = deleteShift(shiftId);
+
     res.send(temp);
   } catch (error) {
     res.status(400).send(error);

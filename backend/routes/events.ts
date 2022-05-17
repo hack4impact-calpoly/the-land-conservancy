@@ -1,5 +1,6 @@
 import express from 'express';
 import Event from '../models/eventSchema';
+import { deleteShift } from './shifts';
 
 export {};
 
@@ -55,11 +56,19 @@ router.put('/:eventId', async (req: any, res: any) => {
   }
 });
 
-// delete shift by id
+// delete event by id
 router.delete('/:eventId', async (req: any, res: any) => {
   try {
     const { eventId } = req.params;
+    const thisEvent = await Event.findById(eventId);
+    const { shifts } = thisEvent;
 
+    // delete all the shifts + their references
+    await Promise.all(
+      shifts.map((shiftId: string) => deleteShift(`${shiftId.valueOf()}`))
+    );
+
+    // delete the event
     const temp = await Event.findByIdAndDelete(eventId);
 
     res.send(temp);
