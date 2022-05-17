@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import EventCard from './eventCard';
 import Header from '../navigation/header';
 import { Event } from '../../types';
@@ -19,6 +20,15 @@ const StyledContainer = styled(Container)`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+`;
+
+const StyledDelete = styled(RiDeleteBin6Line)`
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  &:hover {
+    color: white;
+  }
 `;
 
 const convertDate = (dateString: string) => {
@@ -86,7 +96,15 @@ export default function Events({ eventData }: EventProps) {
                     title={event.title}
                     date={convertDate(event.start)}
                     key={event._id}
-                  />
+                  >
+                    <StyledDelete
+                      onClick={(e) => {
+                        e.preventDefault();
+                        console.log('clicked a trash can');
+                        /* setDeleteStates(event._id) */
+                      }}
+                    />
+                  </EventCard>
                 </StyledLink>
               );
             })
