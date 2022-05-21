@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Modal, ButtonBase } from '@mui/material';
-import { Shift } from '../../types';
+import { Shift, Event } from '../../types';
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -51,7 +51,9 @@ type DeleteModalProps = {
   deleteOpen: boolean;
   setDeleteOpen: (val: boolean) => void;
   shiftId: string;
-  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
+  setAllShifts?: (val: (prev: Shift[]) => Shift[]) => void;
+  setAllEvents?: (val: (prev: Event[]) => Event[]) => void;
+  isShifts: boolean;
 };
 
 // future: may consider passing obj-to-delete infor or a delete function prop
@@ -60,6 +62,8 @@ export default function DeleteModal({
   setDeleteOpen,
   shiftId,
   setAllShifts,
+  setAllEvents,
+  isShifts,
 }: DeleteModalProps) {
   const deleteShift = async () => {
     await fetch(`${PORT}/shifts/${shiftId}`, {
@@ -69,7 +73,8 @@ export default function DeleteModal({
       },
     })
       .then(() => {
-        setAllShifts((prev) => prev.filter((shift) => shift._id !== shiftId));
+        if (setAllShifts)
+          setAllShifts((prev) => prev.filter((shift) => shift._id !== shiftId));
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -77,15 +82,38 @@ export default function DeleteModal({
     setDeleteOpen(false);
   };
 
+  const deleteEvent = async () => {
+    // placeholder for deleting event
+    setDeleteOpen(false);
+  };
+
   return (
     <StyledModal open={deleteOpen} onClose={() => setDeleteOpen(false)}>
       <StyledModalBox>
-        <StyledModalTitle>
-          Are you sure you want to delete this shift?
-        </StyledModalTitle>
-        <Button onClick={() => deleteShift()}>
-          <StyledModalText>Delete shift</StyledModalText>
-        </Button>
+        {isShifts ? (
+          <StyledModalTitle>
+            Are you sure you want to delete this shift?
+          </StyledModalTitle>
+        ) : (
+          <StyledModalTitle>
+            Are you sure you want to delete this event? It will also delete all
+            shifts that have been logged for it.
+          </StyledModalTitle>
+        )}
+        {isShifts ? (
+          <Button
+            onClick={() => {
+              console.log(setAllEvents);
+              deleteShift();
+            }}
+          >
+            <StyledModalText>Delete shift</StyledModalText>
+          </Button>
+        ) : (
+          <Button onClick={() => deleteEvent()}>
+            <StyledModalText>Delete event</StyledModalText>
+          </Button>
+        )}
         <br />
         <Button onClick={() => setDeleteOpen(false)}>
           <StyledModalText>Cancel</StyledModalText>
@@ -94,3 +122,7 @@ export default function DeleteModal({
     </StyledModal>
   );
 }
+DeleteModal.defaultProps = {
+  setAllShifts: undefined,
+  setAllEvents: undefined,
+};

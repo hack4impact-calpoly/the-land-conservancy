@@ -224,6 +224,7 @@ export default function VolunteerLog({
           setDeleteOpen={setDeleteOpen}
           shiftId={shiftId}
           setAllShifts={setAllShifts}
+          isShifts
         />
       </ThemeProvider>
     </Header>
