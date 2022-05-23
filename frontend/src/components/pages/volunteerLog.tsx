@@ -222,8 +222,9 @@ export default function VolunteerLog({
         <DeleteModal
           deleteOpen={deleteOpen}
           setDeleteOpen={setDeleteOpen}
-          shiftId={shiftId}
+          itemId={shiftId}
           setAllShifts={setAllShifts}
+          isShifts
         />
       </ThemeProvider>
     </Header>
