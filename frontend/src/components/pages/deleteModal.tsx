@@ -50,7 +50,7 @@ const Button = styled(ButtonBase)`
 type DeleteModalProps = {
   deleteOpen: boolean;
   setDeleteOpen: (val: boolean) => void;
-  shiftId: string;
+  itemId: string;
   setAllShifts?: (val: (prev: Shift[]) => Shift[]) => void;
   setAllEvents?: (val: (prev: Event[]) => Event[]) => void;
   isShifts: boolean;
@@ -60,13 +60,14 @@ type DeleteModalProps = {
 export default function DeleteModal({
   deleteOpen,
   setDeleteOpen,
-  shiftId,
+  itemId,
   setAllShifts,
   setAllEvents,
   isShifts,
 }: DeleteModalProps) {
   const deleteShift = async () => {
-    await fetch(`${PORT}/shifts/${shiftId}`, {
+    setDeleteOpen(false);
+    await fetch(`${PORT}/shifts/${itemId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -74,17 +75,20 @@ export default function DeleteModal({
     })
       .then(() => {
         if (setAllShifts)
-          setAllShifts((prev) => prev.filter((shift) => shift._id !== shiftId));
+          setAllShifts((prev) => prev.filter((shift) => shift._id !== itemId));
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-    setDeleteOpen(false);
   };
 
   const deleteEvent = async () => {
-    // placeholder for deleting event
+    // placeholder steps for deleting event
     setDeleteOpen(false);
+    console.log(`deleting event with id ${itemId}`);
+    if (setAllEvents) {
+      setAllEvents((prev) => prev);
+    }
   };
 
   return (
@@ -103,7 +107,6 @@ export default function DeleteModal({
         {isShifts ? (
           <Button
             onClick={() => {
-              console.log(setAllEvents);
               deleteShift();
             }}
           >

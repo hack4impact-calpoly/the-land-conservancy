@@ -125,7 +125,7 @@ export default function Events({ eventData, setAllEvents }: EventProps) {
         <DeleteModal
           deleteOpen={deleteOpen}
           setDeleteOpen={setDeleteOpen}
-          shiftId={eventId}
+          itemId={eventId}
           setAllEvents={setAllEvents}
           isShifts={false}
         />
