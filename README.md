@@ -11,6 +11,7 @@ A volunteer management program to track/ log hours, access volunteer information
   - [Run the frontend](#running-the-frontend)
   - [Run the backend](#running-the-backend)
   - [Add ESLint and Prettier into your IDE](#add-eslint-and-prettier-into-your-ide)
+  - [Get to know our data](#get-familiar-with-the-database)
 - [Contributing](#contributing)
   - [Making Changes](#making-changes)
   - [Commiting Changes](#commiting-changes)
@@ -66,6 +67,9 @@ This will ensure that your code follows a standard style and will be easier for 
 **You may nee to run the linting scripts in the frontend and backend folders to get the IDE to show formatting errors**.  
 `npm run lint`  
 also recommended: enable the "format on save" setting in your vscode settings if that is your editor of choice  
+
+### Get familiar with the database
+Our database schemas can be found within the project files under `backend/models/<schemaName>.ts`
 
 
 ## Contributing 
