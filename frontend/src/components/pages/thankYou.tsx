@@ -1,7 +1,8 @@
 import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
-import { Link } from 'react-router-dom';
+
 import ShiftSlot from './shiftSlot';
 import Header from '../navigation/header';
 import checkmark from '../../imgs/green_checkmark.svg';
@@ -83,15 +84,18 @@ const convertDate = (date: string) => {
   })}`;
 };
 
+interface LocationState {
+  _id: string;
+  title: string;
+  date: string;
+  hours: number;
+}
+
 // possible TODO: alter the props to accomodate for working with the backend
 // to display the details of the shift that was just posted
 export default function ThankYou() {
-  const shift = {
-    _id: '001',
-    title: 'Test event title',
-    date: new Date(Date.UTC(2022, 3, 27)).toString(),
-    hours: 4,
-  };
+  const location = useLocation();
+  const data = location.state as LocationState;
 
   return (
     <Header headerText=" " navbar>
@@ -109,12 +113,12 @@ export default function ThankYou() {
           Volunteer Coordinator an email at nikiu@lcslo.org to collect your
           reward.
         </Text>
-        {shift ? (
+        {data ? (
           <ShiftSlot
-            key={shift._id}
-            title={shift.title}
-            date={convertDate(shift.date)}
-            hours={shift.hours}
+            key={data._id}
+            title={data.title}
+            date={convertDate(data.date)}
+            hours={data.hours}
           />
         ) : (
           <p key="load"> Loading ...</p>

@@ -303,6 +303,13 @@ export default function LogHours({
     validateHours();
   }, [hours]);
 
+  const shiftData = {
+    _id: shiftId,
+    title: thisEvent.title,
+    date: thisEvent.start,
+    hours,
+  };
+
   return (
     <Header headerText="Log Hours">
       <StyledContainer maxWidth="sm">
@@ -318,6 +325,7 @@ export default function LogHours({
         ) : (
           'Loading...'
         )}
+
         <form
           id="form"
           onSubmit={(e) => {
@@ -346,7 +354,10 @@ export default function LogHours({
             required
           />
           <Feedback>{valid}</Feedback>
-          <Submit type="submit" value={editing ? 'Update hours' : 'Submit'} />
+
+          <Link to="/thank-you" state={shiftData}>
+            <Submit type="submit" value={editing ? 'Update hours' : 'Submit'} />
+          </Link>
           <p>{submit}</p>
           <Link to={currentUser.isAdmin ? '/volunteer-log' : '/past-shifts'}>
             {link}
