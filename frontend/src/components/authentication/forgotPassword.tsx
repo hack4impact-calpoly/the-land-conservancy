@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 import { AuthContainer, ErrorMsg } from './authComponents';
 import {
   Content,
@@ -37,6 +38,8 @@ export default function ForgotPassword() {
   const [valid, setValidation] = React.useState(' ');
   const [sent, setSent] = React.useState(' ');
 
+  const navigate = useNavigate();
+
   /* checks if email has the @ symbol and a period */
   const validateEmail = () => {
     if (email.includes('@') && email.includes('.')) {
@@ -49,12 +52,18 @@ export default function ForgotPassword() {
   };
 
   /* only called when form requirements met */
-  /* Doesn't do anything on the back since it is just frontend for now */
   const sendEmail = () => {
     validateEmail(); // to reset error msg
-    setSent(
-      'Email has been sent. Please check your email for your reset link.'
-    );
+    Auth.forgotPassword(email)
+      .then((data) => {
+        console.log(data);
+        setSent('Email has been sent. Please check your email for reset code.');
+        navigate('/reset-password');
+      })
+      .catch((err) => {
+        console.log(err);
+        setSent('Attempt limit exceeded, please try again later.');
+      });
   };
 
   return (
@@ -66,8 +75,8 @@ export default function ForgotPassword() {
         <Header>Forgot Password</Header>
         <StyledParagraph>
           {' '}
-          Please enter the email associated with your account to recieve a reset
-          link.{' '}
+          Please enter the email associated with your account to recieve
+          confirmation code to reset password.{' '}
         </StyledParagraph>
         <Form
           onSubmit={(e) => {

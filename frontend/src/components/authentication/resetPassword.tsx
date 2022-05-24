@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 import { AuthContainer, ErrorMsg } from './authComponents';
 import {
   Content,
@@ -14,9 +15,13 @@ import {
 export default function ResetPassword() {
   const [pass1, setPass1] = useState('');
   const [pass2, setPass2] = useState('');
+  const [currentUser, setCurrentUser] = useState('');
+  const [code, setCode] = useState('');
   const [badPassMsg, setBadpassMsg] = useState('');
   const [disabled, setDisabled] = useState(true);
   const firstRender = useRef(true);
+
+  const navigate = useNavigate();
 
   const validatePass = () => {
     if (pass1.length < 8) {
@@ -37,7 +42,20 @@ export default function ResetPassword() {
   // only called when form is not disabled
   const changePassword = () => {
     // no actual functionality here yet since no backend
-    console.log('pass changed');
+    if (validatePass()) {
+      Auth.forgotPasswordSubmit(currentUser, code, pass1)
+        .then((data) => {
+          console.log(data);
+          alert('Password successfully reset!');
+          navigate('/login');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(
+            'Could not change password, please confirm email and code are correct. New Password must be different than old password.'
+          );
+        });
+    }
   };
 
   useEffect(() => {
@@ -56,13 +74,25 @@ export default function ResetPassword() {
         <StyledBack size="30" />
       </Link>
       <Content>
-        <Header>Reset Password</Header>
+        <Header>Reset Password (Code sent to email)</Header>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
             changePassword();
           }}
         >
+          <Label htmlFor="user">Username (email)</Label>
+          <Input
+            type="email"
+            id="email"
+            onChange={(e) => setCurrentUser(e.target.value)}
+          />
+          <Label htmlFor="code">Confirmation Code</Label>
+          <Input
+            type="code"
+            id="code"
+            onChange={(e) => setCode(e.target.value)}
+          />
           <Label htmlFor="np1">New password</Label>
           <Input
             type="password"
