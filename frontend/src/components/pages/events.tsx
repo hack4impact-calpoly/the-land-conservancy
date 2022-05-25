@@ -100,13 +100,15 @@ export default function Events({ eventData, setAllEvents }: EventProps) {
             })
             .map((event) => {
               return currentUser.isAdmin ? (
-                <EventCard
-                  title={event.title}
-                  date={convertDate(event.start)}
-                  key={event._id}
-                >
-                  <StyledDelete onClick={() => setDeleteStates(event._id)} />
-                </EventCard>
+                <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
+                  <EventCard
+                    title={event.title}
+                    date={convertDate(event.start)}
+                    key={event._id}
+                  >
+                    <StyledDelete onClick={() => setDeleteStates(event._id)} />
+                  </EventCard>
+                </StyledLink>
               ) : (
                 <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
                   <EventCard
