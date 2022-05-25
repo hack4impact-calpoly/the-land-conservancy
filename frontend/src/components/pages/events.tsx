@@ -106,7 +106,12 @@ export default function Events({ eventData, setAllEvents }: EventProps) {
                     date={convertDate(event.start)}
                     key={event._id}
                   >
-                    <StyledDelete onClick={() => setDeleteStates(event._id)} />
+                    <StyledDelete
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setDeleteStates(event._id);
+                      }}
+                    />
                   </EventCard>
                 </StyledLink>
               ) : (
@@ -115,9 +120,7 @@ export default function Events({ eventData, setAllEvents }: EventProps) {
                     title={event.title}
                     date={convertDate(event.start)}
                     key={event._id}
-                  >
-                    <StyledDelete onClick={() => setDeleteStates(event._id)} />
-                  </EventCard>
+                  />
                 </StyledLink>
               );
             })
