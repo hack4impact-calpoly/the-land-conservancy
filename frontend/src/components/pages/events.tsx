@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import EventCard from './eventCard';
+import DeleteModal from './deleteModal';
 import Header from '../navigation/header';
 import { Event } from '../../types';
 import UserContext from '../../userContext';
@@ -51,10 +52,18 @@ const convertDate = (dateString: string) => {
 
 type EventProps = {
   eventData: Event[];
+  setAllEvents: (val: (prev: Event[]) => Event[]) => void;
 };
 
-export default function Events({ eventData }: EventProps) {
+export default function Events({ eventData, setAllEvents }: EventProps) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [eventId, setEvent] = useState('');
   const { currentUser } = useContext(UserContext);
+
+  const setDeleteStates = (id: string) => {
+    setDeleteOpen(true);
+    setEvent(id);
+  };
 
   eventData.sort((a: Event, b: Event) => {
     if (a.start > b.start) {
@@ -90,7 +99,7 @@ export default function Events({ eventData }: EventProps) {
               );
             })
             .map((event) => {
-              return (
+              return currentUser.isAdmin ? (
                 <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
                   <EventCard
                     title={event.title}
@@ -100,17 +109,31 @@ export default function Events({ eventData }: EventProps) {
                     <StyledDelete
                       onClick={(e) => {
                         e.preventDefault();
-                        console.log('clicked a trash can');
-                        /* setDeleteStates(event._id) */
+                        setDeleteStates(event._id);
                       }}
                     />
                   </EventCard>
+                </StyledLink>
+              ) : (
+                <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
+                  <EventCard
+                    title={event.title}
+                    date={convertDate(event.start)}
+                    key={event._id}
+                  />
                 </StyledLink>
               );
             })
         ) : (
           <p key="load"> Loading ...</p>
         )}
+        <DeleteModal
+          deleteOpen={deleteOpen}
+          setDeleteOpen={setDeleteOpen}
+          itemId={eventId}
+          setAllEvents={setAllEvents}
+          isShifts={false}
+        />
       </StyledContainer>
     </Header>
   );

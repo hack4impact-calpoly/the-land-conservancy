@@ -74,6 +74,7 @@ const options = {
 const csvExporter = new ExportToCsv(options);
 
 // creates a row of data for the volunteer log table
+// this does not affect the csv export file
 function createData(
   _id: string,
   eventId: string,
@@ -91,6 +92,7 @@ function createData(
 }
 
 // creates a row of data for the csv file
+// DO NOT TOUCH unless you want to edit the csv export format
 function createCsvRow(
   eventTitle: string,
   eventLocation: string,
@@ -222,8 +224,9 @@ export default function VolunteerLog({
         <DeleteModal
           deleteOpen={deleteOpen}
           setDeleteOpen={setDeleteOpen}
-          shiftId={shiftId}
+          itemId={shiftId}
           setAllShifts={setAllShifts}
+          isShifts
         />
       </ThemeProvider>
     </Header>

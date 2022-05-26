@@ -53,7 +53,7 @@ const StyledDiv = styled.div`
 type EventCardProps = {
   title: string;
   date: string;
-  children: ReactChild;
+  children?: ReactChild;
 };
 
 export default function EventCard({ title, date, children }: EventCardProps) {
@@ -75,3 +75,7 @@ export default function EventCard({ title, date, children }: EventCardProps) {
     </StyledDiv>
   );
 }
+
+EventCard.defaultProps = {
+  children: null,
+};
