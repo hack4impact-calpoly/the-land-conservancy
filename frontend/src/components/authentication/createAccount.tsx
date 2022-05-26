@@ -107,6 +107,9 @@ export default function CreateAccount() {
     const emailRegex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const phoneRegex = /[0-9]{10}/;
+    const hasNum = (str: string) => /\d/.test(str);
+    const hasLower = (str: string) => /[a-z]/.test(str);
+    const hasUpper = (str: string) => /[A-Z]/.test(str);
 
     if (email && !emailRegex.test(email)) {
       setBadMsg('Please enter a valid email address.');
@@ -117,8 +120,15 @@ export default function CreateAccount() {
       setBadMsg('please enter the 10 digits of your phone number');
       return false;
     }
-    if (pass1 && pass1.length < 8) {
-      // TODO: add validation for other requirements (see msg below)
+    if (
+      pass1 &&
+      !(
+        pass1.length >= 8 &&
+        hasNum(pass1) &&
+        hasLower(pass1) &&
+        hasUpper(pass1)
+      )
+    ) {
       setBadMsg(
         'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
       );

@@ -24,8 +24,17 @@ export default function ResetPassword() {
   const navigate = useNavigate();
 
   const validatePass = () => {
-    if (pass1.length < 8) {
-      // TODO: add validation for other requirements (see msg below)
+    const hasNum = (str: string) => /\d/.test(str);
+    const hasLower = (str: string) => /[a-z]/.test(str);
+    const hasUpper = (str: string) => /[A-Z]/.test(str);
+    if (
+      !(
+        pass1.length >= 8 &&
+        hasNum(pass1) &&
+        hasLower(pass1) &&
+        hasUpper(pass1)
+      )
+    ) {
       setBadpassMsg(
         'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
       );
@@ -41,7 +50,6 @@ export default function ResetPassword() {
 
   // only called when form is not disabled
   const changePassword = () => {
-    // no actual functionality here yet since no backend
     if (validatePass()) {
       Auth.forgotPasswordSubmit(currentUser, code, pass1)
         .then((data) => {
