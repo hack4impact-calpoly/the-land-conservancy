@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Container, Autocomplete, TextField, Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import EventDesc from './eventDesc';
 import Header from '../navigation/header';
 import { Input, Label, Submit } from '../styledComponents';
@@ -131,7 +131,7 @@ function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
         options={allUsers}
         defaultValue={user || null}
         disabled={editing === 'true'}
-        onChange={(e, value) => setVolunteer(value || ({} as User))}
+        onChange={(_e, value) => setVolunteer(value || ({} as User))}
         autoHighlight
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => (
@@ -177,6 +177,8 @@ export default function LogHours({
   const { eventId } = useParams();
   const editing = useQuery().get('editing');
   const location = useLocation();
+  const navigate = useNavigate();
+
   // if admin, submit for entered user, else submit for this user
   let submittingUser = currentUser.isAdmin ? volunteer : currentUser;
   let oldHours = null;
@@ -196,6 +198,13 @@ export default function LogHours({
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
   });
+
+  // data to pass to thank-you page
+  const shiftData = {
+    title: thisEvent?.title,
+    date: thisEvent?.start,
+    hours,
+  };
 
   const addToUser = async (id: string) => {
     await fetch(`${PORT}/users/${submittingUser._id}`, {
@@ -247,6 +256,9 @@ export default function LogHours({
         // (if admin) update allShifts for the volunteer log
         setAllShifts((prev: Shift[]) => [...prev, data]);
       })
+      .then(() => {
+        navigate('/thank-you', { state: shiftData });
+      })
       .catch((err) => console.log(err));
   };
 
@@ -295,10 +307,11 @@ export default function LogHours({
       setSubmit('Hours have been submitted.');
       setLink('View your updated history here.');
       setHours('');
-    } else {
-      setSubmit(' ');
-      setLink(' ');
-    }
+      return true;
+    } // else
+    setSubmit(' ');
+    setLink(' ');
+    return false;
   };
 
   useEffect(() => {
@@ -320,16 +333,18 @@ export default function LogHours({
         ) : (
           'Loading...'
         )}
+
         <form
           id="form"
           onSubmit={(e) => {
             e.preventDefault();
-            if (editing) {
-              editShift();
-            } else {
-              addShift();
+            if (submitHours()) {
+              if (editing) {
+                editShift();
+              } else {
+                addShift();
+              }
             }
-            submitHours();
           }}
         >
           {currentUser.isAdmin ? (
