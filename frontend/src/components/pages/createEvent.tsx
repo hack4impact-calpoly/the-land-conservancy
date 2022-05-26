@@ -5,6 +5,8 @@ import Header from '../navigation/header';
 import Container from './formComponents';
 import { Form, Input, Submit, Label, GreenLink } from '../styledComponents';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
   align-items: left;
@@ -45,11 +47,9 @@ interface Event {
 }
 
 export default function CreateEvent({
-  eventData,
   setEvents,
 }: {
-  eventData: Event[];
-  setEvents: (val: Event[]) => void;
+  setEvents: (val: (prev: Event[]) => Event[]) => void;
 }) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
@@ -82,8 +82,8 @@ export default function CreateEvent({
   ) => {
     const startTimeDate = new Date(curDate);
     const [sYear, sMonth, sDay] = [
-      startTimeDate.getFullYear(),
-      startTimeDate.getMonth(),
+      startTimeDate.getUTCFullYear(),
+      startTimeDate.getUTCMonth(),
       startTimeDate.getUTCDate(),
     ];
     const convertedStart = new Date(
@@ -92,8 +92,8 @@ export default function CreateEvent({
 
     const endTimeDate = new Date(curDate);
     const [eYear, eMonth, eDay] = [
-      endTimeDate.getFullYear(),
-      endTimeDate.getMonth(),
+      endTimeDate.getUTCFullYear(),
+      endTimeDate.getUTCMonth(),
       endTimeDate.getUTCDate(),
     ];
     const convertedEnd = new Date(Date.UTC(eYear, eMonth, eDay, +endH, +endM));
@@ -108,7 +108,7 @@ export default function CreateEvent({
     };
 
     clearForm(); // clear form first to prevent multiple clicks => multiple submits
-    fetch('http://localhost:3001/events/', {
+    fetch(`${PORT}/events/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export default function CreateEvent({
       body: JSON.stringify(newEvent),
     })
       .then((response) => response.json())
-      .then((data) => setEvents([...eventData, data]))
+      .then((data) => setEvents((prev) => [...prev, data]))
       .then(() => {
         setSubmit('Your event has been created. ');
         setLink('Back to events');

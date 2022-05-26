@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 import './App.css';
 import Login from './components/authentication/login';
+import ConfirmEmail from './components/authentication/confirmEmail';
 import CreateAccount from './components/authentication/createAccount';
 import ForgotPasword from './components/authentication/forgotPassword';
 import ResetPassword from './components/authentication/resetPassword';
@@ -19,7 +20,7 @@ import UserContext from './userContext';
 import { Event, Shift, User, Prize } from './types';
 // import awsconfig from './aws-exports';
 
-const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
+const PORT = process.env.REACT_APP_API_URL; // 'http://localhost:3001';
 
 // Amplify.configure(awsconfig);
 Amplify.configure({
@@ -53,7 +54,6 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           setEvents(data);
-          // console.log(data);
         })
         .catch((err) => console.log(err));
     };
@@ -143,6 +143,7 @@ function App() {
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/forgot-password" element={<ForgotPasword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/confirm-email" element={<ConfirmEmail />} />
 
             <Route
               path="/past-shifts"
@@ -156,7 +157,7 @@ function App() {
               path="/events"
               element={
                 <ProtectedRoute>
-                  <Events eventData={events} />
+                  <Events eventData={events} setAllEvents={setEvents} />
                 </ProtectedRoute>
               }
             />
@@ -187,7 +188,7 @@ function App() {
               path="/create-event"
               element={
                 <ProtectedRoute>
-                  <CreateEvent eventData={events} setEvents={setEvents} />
+                  <CreateEvent setEvents={setEvents} />
                 </ProtectedRoute>
               }
             />
@@ -207,7 +208,7 @@ function App() {
               path="/edit-prizes/:prizeId"
               element={
                 <ProtectedRoute>
-                  <EditOnePrize setPrizes={setPrizes} PORT={PORT} />
+                  <EditOnePrize setPrizes={setPrizes} />
                 </ProtectedRoute>
               }
             />

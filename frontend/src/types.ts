@@ -26,7 +26,6 @@ interface User {
   isAdmin: boolean;
   pastShifts: Shift[];
   phone: string;
-  totalHours: number;
 }
 
 interface Prize {

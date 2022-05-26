@@ -7,6 +7,9 @@ import { AuthContainer } from './authComponents';
 import { Content, Form, Input } from '../styledComponents';
 import landscape from '../../imgs/tlc_background.jpeg';
 import UserContext from '../../userContext';
+import { User } from '../../types';
+
+const PORT = process.env.REACT_APP_API_URL;
 
 const Background = styled.div`
   background-image: url(${landscape});
@@ -88,13 +91,21 @@ export default function LoginPage() {
   // only runs when form not disabled (requirements met)
   const retrieveUser = () => {
     console.log(username);
-    console.log(password);
+  };
+
+  const sendConfirmationcode = async (userEmail: string) => {
+    try {
+      await Auth.resendSignUp(userEmail);
+      console.log('code sent successfully!');
+    } catch (err) {
+      console.log('error resending code: ', err);
+    }
   };
 
   // fetches Mongo user who signed in
   const getMongoUser = async (id: string) => {
     try {
-      fetch(`http://localhost:3001/users/${id}`)
+      fetch(`${PORT}/users/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setUser(data);
@@ -103,6 +114,7 @@ export default function LoginPage() {
     } catch (error) {
       console.log('error getting user from mongodb', error);
     }
+    return true;
   };
 
   // authenticate sign in
@@ -110,18 +122,28 @@ export default function LoginPage() {
     try {
       // first get cognitoUser
       const user = await Auth.signIn(username, password);
-      setUser(user.userSub);
-      console.log(user);
-      // note: the user id is stored in the username
-      // attribute of object returned by signIn
+      setUser(user.attributes.sub);
+      // note: the user id is stored in the username when
+      // user is not yet confirmed;
+      // when user is confirmed, email is stored in username
+      // and user id is in user.attributes.sub
 
-      // then get mongoUser
-      await getMongoUser(user.username);
-      console.log(`Successful sign in for user: ${username}`);
-      navigate('/');
+      // then get mongoUser from userSub
+      const mongoUser = await getMongoUser(user.attributes.sub);
+      if (user && mongoUser) {
+        console.log(`Successful sign in for user: ${username}`);
+        navigate('/');
+      }
     } catch (error) {
       console.log('error signing in', error);
-      window.alert(error);
+      if ((error as Error).name === 'UserNotConfirmedException') {
+        setUser({ email: `${username}` } as User);
+        sendConfirmationcode(username).then(() => {
+          navigate('/confirm-email');
+        });
+      } else {
+        window.alert((error as Error).message);
+      }
     }
   };
 

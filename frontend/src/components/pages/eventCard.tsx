@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactChild, useContext } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import { RiArrowRightSLine } from 'react-icons/ri';
+import UserContext from '../../userContext';
 
 const StyledContainer = styled(Container)`
   background-color: #f1f1f1;
@@ -52,9 +53,12 @@ const StyledDiv = styled.div`
 type EventCardProps = {
   title: string;
   date: string;
+  children?: ReactChild;
 };
 
-export default function EventCard({ title, date }: EventCardProps) {
+export default function EventCard({ title, date, children }: EventCardProps) {
+  const { currentUser } = useContext(UserContext);
+
   return (
     <StyledDiv>
       <StyledContainer>
@@ -64,10 +68,14 @@ export default function EventCard({ title, date }: EventCardProps) {
             <EventDate>{date}</EventDate>
           </TextDiv>
           <ArrowDiv>
-            <StyledArrow />
+            {currentUser.isAdmin ? children : <StyledArrow />}
           </ArrowDiv>
         </LayoutDiv>
       </StyledContainer>
     </StyledDiv>
   );
 }
+
+EventCard.defaultProps = {
+  children: null,
+};

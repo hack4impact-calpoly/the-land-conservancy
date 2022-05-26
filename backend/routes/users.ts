@@ -30,7 +30,7 @@ router.use(express.json());
 
 // posts a new user to the database
 router.post('/', async (req: any, res: any) => {
-  const { _id, isAdmin, name, email, phone, pastShifts, totalHours } = req.body;
+  const { _id, isAdmin, name, email, phone, pastShifts } = req.body;
   let user = new User({
     _id,
     isAdmin,
@@ -38,7 +38,6 @@ router.post('/', async (req: any, res: any) => {
     email,
     phone,
     pastShifts,
-    totalHours,
   });
 
   try {
@@ -68,7 +67,6 @@ router.put('/:userId', async (req: any, res: any) => {
     const { userId } = req.params;
     const updates = req.body;
     const updatedUser = await User.findByIdAndUpdate(userId, {
-      $inc: { totalHours: updates.numHours },
       $push: { pastShifts: updates.shiftId },
     });
     res.json(updatedUser);

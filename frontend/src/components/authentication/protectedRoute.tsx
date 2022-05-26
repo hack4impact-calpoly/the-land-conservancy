@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import UserContext from '../../userContext';
 
-const PORT = 'http://localhost:3001'; // 'http://123.456.78.910:3001'; //
+const PORT = process.env.REACT_APP_API_URL;
 
 export type ProtectedRouteProps = {
   children: JSX.Element;
@@ -34,7 +34,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const checkAuth = async () => {
     try {
       const cognitoUser = await Auth.currentAuthenticatedUser();
-      await getMongoUser(cognitoUser.username);
+      await getMongoUser(cognitoUser.attributes.sub);
     } catch (err) {
       // error indicataes no user is logged in
       navigate('/login');

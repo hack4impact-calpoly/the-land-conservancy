@@ -6,6 +6,8 @@ import Header from '../navigation/header';
 import { Form, Input, Submit, Label } from '../styledComponents';
 import { Prize } from '../../types';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const StyledContainer = styled(Container)`
   margin: 5px;
   padding: 20px;
@@ -21,21 +23,14 @@ const StyledHours = styled.p`
 
 type EditPrizeProps = {
   setPrizes: (val: (prev: Prize[]) => Prize[]) => void;
-  PORT: string;
 };
 
-export default function EditOnePrize({ setPrizes, PORT }: EditPrizeProps) {
+export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
   const [itemName, setItemName] = useState('');
   const [sponsorName, setSponsorName] = useState('');
   const [sponsorImg, setSponsorImg] = useState('');
   const { prizeId } = useParams();
   const navigate = useNavigate();
-
-  const submitEdits = () => {
-    console.log(itemName);
-    console.log(sponsorName);
-    console.log(sponsorImg);
-  };
 
   const addToPrize = async (
     item: string,
@@ -80,7 +75,6 @@ export default function EditOnePrize({ setPrizes, PORT }: EditPrizeProps) {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              submitEdits();
               addToPrize(itemName, sponsorName, sponsorImg).then(() =>
                 navigate('/edit-prizes')
               );

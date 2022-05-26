@@ -9,6 +9,8 @@ import { Input, Label, Submit } from '../styledComponents';
 import { Event, Shift, User } from '../../types';
 import UserContext from '../../userContext';
 
+const PORT = process.env.REACT_APP_API_URL;
+
 const theme = createTheme({
   components: {
     // Name of the component
@@ -167,7 +169,6 @@ export default function LogHours({
   allUsers,
 }: LogHoursProps) {
   const { currentUser } = useContext(UserContext);
-  const [hours, setHours] = React.useState('');
   const [valid, setValid] = React.useState(' ');
   const [submit, setSubmit] = React.useState(' ');
   const [volunteer, setVolunteer] = React.useState({} as User);
@@ -192,6 +193,7 @@ export default function LogHours({
     oldHours = (location.state as LocationState).oldHours;
     shiftId = (location.state as LocationState).shiftId;
   }
+  const [hours, setHours] = React.useState(oldHours || '');
 
   const thisEvent = eventData.find((event) => {
     return event._id === eventId;
@@ -205,7 +207,7 @@ export default function LogHours({
   };
 
   const addToUser = async (id: string) => {
-    await fetch(`http://localhost:3001/users/${submittingUser._id}`, {
+    await fetch(`${PORT}/users/${submittingUser._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -218,7 +220,7 @@ export default function LogHours({
   };
 
   const addToEvent = async (id: string) => {
-    await fetch(`http://localhost:3001/events/${eventId}`, {
+    await fetch(`${PORT}/events/${eventId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -237,7 +239,7 @@ export default function LogHours({
 
     console.log(shift);
 
-    await fetch(`http://localhost:3001/shifts`, {
+    await fetch(`${PORT}/shifts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(shift),
@@ -265,7 +267,7 @@ export default function LogHours({
       hours,
     };
 
-    await fetch(`http://localhost:3001/shifts/${shiftId}`, {
+    await fetch(`${PORT}/shifts/${shiftId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newShiftHours),
@@ -352,17 +354,30 @@ export default function LogHours({
           )}
 
           <StyledLabel htmlFor="hours">Total hours volunteered</StyledLabel>
-          <StyledInput
-            id="hours"
-            type="number"
-            step="0.5"
-            defaultValue={oldHours || ''}
-            onChange={(e) => setHours(e.target.value)}
-            required
-          />
-          <Feedback>{valid}</Feedback>
+          {thisEvent ? (
+            <StyledInput
+              id="hours"
+              type="number"
+              step="0.5"
+              value={hours}
+              onChange={(e) => setHours(e.target.value)}
+              disabled={new Date(thisEvent.start) > new Date()}
+              required
+            />
+          ) : (
+            <div />
+          )}
 
-          <Submit type="submit" value={editing ? 'Update hours' : 'Submit'} />
+          <Feedback>{valid}</Feedback>
+          {thisEvent ? (
+            <Submit
+              type="submit"
+              value={editing ? 'Update hours' : 'Submit'}
+              disabled={new Date(thisEvent.start) > new Date()}
+            />
+          ) : (
+            <div />
+          )}
           <p>{submit}</p>
           <Link to={currentUser.isAdmin ? '/volunteer-log' : '/past-shifts'}>
             {link}
