@@ -91,8 +91,6 @@ interface LocationState {
   hours: number;
 }
 
-// possible TODO: alter the props to accomodate for working with the backend
-// to display the details of the shift that was just posted
 export default function ThankYou() {
   const location = useLocation();
   const data = location.state as LocationState;
@@ -115,7 +113,6 @@ export default function ThankYou() {
         </Text>
         {data ? (
           <ShiftSlot
-            key={data._id}
             title={data.title}
             date={convertDate(data.date)}
             hours={data.hours}
