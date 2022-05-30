@@ -157,7 +157,11 @@ function App() {
               path="/events"
               element={
                 <ProtectedRoute>
-                  <Events eventData={events} setAllEvents={setEvents} />
+                  <Events
+                    eventData={events}
+                    setAllEvents={setEvents}
+                    setAllShifts={setAllShifts}
+                  />
                 </ProtectedRoute>
               }
             />

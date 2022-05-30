@@ -51,12 +51,13 @@ type DeleteModalProps = {
   deleteOpen: boolean;
   setDeleteOpen: (val: boolean) => void;
   itemId: string;
-  setAllShifts?: (val: (prev: Shift[]) => Shift[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
   setAllEvents?: (val: (prev: Event[]) => Event[]) => void;
   isShifts: boolean;
 };
 
-// future: may consider passing obj-to-delete infor or a delete function prop
+// used for deleting a shift @ /volunteer-log
+// and for deleting an event @ /events
 export default function DeleteModal({
   deleteOpen,
   setDeleteOpen,
@@ -74,6 +75,7 @@ export default function DeleteModal({
       },
     })
       .then(() => {
+        // filter out deleted shift on the frontend
         if (setAllShifts)
           setAllShifts((prev) => prev.filter((shift) => shift._id !== itemId));
       })
@@ -83,12 +85,27 @@ export default function DeleteModal({
   };
 
   const deleteEvent = async () => {
-    // placeholder steps for deleting event
     setDeleteOpen(false);
     console.log(`deleting event with id ${itemId}`);
-    if (setAllEvents) {
-      setAllEvents((prev) => prev);
-    }
+    await fetch(`${PORT}/events/${itemId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(() => {
+        if (setAllEvents) {
+          // delete event from the frontend
+          setAllEvents((prev) => prev.filter((event) => event._id !== itemId));
+        }
+        // filter out the deleted shifts on the frontend
+        setAllShifts((prev) =>
+          prev.filter((shift) => shift.event._id !== itemId)
+        );
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -126,6 +143,5 @@ export default function DeleteModal({
   );
 }
 DeleteModal.defaultProps = {
-  setAllShifts: undefined,
   setAllEvents: undefined,
 };

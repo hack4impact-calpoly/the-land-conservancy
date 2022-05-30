@@ -6,7 +6,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import EventCard from './eventCard';
 import DeleteModal from './deleteModal';
 import Header from '../navigation/header';
-import { Event } from '../../types';
+import { Event, Shift } from '../../types';
 import UserContext from '../../userContext';
 
 const StyledContainer = styled(Container)`
@@ -53,9 +53,14 @@ const convertDate = (dateString: string) => {
 type EventProps = {
   eventData: Event[];
   setAllEvents: (val: (prev: Event[]) => Event[]) => void;
+  setAllShifts: (val: (prev: Shift[]) => Shift[]) => void;
 };
 
-export default function Events({ eventData, setAllEvents }: EventProps) {
+export default function Events({
+  eventData,
+  setAllEvents,
+  setAllShifts,
+}: EventProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [eventId, setEvent] = useState('');
   const { currentUser } = useContext(UserContext);
@@ -131,6 +136,7 @@ export default function Events({ eventData, setAllEvents }: EventProps) {
           deleteOpen={deleteOpen}
           setDeleteOpen={setDeleteOpen}
           itemId={eventId}
+          setAllShifts={setAllShifts}
           setAllEvents={setAllEvents}
           isShifts={false}
         />
