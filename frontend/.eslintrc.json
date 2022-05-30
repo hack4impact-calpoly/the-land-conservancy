@@ -21,7 +21,12 @@
     "jest": true,
     "node": true
   },
-  "ignorePatterns": ["**/custom.d.ts", "**/amplify/*"],
+  "ignorePatterns": [
+    "**/custom.d.ts",
+    "**/amplify/*",
+    "**/node_modules",
+    "**/build"
+  ],
   "rules": {
     "jsx-a11y/href-no-hash": ["off"],
     "prettier/prettier": "warn",
