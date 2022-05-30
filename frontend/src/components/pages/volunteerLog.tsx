@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ExportToCsv } from 'export-to-csv-fix-source-map';
 
@@ -41,6 +41,26 @@ const StyledEdit = styled(BiEdit)`
 const StyledDelete = styled(RiDeleteBin6Line)`
   font-size: 20px;
   cursor: pointer;
+`;
+
+const Select = styled.select`
+  display: block;
+  box-sizing: border-box;
+
+  width: 165px;
+  height: 40px;
+  left: 0px;
+  top: 0px;
+  padding: 5px;
+
+  border: 1px solid #c1c1c1;
+`;
+
+const Flex = styled.div.attrs((props: { dir: string }) => props)`
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+  flex-direction: ${({ dir }) => dir};
 `;
 
 const BlackLink = styled(Link)`
@@ -105,6 +125,28 @@ function createCsvRow(
   });
   return { eventTitle, eventLocation, date, hours, name };
 }
+const monthOptions = [
+  { label: 'Sort by month', value: '', key: 0 },
+  { label: 'January', value: '1', key: 1 },
+  { label: 'February', value: '2', key: 2 },
+  { label: 'March', value: '3', key: 3 },
+  { label: 'April', value: '4', key: 4 },
+  { label: 'May', value: '5', key: 5 },
+  { label: 'June', value: '6', key: 6 },
+  { label: 'July', value: '7', key: 7 },
+  { label: 'August', value: '8', key: 8 },
+  { label: 'September', value: '9', key: 9 },
+  { label: 'October', value: '10', key: 10 },
+  { label: 'November', value: '11', key: 11 },
+  { label: 'December', value: '12', key: 12 },
+];
+
+const yearOptions: { label: string; value: string; key: number }[] = [
+  { label: 'Sort by year', value: '', key: 0 },
+];
+for (let i = 2000; i < 2050; i += 1) {
+  yearOptions.push({ label: i.toString(), value: i.toString(), key: i });
+}
 
 type ShiftProps = {
   allShiftData: Shift[];
@@ -117,6 +159,8 @@ export default function VolunteerLog({
 }: ShiftProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [shiftId, setShift] = useState('');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
 
   allShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
@@ -160,19 +204,51 @@ export default function VolunteerLog({
     );
   });
 
+  useEffect(() => {
+    console.log('year = ', year);
+  }, [year]);
+
+  useEffect(() => {
+    console.log('month = ', month);
+  }, [month]);
+
   return (
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
         <StyledContainer>
-          <Form
-            id="form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              csvExporter.generateCsv(csvRows);
-            }}
-          >
-            <Export type="submit" value="Export" />
-          </Form>
+          <StyledContainer>
+            <Flex>
+              <Flex>
+                <Select
+                  value={month}
+                  onChange={(e) => setMonth(e.target.value)}
+                >
+                  {monthOptions.map((option) => (
+                    <option value={option.value} key={option.key}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+                <Select value={year} onChange={(e) => setYear(e.target.value)}>
+                  {yearOptions.map((option) => (
+                    <option value={option.value} key={option.key}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </Flex>
+              <Form
+                id="form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  csvExporter.generateCsv(csvRows);
+                }}
+              >
+                <Export type="submit" value="Export" />
+              </Form>
+            </Flex>
+          </StyledContainer>
+
           <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
               <TableHead sx={{ fontSize: '100px' }}>
@@ -187,33 +263,46 @@ export default function VolunteerLog({
               </TableHead>
               <TableBody>
                 {allShiftData ? (
-                  rows.map((row) => (
-                    <TableRow
-                      key={row._id}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell>{row.eventTitle}</TableCell>
-                      <TableCell>{row.eventLocation}</TableCell>
-                      <TableCell>{row.date}</TableCell>
-                      <TableCell>{row.hours}</TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <BlackLink
-                          to={`/log-hours/${row.eventId}?editing=true`}
-                          state={{
-                            user: { _id: row.user },
-                            oldHours: row.hours,
-                            shiftId: row._id,
-                          }}
-                        >
-                          <StyledEdit />
-                        </BlackLink>
-                        <StyledDelete
-                          onClick={() => setDeleteStates(row._id)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  rows
+                    .filter((row) =>
+                      year !== ''
+                        ? row.date.substring(row.date.length - 4) === year
+                        : row
+                    )
+                    .filter((row) =>
+                      month !== ''
+                        ? row.date.substring(0, row.date.indexOf('/')) === month
+                        : row
+                    )
+                    .map((row) => (
+                      <TableRow
+                        key={row._id}
+                        sx={{
+                          '&:last-child td, &:last-child th': { border: 0 },
+                        }}
+                      >
+                        <TableCell>{row.eventTitle}</TableCell>
+                        <TableCell>{row.eventLocation}</TableCell>
+                        <TableCell>{row.date}</TableCell>
+                        <TableCell>{row.hours}</TableCell>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>
+                          <BlackLink
+                            to={`/log-hours/${row.eventId}?editing=true`}
+                            state={{
+                              user: { _id: row.user },
+                              oldHours: row.hours,
+                              shiftId: row._id,
+                            }}
+                          >
+                            <StyledEdit />
+                          </BlackLink>
+                          <StyledDelete
+                            onClick={() => setDeleteStates(row._id)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
                 ) : (
                   <p key="load"> Loading ...</p>
                 )}
