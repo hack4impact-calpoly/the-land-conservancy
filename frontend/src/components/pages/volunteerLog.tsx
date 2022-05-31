@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ExportToCsv } from 'export-to-csv-fix-source-map';
 
@@ -47,20 +47,23 @@ const Select = styled.select`
   display: block;
   box-sizing: border-box;
 
-  width: 165px;
+  max-width: 165px;
   height: 40px;
   left: 0px;
   top: 0px;
   padding: 5px;
+  margin-right: 5px;
+
+  font-family: Poppins;
 
   border: 1px solid #c1c1c1;
+  border-radius: 10px;
 `;
 
-const Flex = styled.div.attrs((props: { dir: string }) => props)`
+const Flex = styled.div`
   display: flex;
   align-items: left;
   justify-content: space-between;
-  flex-direction: ${({ dir }) => dir};
 `;
 
 const BlackLink = styled(Link)`
@@ -82,7 +85,7 @@ const options = {
   quoteStrings: '"',
   decimalSeparator: '.',
   showLabels: true,
-  showTitle: false,
+  showTitle: false, // currently, don't show title
   title: 'Volunteer Log Test Data', // we can remove this from csv
   filename: 'volunteer_totals', // title of downloaded csv
   useTextFile: false,
@@ -126,7 +129,7 @@ function createCsvRow(
   return { eventTitle, eventLocation, date, hours, name };
 }
 const monthOptions = [
-  { label: 'Sort by month', value: '', key: 0 },
+  { label: 'Filter by month', value: '', key: 0 },
   { label: 'January', value: '1', key: 1 },
   { label: 'February', value: '2', key: 2 },
   { label: 'March', value: '3', key: 3 },
@@ -142,7 +145,7 @@ const monthOptions = [
 ];
 
 const yearOptions: { label: string; value: string; key: number }[] = [
-  { label: 'Sort by year', value: '', key: 0 },
+  { label: 'Filter by year', value: '', key: 0 },
 ];
 for (let i = 2000; i < 2050; i += 1) {
   yearOptions.push({ label: i.toString(), value: i.toString(), key: i });
@@ -179,75 +182,82 @@ export default function VolunteerLog({
 
   // convert allShiftData to an array of rows that hold all atributes
   // on same level, this also formats the rows for exporting to csv correctly
-  const rows = allShiftData.map((shift) => {
-    return createData(
-      shift._id,
-      shift.event._id,
-      shift.event.title,
-      shift.event.location,
-      // convert shift date from string to Date type so we can print it nicely
-      shift.event.start,
-      shift.hours,
-      shift.user,
-      shift.userName
+  const rows = allShiftData
+    .map((shift) => {
+      return createData(
+        shift._id,
+        shift.event._id,
+        shift.event.title,
+        shift.event.location,
+        // convert shift date from string to Date type so we can print it nicely
+        shift.event.start,
+        shift.hours,
+        shift.user,
+        shift.userName
+      );
+    })
+    // filter based on user selection of year & month
+    .filter((row) =>
+      year !== '' ? row.date.substring(row.date.length - 4) === year : row
+    )
+    .filter((row) =>
+      month !== ''
+        ? row.date.substring(0, row.date.indexOf('/')) === month
+        : row
     );
-  });
 
-  const csvRows = allShiftData.map((shift) => {
-    return createCsvRow(
-      shift.event.title,
-      shift.event.location,
-      // convert shift date from string to Date type so we can print it nicely
-      shift.event.start,
-      shift.hours,
-      shift.userName
+  const csvRows = allShiftData
+    .map((shift) => {
+      return createCsvRow(
+        shift.event.title,
+        shift.event.location,
+        // convert shift date from string to Date type so we can print it nicely
+        shift.event.start,
+        shift.hours,
+        shift.userName
+      );
+    })
+    // filter based on user selection of year & month
+    .filter((row) =>
+      year !== '' ? row.date.substring(row.date.length - 4) === year : row
+    )
+    .filter((row) =>
+      month !== ''
+        ? row.date.substring(0, row.date.indexOf('/')) === month
+        : row
     );
-  });
-
-  useEffect(() => {
-    console.log('year = ', year);
-  }, [year]);
-
-  useEffect(() => {
-    console.log('month = ', month);
-  }, [month]);
 
   return (
     <Header headerText="Volunteer Log" navbar>
       <ThemeProvider theme={theme}>
         <StyledContainer>
-          <StyledContainer>
+          <Flex>
             <Flex>
-              <Flex>
-                <Select
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value)}
-                >
-                  {monthOptions.map((option) => (
-                    <option value={option.value} key={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Select>
-                <Select value={year} onChange={(e) => setYear(e.target.value)}>
-                  {yearOptions.map((option) => (
-                    <option value={option.value} key={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Select>
-              </Flex>
-              <Form
-                id="form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  csvExporter.generateCsv(csvRows);
-                }}
-              >
-                <Export type="submit" value="Export" />
-              </Form>
+              <Select value={month} onChange={(e) => setMonth(e.target.value)}>
+                {monthOptions.map((option) => (
+                  <option value={option.value} key={option.key}>
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
+              <Select value={year} onChange={(e) => setYear(e.target.value)}>
+                {yearOptions.map((option) => (
+                  <option value={option.value} key={option.key}>
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
             </Flex>
-          </StyledContainer>
+            <Form
+              id="form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                csvExporter.generateCsv(csvRows);
+              }}
+            >
+              <Export type="submit" value="Export" />
+            </Form>
+          </Flex>
 
           <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
@@ -263,46 +273,35 @@ export default function VolunteerLog({
               </TableHead>
               <TableBody>
                 {allShiftData ? (
-                  rows
-                    .filter((row) =>
-                      year !== ''
-                        ? row.date.substring(row.date.length - 4) === year
-                        : row
-                    )
-                    .filter((row) =>
-                      month !== ''
-                        ? row.date.substring(0, row.date.indexOf('/')) === month
-                        : row
-                    )
-                    .map((row) => (
-                      <TableRow
-                        key={row._id}
-                        sx={{
-                          '&:last-child td, &:last-child th': { border: 0 },
-                        }}
-                      >
-                        <TableCell>{row.eventTitle}</TableCell>
-                        <TableCell>{row.eventLocation}</TableCell>
-                        <TableCell>{row.date}</TableCell>
-                        <TableCell>{row.hours}</TableCell>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>
-                          <BlackLink
-                            to={`/log-hours/${row.eventId}?editing=true`}
-                            state={{
-                              user: { _id: row.user },
-                              oldHours: row.hours,
-                              shiftId: row._id,
-                            }}
-                          >
-                            <StyledEdit />
-                          </BlackLink>
-                          <StyledDelete
-                            onClick={() => setDeleteStates(row._id)}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))
+                  rows.map((row) => (
+                    <TableRow
+                      key={row._id}
+                      sx={{
+                        '&:last-child td, &:last-child th': { border: 0 },
+                      }}
+                    >
+                      <TableCell>{row.eventTitle}</TableCell>
+                      <TableCell>{row.eventLocation}</TableCell>
+                      <TableCell>{row.date}</TableCell>
+                      <TableCell>{row.hours}</TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>
+                        <BlackLink
+                          to={`/log-hours/${row.eventId}?editing=true`}
+                          state={{
+                            user: { _id: row.user },
+                            oldHours: row.hours,
+                            shiftId: row._id,
+                          }}
+                        >
+                          <StyledEdit />
+                        </BlackLink>
+                        <StyledDelete
+                          onClick={() => setDeleteStates(row._id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
                 ) : (
                   <p key="load"> Loading ...</p>
                 )}
