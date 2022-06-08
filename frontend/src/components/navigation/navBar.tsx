@@ -34,7 +34,6 @@ export default function NavBar({ children }: Props) {
   const signUserOut = async () => {
     try {
       await Auth.signOut();
-      console.log('attempting user sign out');
       setUser({} as User);
     } catch (error) {
       console.log('error signing out: ', error);

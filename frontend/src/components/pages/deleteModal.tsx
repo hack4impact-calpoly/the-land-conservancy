@@ -84,9 +84,9 @@ export default function DeleteModal({
       });
   };
 
+  // delete event with id ${itemId}
   const deleteEvent = async () => {
     setDeleteOpen(false);
-    console.log(`deleting event with id ${itemId}`);
     await fetch(`${PORT}/events/${itemId}`, {
       method: 'DELETE',
       headers: {

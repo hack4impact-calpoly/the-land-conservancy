@@ -14,9 +14,6 @@ import {
 import UserContext from '../../userContext';
 import { User } from '../../types';
 
-// TODO: change to containr later and text-aling left
-// but that will probably go into styledComponenets as well
-
 // create account type
 type Account = {
   Name: string;
@@ -46,7 +43,6 @@ export default function CreateAccount() {
       phone: number,
       pastShifts: [], // no shifts or hours on init
     };
-    console.log(mongoUser);
     await fetch(`${PORT}/users`, {
       method: 'POST',
       headers: {
@@ -98,9 +94,7 @@ export default function CreateAccount() {
       Number: '+1'.concat(number),
       Password: pass1,
     };
-    // console.log(account);
     return account;
-    // print to console for now, call some backend/ cognito function later
   };
 
   const validateForm = () => {

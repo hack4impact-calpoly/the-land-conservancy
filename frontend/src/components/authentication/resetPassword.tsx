@@ -52,8 +52,7 @@ export default function ResetPassword() {
   const changePassword = () => {
     if (validatePass()) {
       Auth.forgotPasswordSubmit(currentUser, code, pass1)
-        .then((data) => {
-          console.log(data);
+        .then(() => {
           alert('Password successfully reset!');
           navigate('/login');
         })

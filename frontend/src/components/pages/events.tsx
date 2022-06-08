@@ -89,8 +89,9 @@ export default function Events({
               const date = new Date(event.start);
               const currentDate = new Date();
               return (
+                // for volunteers:
                 // only show events 2 months before current date and
-                // events 1 week after current date for volunteers
+                // events 2 weeks after current date for volunteers
                 currentUser.isAdmin
                   ? event
                   : date <

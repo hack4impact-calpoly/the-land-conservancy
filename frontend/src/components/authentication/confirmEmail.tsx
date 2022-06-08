@@ -27,15 +27,10 @@ export default function ConfirmEmailPage() {
   let codeAttempt = '';
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log('loaded confirm email page!');
-  }, []);
-
   const confirmSignUp = async (userEmail: string, code: string) => {
     try {
       setFeedback('');
       await Auth.confirmSignUp(userEmail, code);
-      console.log('user confirmed!');
       navigate('/login');
     } catch (error) {
       console.log('error confirming sign up', error);
@@ -52,7 +47,6 @@ export default function ConfirmEmailPage() {
     try {
       setFeedback('');
       await Auth.resendSignUp(currentUser.email);
-      console.log('code sent successfully!');
       setFeedback(`code resent to ${currentUser.email}`);
     } catch (err) {
       console.log('error resending code: ', err);

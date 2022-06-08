@@ -46,7 +46,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, []);
 
   useEffect(() => {
-    console.log(found);
+    // console.log(found);
     if (found !== undefined) {
       setPending(false);
     }
@@ -56,12 +56,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
     return <div>Loading...</div>;
   }
   if (!found) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    console.log('redirecting');
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to="/login" />;
   }
 
   return children;

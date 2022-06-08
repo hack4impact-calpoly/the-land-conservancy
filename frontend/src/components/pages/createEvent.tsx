@@ -146,7 +146,6 @@ export default function CreateEvent({
           },
           { weekStartsOn: getDay(startDate) }
         );
-        // console.log(dates); // the dates of all the repeat events
         dates.forEach((curDate) => {
           postEvent(curDate.toUTCString(), startH, startM, endH, endM);
         });

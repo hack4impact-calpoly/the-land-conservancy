@@ -43,10 +43,8 @@ export default function ForgotPassword() {
   /* checks if email has the @ symbol and a period */
   const validateEmail = () => {
     if (email.includes('@') && email.includes('.')) {
-      console.log('Is valid');
       setValidation('');
     } else {
-      console.log('Is not valid');
       setValidation('Please enter a valid email.');
     }
   };
@@ -55,8 +53,7 @@ export default function ForgotPassword() {
   const sendEmail = () => {
     validateEmail(); // to reset error msg
     Auth.forgotPassword(email)
-      .then((data) => {
-        console.log(data);
+      .then(() => {
         setSent('Email has been sent. Please check your email for reset code.');
         navigate('/reset-password');
       })

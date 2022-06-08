@@ -237,8 +237,6 @@ export default function LogHours({
       userName: submittingUser.name,
     };
 
-    console.log(shift);
-
     await fetch(`${PORT}/shifts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
