@@ -371,6 +371,7 @@ export default function LogHours({
             <Submit
               type="submit"
               value={editing ? 'Update hours' : 'Submit'}
+              // cannot submit hours for events that haven't started yet
               disabled={new Date(thisEvent.start) > new Date()}
             />
           ) : (
