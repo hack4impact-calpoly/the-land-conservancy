@@ -1,7 +1,7 @@
-import { Auth } from 'aws-amplify';
-import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import UserContext from '../../userContext';
+import { Auth } from "aws-amplify";
+import React, { useContext, useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import UserContext from "../../userContext";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -13,7 +13,6 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { setUser } = useContext(UserContext);
   const [pending, setPending] = useState(true);
   const [found, setFound] = useState();
-  const location = useLocation();
   const navigate = useNavigate();
 
   // fetches Mongo user who signed in
@@ -27,7 +26,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
         })
         .catch((err) => console.log(err));
     } catch (error) {
-      console.log('error getting user from mongodb', error);
+      console.log("error getting user from mongodb", error);
     }
   };
 
@@ -37,7 +36,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
       await getMongoUser(cognitoUser.attributes.sub);
     } catch (err) {
       // error indicataes no user is logged in
-      navigate('/login');
+      navigate("/login");
     }
   };
 

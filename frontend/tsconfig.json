@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src", "custom.d.ts"]
 }

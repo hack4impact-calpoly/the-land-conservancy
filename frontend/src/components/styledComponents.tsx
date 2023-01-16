@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { BiArrowBack } from 'react-icons/bi';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { BiArrowBack } from "react-icons/bi";
 
 const StyledBack = styled(BiArrowBack)`
   margin-top: 10px;

@@ -49,5 +49,6 @@ module.exports = {
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
     "no-console": "off",
+    "no-alert": "off",
   },
 };

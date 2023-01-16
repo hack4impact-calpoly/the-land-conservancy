@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Auth } from 'aws-amplify';
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { AuthContainer } from './authComponents';
+import React, { useState, useContext } from "react";
+import { Auth } from "aws-amplify";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { AuthContainer } from "./authComponents";
 import {
   Content,
   Form,
@@ -11,8 +11,8 @@ import {
   Label,
   StyledBack,
   Submit,
-} from '../styledComponents';
-import UserContext from '../../userContext';
+} from "../styledComponents";
+import UserContext from "../../userContext";
 
 const Feedback = styled.div`
   font-size: 1.15rem;
@@ -21,19 +21,19 @@ const Feedback = styled.div`
 `;
 
 export default function ConfirmEmailPage() {
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState("");
   const { currentUser } = useContext(UserContext);
   // "required" attribute on input validates
-  let codeAttempt = '';
+  let codeAttempt = "";
   const navigate = useNavigate();
 
   const confirmSignUp = async (userEmail: string, code: string) => {
     try {
-      setFeedback('');
+      setFeedback("");
       await Auth.confirmSignUp(userEmail, code);
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.log('error confirming sign up', error);
+      console.log("error confirming sign up", error);
       // display invalid code error
       window.alert((error as Error).message);
     }
@@ -45,11 +45,11 @@ export default function ConfirmEmailPage() {
 
   const sendConfirmationcode = async () => {
     try {
-      setFeedback('');
+      setFeedback("");
       await Auth.resendSignUp(currentUser.email);
       setFeedback(`code resent to ${currentUser.email}`);
     } catch (err) {
-      console.log('error resending code: ', err);
+      console.log("error resending code: ", err);
       setFeedback(`${(err as Error).message}`);
     }
   };
@@ -62,7 +62,7 @@ export default function ConfirmEmailPage() {
       <Content>
         <Header>Authenticate your account</Header>
         <Label>
-          Please confirm your account by entering the confirmation code sent to{' '}
+          Please confirm your account by entering the confirmation code sent to{" "}
           {currentUser.email}
         </Label>
         <Form

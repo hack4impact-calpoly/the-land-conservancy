@@ -1,8 +1,8 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { BiArrowBack } from 'react-icons/bi';
-import NavBar from './navBar';
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
+import { BiArrowBack } from "react-icons/bi";
+import NavBar from "./navBar";
 
 const Navigation = styled.div`
   display: flex;
@@ -29,8 +29,8 @@ const BackArrow = styled(BiArrowBack)`
 `;
 
 const StyledHeader = styled.header`
-  display: 'flex';
-  font-family: 'Poppins';
+  display: "flex";
+  font-family: "Poppins";
   font-size: 28px;
   font-weight: 400;
   color: black;
@@ -46,7 +46,7 @@ const Container = styled.div`
   }
 `;
 
-type headerPropTypes = {
+type HeaderPropTypes = {
   headerText: string;
   navbar?: boolean; // optional prop, default defined below
   back?: string;
@@ -61,7 +61,7 @@ export default function Header({
   navbar,
   back,
   children,
-}: headerPropTypes) {
+}: HeaderPropTypes) {
   const navigate = useNavigate();
 
   const previous = back ? (
@@ -93,5 +93,5 @@ export default function Header({
 }
 Header.defaultProps = {
   navbar: false,
-  back: '',
+  back: "",
 };

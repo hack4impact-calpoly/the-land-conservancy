@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Modal, ButtonBase } from '@mui/material';
-import { IoCloseOutline } from 'react-icons/io5';
-import { Submit } from '../styledComponents';
-import { HoursCount } from './progressBar';
-import PrizeCard from './prizeCard';
-import { Prize } from '../../types';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Modal, ButtonBase } from "@mui/material";
+import { IoCloseOutline } from "react-icons/io5";
+import { Submit } from "../styledComponents";
+import { HoursCount } from "./progressBar";
+import PrizeCard from "./prizeCard";
+import { Prize } from "../../types";
 
 const StyledModal = styled(Modal)`
   padding-left: 14px;
@@ -116,22 +116,20 @@ export default function RewardModal({
           <RowDiv>
             <HoursCount hours={hours} />
             <StyledModalText>
-              After reaching a milestone, please send our Volunteer Coordinator{' '}
+              After reaching a milestone, please send our Volunteer Coordinator{" "}
               <br /> an email at nikiu@lcslo.org to collect your reward.
             </StyledModalText>
           </RowDiv>
           {prizes ? (
-            prizes.map((prize: Prize) => {
-              return (
-                <PrizeCard
-                  key={prize._id}
-                  itemName={prize.itemName}
-                  sponsorName={prize.sponsorName}
-                  sponsorImage={prize.sponsorImage}
-                  hoursNeeded={prize._id}
-                />
-              );
-            })
+            prizes.map((prize: Prize) => (
+              <PrizeCard
+                key={prize._id}
+                itemName={prize.itemName}
+                sponsorName={prize.sponsorName}
+                sponsorImage={prize.sponsorImage}
+                hoursNeeded={prize._id}
+              />
+            ))
           ) : (
             <p key="load"> Loading ...</p>
           )}

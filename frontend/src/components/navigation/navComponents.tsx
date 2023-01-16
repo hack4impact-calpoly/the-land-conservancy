@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import { BiEdit } from 'react-icons/bi';
-import { FaBars } from 'react-icons/fa';
-import { HiOutlineClipboardList } from 'react-icons/hi';
-import { GiBackwardTime } from 'react-icons/gi';
-import { MdLogout } from 'react-icons/md';
-import { IoMdAddCircleOutline } from 'react-icons/io';
-import { FiCalendar } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { BiEdit } from "react-icons/bi";
+import { FaBars } from "react-icons/fa";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { GiBackwardTime } from "react-icons/gi";
+import { MdLogout } from "react-icons/md";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { FiCalendar } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const BarIcon = styled(FaBars)`
   margin-top: 15px;
@@ -81,7 +81,7 @@ const Path = styled.div<Props>`
   border: none;
   sizing-border-box;
   background-color: ${(props: Props) =>
-    props.active ? '#aec29b' : 'transparent'}; 
+    props.active ? "#aec29b" : "transparent"}; 
   display: flex;
   padding-left: 29px;
   align-items: center;

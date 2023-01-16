@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Container } from '@mui/material';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-import EventCard from './eventCard';
-import DeleteModal from './deleteModal';
-import Header from '../navigation/header';
-import { Event, Shift } from '../../types';
-import UserContext from '../../userContext';
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { Container } from "@mui/material";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import EventCard from "./eventCard";
+import DeleteModal from "./deleteModal";
+import Header from "../navigation/header";
+import { Event, Shift } from "../../types";
+import UserContext from "../../userContext";
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -34,19 +34,19 @@ const StyledDelete = styled(RiDeleteBin6Line)`
 
 const convertDate = (dateString: string) => {
   const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
 
   const date = new Date(dateString);
 
-  return `${days[date.getUTCDay()]} ${date.toLocaleDateString('en-US', {
-    timeZone: 'UTC',
+  return `${days[date.getUTCDay()]} ${date.toLocaleDateString("en-US", {
+    timeZone: "UTC",
   })}`;
 };
 
@@ -62,7 +62,7 @@ export default function Events({
   setAllShifts,
 }: EventProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [eventId, setEvent] = useState('');
+  const [eventId, setEvent] = useState("");
   const { currentUser } = useContext(UserContext);
 
   const setDeleteStates = (id: string) => {
@@ -104,8 +104,8 @@ export default function Events({
                         )
               );
             })
-            .map((event) => {
-              return currentUser.isAdmin ? (
+            .map((event) =>
+              currentUser.isAdmin ? (
                 <StyledLink to={`/log-hours/${event._id}`} key={event._id}>
                   <EventCard
                     title={event.title}
@@ -128,8 +128,8 @@ export default function Events({
                     key={event._id}
                   />
                 </StyledLink>
-              );
-            })
+              )
+            )
         ) : (
           <p key="load"> Loading ...</p>
         )}
