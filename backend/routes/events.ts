@@ -1,13 +1,13 @@
-import express from 'express';
-import Event from '../models/eventSchema';
-import { deleteShift } from './shifts';
+import express from "express";
+import Event from "../models/eventSchema";
+import { deleteShift } from "./shifts";
 
 export {};
 
 const router = express.Router();
 
 /* gets all events */
-router.get('/', async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
   try {
     const temp = await Event.find({});
     res.send(temp);
@@ -17,7 +17,7 @@ router.get('/', async (req: any, res: any) => {
 });
 
 /* gets the one event given by eventid */
-router.get('/:eventid', async (req: any, res: any) => {
+router.get("/:eventid", async (req: any, res: any) => {
   try {
     const temp = await Event.findOne({ _id: req.params.eventid });
     res.send(temp);
@@ -29,7 +29,7 @@ router.get('/:eventid', async (req: any, res: any) => {
 router.use(express.json());
 
 /* posts an event to the database */
-router.post('/', async (req: any, res: any) => {
+router.post("/", async (req: any, res: any) => {
   try {
     const { title, start, end, location, notes, shifts } = req.body;
     let event = new Event({ title, start, end, location, notes, shifts });
@@ -42,7 +42,7 @@ router.post('/', async (req: any, res: any) => {
 });
 
 // should put new shift into shifts array
-router.put('/:eventId', async (req: any, res: any) => {
+router.put("/:eventId", async (req: any, res: any) => {
   try {
     const event = req.params.eventId;
     const shift = req.body;
@@ -57,7 +57,7 @@ router.put('/:eventId', async (req: any, res: any) => {
 });
 
 // delete event by id
-router.delete('/:eventId', async (req: any, res: any) => {
+router.delete("/:eventId", async (req: any, res: any) => {
   try {
     const { eventId } = req.params;
     const thisEvent = await Event.findById(eventId);

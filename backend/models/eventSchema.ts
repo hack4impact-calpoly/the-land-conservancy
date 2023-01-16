@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
 
 export const EventSchema = new mongoose.Schema(
   {
@@ -7,10 +7,10 @@ export const EventSchema = new mongoose.Schema(
     end: { type: Date, required: true },
     location: { type: String, required: true },
     notes: String,
-    shifts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Shift' }],
+    shifts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Shift" }],
   },
-  { collection: 'Events' }
+  { collection: "Events" }
 );
 
-const Event = mongoose.model('Event', EventSchema);
+const Event = mongoose.model("Event", EventSchema);
 export default Event;

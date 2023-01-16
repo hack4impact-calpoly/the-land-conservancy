@@ -1,10 +1,10 @@
-import express from 'express';
-import User from '../models/userSchema';
+import express from "express";
+import User from "../models/userSchema";
 
 const router = express.Router();
 
 // get all users
-router.get('/', async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
   try {
     const temp = await User.find({});
     res.send(temp);
@@ -14,11 +14,11 @@ router.get('/', async (req: any, res: any) => {
 });
 
 // get specific user
-router.get('/:userId', async (req: any, res: any) => {
+router.get("/:userId", async (req: any, res: any) => {
   try {
     const temp = await User.findById(req.params.userId).populate({
-      path: 'pastShifts',
-      populate: 'event',
+      path: "pastShifts",
+      populate: "event",
     });
     res.send(temp);
   } catch (error) {
@@ -29,7 +29,8 @@ router.get('/:userId', async (req: any, res: any) => {
 router.use(express.json());
 
 // posts a new user to the database
-router.post('/', async (req: any, res: any) => {
+router.post("/", async (req: any, res: any) => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { _id, isAdmin, name, email, phone, pastShifts } = req.body;
   let user = new User({
     _id,
@@ -50,7 +51,7 @@ router.post('/', async (req: any, res: any) => {
 });
 
 // patch a user (will replace the fields passed in through the req.body)
-router.patch('/:userId', async (req: any, res: any) => {
+router.patch("/:userId", async (req: any, res: any) => {
   try {
     const { userId } = req.params;
     const updates = req.body;
@@ -62,7 +63,7 @@ router.patch('/:userId', async (req: any, res: any) => {
 });
 
 // put new shift into user's past shifts + update hours
-router.put('/:userId', async (req: any, res: any) => {
+router.put("/:userId", async (req: any, res: any) => {
   try {
     const { userId } = req.params;
     const updates = req.body;
@@ -76,7 +77,7 @@ router.put('/:userId', async (req: any, res: any) => {
 });
 
 // delete user by id
-router.delete('/:userId', async (req: any, res: any) => {
+router.delete("/:userId", async (req: any, res: any) => {
   try {
     const temp = await User.findByIdAndDelete(req.params.userId);
     res.send(temp);
