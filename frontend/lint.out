@@ -1,0 +1,531 @@
+
+> frontend@0.1.0 lint
+> eslint --ext .js,.jsx,.ts,.tsx . && prettier --check .
+
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\App.tsx
+    1:44  error  Replace `'react'` with `"react"`                                                                            prettier/prettier
+    2:56  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                      prettier/prettier
+    3:21  error  Replace `'aws-amplify'` with `"aws-amplify"`                                                                prettier/prettier
+    4:8   error  Replace `'./App.css'` with `"./App.css"`                                                                    prettier/prettier
+    5:19  error  Replace `'./components/authentication/login'` with `"./components/authentication/login"`                    prettier/prettier
+    6:26  error  Replace `'./components/authentication/confirmEmail'` with `"./components/authentication/confirmEmail"`      prettier/prettier
+    7:27  error  Replace `'./components/authentication/createAccount'` with `"./components/authentication/createAccount"`    prettier/prettier
+    8:27  error  Replace `'./components/authentication/forgotPassword'` with `"./components/authentication/forgotPassword"`  prettier/prettier
+    9:27  error  Replace `'./components/authentication/resetPassword'` with `"./components/authentication/resetPassword"`    prettier/prettier
+   10:28  error  Replace `'./components/authentication/protectedRoute'` with `"./components/authentication/protectedRoute"`  prettier/prettier
+   11:24  error  Replace `'./components/pages/pastShifts'` with `"./components/pages/pastShifts"`                            prettier/prettier
+   12:20  error  Replace `'./components/pages/events'` with `"./components/pages/events"`                                    prettier/prettier
+   13:22  error  Replace `'./components/pages/logHours'` with `"./components/pages/logHours"`                                prettier/prettier
+   14:22  error  Replace `'./components/pages/thankYou'` with `"./components/pages/thankYou"`                                prettier/prettier
+   15:25  error  Replace `'./components/pages/createEvent'` with `"./components/pages/createEvent"`                          prettier/prettier
+   16:26  error  Replace `'./components/pages/volunteerLog'` with `"./components/pages/volunteerLog"`                        prettier/prettier
+   17:24  error  Replace `'./components/pages/editPrizes'` with `"./components/pages/editPrizes"`                            prettier/prettier
+   18:26  error  Replace `'./components/pages/editOnePrize'` with `"./components/pages/editOnePrize"`                        prettier/prettier
+   19:25  error  Replace `'./userContext'` with `"./userContext"`                                                            prettier/prettier
+   20:43  error  Replace `'./types'` with `"./types"`                                                                        prettier/prettier
+   29:13  error  Replace `'us-west-2'` with `"us-west-2"`                                                                    prettier/prettier
+   31:17  error  Replace `'us-west-2_GsGspX3dl'` with `"us-west-2_GsGspX3dl"`                                                prettier/prettier
+   33:26  error  Replace `'56nsvt3lp1gmb3ou6t63ldj72m'` with `"56nsvt3lp1gmb3ou6t63ldj72m"`                                  prettier/prettier
+  128:17  error  Replace `'currentUser·has·been·updated:·'` with `"currentUser·has·been·updated:·"`                          prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\Home.tsx
+  1:19  error  Replace `'react'` with `"react"`                          prettier/prettier
+  2:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+  5:12  error  Replace `'flex'` with `"flex"`                            prettier/prettier
+  6:19  error  Replace `'column'` with `"column"`                        prettier/prettier
+  7:16  error  Replace `'center'` with `"center"`                        prettier/prettier
+  8:20  error  Replace `'center'` with `"center"`                        prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\authComponents.tsx
+  1:35  error  Replace `'react'` with `"react"`                          prettier/prettier
+  2:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\confirmEmail.tsx
+   1:27  error    'useEffect' is defined but never used                                   @typescript-eslint/no-unused-vars
+   1:56  error    Replace `'react'` with `"react"`                                        prettier/prettier
+   2:22  error    Replace `'aws-amplify'` with `"aws-amplify"`                            prettier/prettier
+   3:35  error    Replace `'react-router-dom'` with `"react-router-dom"`                  prettier/prettier
+   4:20  error    Replace `'styled-components'` with `"styled-components"`                prettier/prettier
+   5:31  error    Replace `'./authComponents'` with `"./authComponents"`                  prettier/prettier
+  14:8   error    Replace `'../styledComponents'` with `"../styledComponents"`            prettier/prettier
+  15:25  error    Replace `'../../userContext'` with `"../../userContext"`                prettier/prettier
+  24:44  error    Replace `''` with `""`                                                  prettier/prettier
+  27:21  error    Replace `''` with `""`                                                  prettier/prettier
+  32:19  error    Replace `''` with `""`                                                  prettier/prettier
+  34:16  error    Replace `'/login'` with `"/login"`                                      prettier/prettier
+  36:19  error    Replace `'error·confirming·sign·up'` with `"error·confirming·sign·up"`  prettier/prettier
+  38:7   warning  Unexpected alert                                                        no-alert
+  48:19  error    Replace `''` with `""`                                                  prettier/prettier
+  52:19  error    Replace `'error·resending·code:·'` with `"error·resending·code:·"`      prettier/prettier
+  65:81  error    Replace `'·'` with `"·"`                                                prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\createAccount.tsx
+    1:56  error    Replace `'react'` with `"react"`                                                                                                                                                                                                  prettier/prettier
+    2:35  error    Replace `'react-router-dom'` with `"react-router-dom"`                                                                                                                                                                            prettier/prettier
+    3:22  error    Replace `'aws-amplify'` with `"aws-amplify"`                                                                                                                                                                                      prettier/prettier
+    4:41  error    Replace `'./authComponents'` with `"./authComponents"`                                                                                                                                                                            prettier/prettier
+   13:8   error    Replace `'../styledComponents'` with `"../styledComponents"`                                                                                                                                                                      prettier/prettier
+   14:25  error    Replace `'../../userContext'` with `"../../userContext"`                                                                                                                                                                          prettier/prettier
+   15:22  error    Replace `'../../types'` with `"../../types"`                                                                                                                                                                                      prettier/prettier
+   26:36  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+   27:38  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+   28:40  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+   29:38  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+   30:38  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+   31:40  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+   47:15  error    Replace `'POST'` with `"POST"`                                                                                                                                                                                                    prettier/prettier
+   49:9   error    Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                                                                                                                                            prettier/prettier
+   79:21  error    Replace `'error·adding·user·to·mongoDB:'` with `"error·adding·user·to·mongoDB:"`                                                                                                                                                  prettier/prettier
+   83:19  error    Replace `'error·signing·up:'` with `"error·signing·up:"`                                                                                                                                                                          prettier/prettier
+   84:7   warning  Unexpected alert                                                                                                                                                                                                                  no-alert
+   94:15  error    Replace `'+1'` with `"+1"`                                                                                                                                                                                                        prettier/prettier
+  109:17  error    Replace `'Please·enter·a·valid·email·address.'` with `"Please·enter·a·valid·email·address."`                                                                                                                                      prettier/prettier
+  114:17  error    Replace `'please·enter·the·10·digits·of·your·phone·number'` with `"please·enter·the·10·digits·of·your·phone·number"`                                                                                                              prettier/prettier
+  127:9   error    Replace `'Passwords·must·be·at·least·8·characters,·contain·1·number,·1·uppercase·letter,·and·1·lowercase·letter'` with `"Passwords·must·be·at·least·8·characters,·contain·1·number,·1·uppercase·letter,·and·1·lowercase·letter"`  prettier/prettier
+  132:17  error    Replace `'Passwords·must·match'` with `"Passwords·must·match"`                                                                                                                                                                    prettier/prettier
+  136:15  error    Replace `''` with `""`                                                                                                                                                                                                            prettier/prettier
+  159:24  error    Replace `'/confirm-email'` with `"/confirm-email"`                                                                                                                                                                                prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\forgotPassword.tsx
+   1:19  error  Replace `'react'` with `"react"`                                                                                                                prettier/prettier
+   2:20  error  Replace `'styled-components'` with `"styled-components"`                                                                                        prettier/prettier
+   3:35  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                                                          prettier/prettier
+   4:22  error  Replace `'aws-amplify'` with `"aws-amplify"`                                                                                                    prettier/prettier
+   5:41  error  Replace `'./authComponents'` with `"./authComponents"`                                                                                          prettier/prettier
+  14:8   error  Replace `'../styledComponents'` with `"../styledComponents"`                                                                                    prettier/prettier
+  37:44  error  Replace `'·'` with `"·"`                                                                                                                        prettier/prettier
+  38:49  error  Replace `'·'` with `"·"`                                                                                                                        prettier/prettier
+  39:42  error  Replace `'·'` with `"·"`                                                                                                                        prettier/prettier
+  45:24  error  Replace `'@')·&&·email.includes('.'` with `"@")·&&·email.includes("."`                                                                          prettier/prettier
+  46:21  error  Replace `''` with `""`                                                                                                                          prettier/prettier
+  48:21  error  Replace `'Please·enter·a·valid·email.'` with `"Please·enter·a·valid·email."`                                                                    prettier/prettier
+  57:17  error  Replace `'Email·has·been·sent.·Please·check·your·email·for·reset·code.'` with `"Email·has·been·sent.·Please·check·your·email·for·reset·code."`  prettier/prettier
+  58:18  error  Replace `'/reset-password'` with `"/reset-password"`                                                                                            prettier/prettier
+  62:17  error  Replace `'Attempt·limit·exceeded,·please·try·again·later.'` with `"Attempt·limit·exceeded,·please·try·again·later."`                            prettier/prettier
+  74:12  error  Replace `'·'` with `"·"`                                                                                                                        prettier/prettier
+  76:48  error  Replace `'·'` with `"·"`                                                                                                                        prettier/prettier
+  90:23  error  Replace `''` with `""`                                                                                                                          prettier/prettier
+  97:49  error  Replace `'·'` with `"·"`                                                                                                                        prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\login.tsx
+    1:45  error    Replace `'react'` with `"react"`                                                      prettier/prettier
+    2:20  error    Replace `'styled-components'` with `"styled-components"`                              prettier/prettier
+    3:22  error    Replace `'aws-amplify'` with `"aws-amplify"`                                          prettier/prettier
+    4:35  error    Replace `'react-router-dom'` with `"react-router-dom"`                                prettier/prettier
+    5:18  error    Replace `'../../imgs/logo.png'` with `"../../imgs/logo.png"`                          prettier/prettier
+    6:31  error    Replace `'./authComponents'` with `"./authComponents"`                                prettier/prettier
+    7:38  error    Replace `'../styledComponents'` with `"../styledComponents"`                          prettier/prettier
+    8:23  error    Replace `'../../imgs/tlc_background.jpeg'` with `"../../imgs/tlc_background.jpeg"`    prettier/prettier
+    9:25  error    Replace `'../../userContext'` with `"../../userContext"`                              prettier/prettier
+   10:22  error    Replace `'../../types'` with `"../../types"`                                          prettier/prettier
+   84:44  error    Replace `''` with `""`                                                                prettier/prettier
+   85:44  error    Replace `''` with `""`                                                                prettier/prettier
+   99:19  error    Replace `'code·sent·successfully!'` with `"code·sent·successfully!"`                  prettier/prettier
+  101:19  error    Replace `'error·resending·code:·'` with `"error·resending·code:·"`                    prettier/prettier
+  115:19  error    Replace `'error·getting·user·from·mongodb'` with `"error·getting·user·from·mongodb"`  prettier/prettier
+  135:18  error    Replace `'/'` with `"/"`                                                              prettier/prettier
+  138:19  error    Replace `'error·signing·in'` with `"error·signing·in"`                                prettier/prettier
+  139:37  error    Replace `'UserNotConfirmedException'` with `"UserNotConfirmedException"`              prettier/prettier
+  142:20  error    Replace `'/confirm-email'` with `"/confirm-email"`                                    prettier/prettier
+  145:9   warning  Unexpected alert                                                                      no-alert
+  182:20  error    Replace `'·'` with `"·"`                                                              prettier/prettier
+  183:34  error    Replace `'·'` with `"·"`                                                              prettier/prettier
+  187:18  error    Replace `'·'` with `"·"`                                                              prettier/prettier
+  188:25  error    Replace `'·'` with `"·"`                                                              prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\protectedRoute.tsx
+   1:22  error  Replace `'aws-amplify'` with `"aws-amplify"`                                          prettier/prettier
+   2:56  error  Replace `'react'` with `"react"`                                                      prettier/prettier
+   3:52  error  Replace `'react-router-dom'` with `"react-router-dom"`                                prettier/prettier
+   4:25  error  Replace `'../../userContext'` with `"../../userContext"`                              prettier/prettier
+  16:9   error  'location' is assigned a value but never used                                         @typescript-eslint/no-unused-vars
+  30:19  error  Replace `'error·getting·user·from·mongodb'` with `"error·getting·user·from·mongodb"`  prettier/prettier
+  40:16  error  Replace `'/login'` with `"/login"`                                                    prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\authentication\resetPassword.tsx
+   1:52  error    Replace `'react'` with `"react"`                                                                                                                                                                                                                                      prettier/prettier
+   2:35  error    Replace `'react-router-dom'` with `"react-router-dom"`                                                                                                                                                                                                                prettier/prettier
+   3:22  error    Replace `'aws-amplify'` with `"aws-amplify"`                                                                                                                                                                                                                          prettier/prettier
+   4:41  error    Replace `'./authComponents'` with `"./authComponents"`                                                                                                                                                                                                                prettier/prettier
+  13:8   error    Replace `'../styledComponents'` with `"../styledComponents"`                                                                                                                                                                                                          prettier/prettier
+  16:38  error    Replace `''` with `""`                                                                                                                                                                                                                                                prettier/prettier
+  17:38  error    Replace `''` with `""`                                                                                                                                                                                                                                                prettier/prettier
+  18:50  error    Replace `''` with `""`                                                                                                                                                                                                                                                prettier/prettier
+  19:36  error    Replace `''` with `""`                                                                                                                                                                                                                                                prettier/prettier
+  20:48  error    Replace `''` with `""`                                                                                                                                                                                                                                                prettier/prettier
+  39:9   error    Replace `'Passwords·must·be·at·least·8·characters,·contain·1·number,·1·uppercase·letter,·and·1·lowercase·letter'` with `"Passwords·must·be·at·least·8·characters,·contain·1·number,·1·uppercase·letter,·and·1·lowercase·letter"`                                      prettier/prettier
+  44:21  error    Replace `'Passwords·must·match'` with `"Passwords·must·match"`                                                                                                                                                                                                        prettier/prettier
+  47:19  error    Replace `''` with `""`                                                                                                                                                                                                                                                prettier/prettier
+  56:11  warning  Unexpected alert                                                                                                                                                                                                                                                      no-alert
+  56:17  error    Replace `'Password·successfully·reset!'` with `"Password·successfully·reset!"`                                                                                                                                                                                        prettier/prettier
+  57:20  error    Replace `'/login'` with `"/login"`                                                                                                                                                                                                                                    prettier/prettier
+  61:11  warning  Unexpected alert                                                                                                                                                                                                                                                      no-alert
+  62:13  error    Replace `'Could·not·change·password,·please·confirm·email·and·code·are·correct.·New·Password·must·be·different·than·old·password.'` with `"Could·not·change·password,·please·confirm·email·and·code·are·correct.·New·Password·must·be·different·than·old·password."`  prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\navigation\header.tsx
+   1:19  error  Replace `'react'` with `"react"`                                                       prettier/prettier
+   2:35  error  Replace `'react-router-dom'` with `"react-router-dom"`                                 prettier/prettier
+   3:20  error  Replace `'styled-components'` with `"styled-components"`                               prettier/prettier
+   4:29  error  Replace `'react-icons/bi'` with `"react-icons/bi"`                                     prettier/prettier
+   5:20  error  Replace `'./navBar'` with `"./navBar"`                                                 prettier/prettier
+  32:12  error  Replace `'flex'` with `"flex"`                                                         prettier/prettier
+  33:16  error  Replace `'Poppins'` with `"Poppins"`                                                   prettier/prettier
+  49:6   error  Type Alias name `headerPropTypes` must match one of the following formats: PascalCase  @typescript-eslint/naming-convention
+  96:9   error  Replace `''` with `""`                                                                 prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\navigation\navBar.tsx
+    1:45  error  Replace `'react'` with `"react"`                                      prettier/prettier
+    2:26  error  Replace `'react-router-dom'` with `"react-router-dom"`                prettier/prettier
+    3:21  error  Replace `'react-sidebar'` with `"react-sidebar"`                      prettier/prettier
+    4:22  error  Replace `'aws-amplify'` with `"aws-amplify"`                          prettier/prettier
+   19:8   error  Replace `'./navComponents'` with `"./navComponents"`                  prettier/prettier
+   20:18  error  Replace `'../../imgs/logo.png'` with `"../../imgs/logo.png"`          prettier/prettier
+   21:25  error  Replace `'../../userContext'` with `"../../userContext"`              prettier/prettier
+   22:22  error  Replace `'../../types'` with `"../../types"`                          prettier/prettier
+   39:19  error  Replace `'error·signing·out:·'` with `"error·signing·out:·"`          prettier/prettier
+   51:42  error  Replace `'/create-event'` with `"/create-event"`                      prettier/prettier
+   57:42  error  Replace `'/events'` with `"/events"`                                  prettier/prettier
+   63:42  error  Replace `'/volunteer-log'` with `"/volunteer-log"`                    prettier/prettier
+   69:42  error  Replace `'/edit-prizes'` with `"/edit-prizes"`                        prettier/prettier
+   78:42  error  Replace `'/events'` with `"/events"`                                  prettier/prettier
+   84:42  error  Replace `'/past-shifts'` with `"/past-shifts"`                        prettier/prettier
+  102:32  error  Replace `'#8ea974',·width:·'250px'` with `"#8ea974",·width:·"250px"`  prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\navigation\navComponents.tsx
+   1:20  error  Replace `'styled-components'` with `"styled-components"`              prettier/prettier
+   2:24  error  Replace `'react-icons/bi'` with `"react-icons/bi"`                    prettier/prettier
+   3:24  error  Replace `'react-icons/fa'` with `"react-icons/fa"`                    prettier/prettier
+   4:40  error  Replace `'react-icons/hi'` with `"react-icons/hi"`                    prettier/prettier
+   5:32  error  Replace `'react-icons/gi'` with `"react-icons/gi"`                    prettier/prettier
+   6:26  error  Replace `'react-icons/md'` with `"react-icons/md"`                    prettier/prettier
+   7:38  error  Replace `'react-icons/io'` with `"react-icons/io"`                    prettier/prettier
+   8:28  error  Replace `'react-icons/fi'` with `"react-icons/fi"`                    prettier/prettier
+   9:22  error  Replace `'react-router-dom'` with `"react-router-dom"`                prettier/prettier
+  84:20  error  Replace `'#aec29b'·:·'transparent'` with `"#aec29b"·:·"transparent"`  prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\createEvent.tsx
+    1:33  error  Replace `'react'` with `"react"`                                                                                                                    prettier/prettier
+    2:20  error  Replace `'styled-components'` with `"styled-components"`                                                                                            prettier/prettier
+    3:44  error  Replace `'date-fns'` with `"date-fns"`                                                                                                              prettier/prettier
+    4:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                                                                      prettier/prettier
+    5:23  error  Replace `'./formComponents'` with `"./formComponents"`                                                                                              prettier/prettier
+    6:55  error  Replace `'../styledComponents'` with `"../styledComponents"`                                                                                        prettier/prettier
+   54:38  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   55:36  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   56:42  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   57:40  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   58:40  error  Replace `'false'` with `"false"`                                                                                                                    prettier/prettier
+   59:39  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   60:44  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   61:38  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   62:40  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   63:36  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   66:14  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   67:13  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   68:14  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   69:14  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   70:15  error  Replace `'false'` with `"false"`                                                                                                                    prettier/prettier
+   71:12  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   72:17  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+   73:14  error  Replace `''` with `""`                                                                                                                              prettier/prettier
+  112:15  error  Replace `'POST'` with `"POST"`                                                                                                                      prettier/prettier
+  114:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                                                              prettier/prettier
+  121:19  error  Replace `'Your·event·has·been·created.·'` with `"Your·event·has·been·created.·"`                                                                    prettier/prettier
+  122:17  error  Replace `'Back·to·events'` with `"Back·to·events"`                                                                                                  prettier/prettier
+  125:23  error  Replace `'Error:'` with `"Error:"`                                                                                                                  prettier/prettier
+  126:19  error  Replace `'Error·submitting·event'` with `"Error·submitting·event"`                                                                                  prettier/prettier
+  131:46  error  Replace `':'` with `":"`                                                                                                                            prettier/prettier
+  132:40  error  Replace `':'` with `":"`                                                                                                                            prettier/prettier
+  134:20  error  Replace `'false'` with `"false"`                                                                                                                    prettier/prettier
+  138:46  error  Replace `'·'` with `"·"`                                                                                                                            prettier/prettier
+  139:48  error  Replace `'·'` with `"·"`                                                                                                                            prettier/prettier
+  154:11  error  Replace `'Invalid·date·range,·make·sure·starting·date·is·before·end·date'` with `"Invalid·date·range,·make·sure·starting·date·is·before·end·date"`  prettier/prettier
+  229:40  error  Replace `'false'` with `"false"`                                                                                                                    prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\deleteModal.tsx
+    1:19  error  Replace `'react'` with `"react"`                                                        prettier/prettier
+    2:20  error  Replace `'styled-components'` with `"styled-components"`                                prettier/prettier
+    3:35  error  Replace `'@mui/material'` with `"@mui/material"`                                        prettier/prettier
+    4:30  error  Replace `'../../types'` with `"../../types"`                                            prettier/prettier
+   72:15  error  Replace `'DELETE'` with `"DELETE"`                                                      prettier/prettier
+   74:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`  prettier/prettier
+   83:23  error  Replace `'Error:'` with `"Error:"`                                                      prettier/prettier
+   91:15  error  Replace `'DELETE'` with `"DELETE"`                                                      prettier/prettier
+   93:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`  prettier/prettier
+  107:23  error  Replace `'Error:'` with `"Error:"`                                                      prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\editOnePrize.tsx
+   1:33  error  Replace `'react'` with `"react"`                                                                       prettier/prettier
+   2:20  error  Replace `'styled-components'` with `"styled-components"`                                               prettier/prettier
+   3:40  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                 prettier/prettier
+   4:27  error  Replace `'@mui/material'` with `"@mui/material"`                                                       prettier/prettier
+   5:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                         prettier/prettier
+   6:44  error  Replace `'../styledComponents'` with `"../styledComponents"`                                           prettier/prettier
+   7:23  error  Replace `'../../types'` with `"../../types"`                                                           prettier/prettier
+  29:44  error  Replace `''` with `""`                                                                                 prettier/prettier
+  30:50  error  Replace `''` with `""`                                                                                 prettier/prettier
+  31:48  error  Replace `''` with `""`                                                                                 prettier/prettier
+  42:18  error  Replace `''` with `""`                                                                                 prettier/prettier
+  45:21  error  Replace `''` with `""`                                                                                 prettier/prettier
+  48:22  error  Replace `''` with `""`                                                                                 prettier/prettier
+  54:15  error  Replace `'PATCH'` with `"PATCH"`                                                                       prettier/prettier
+  56:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                 prettier/prettier
+  63:25  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+  79:26  error  Replace `'/edit-prizes'` with `"/edit-prizes"`                                                         prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\editPrizes.tsx
+   1:19  error  Replace `'react'` with `"react"`                                                                       prettier/prettier
+   2:20  error  Replace `'styled-components'` with `"styled-components"`                                               prettier/prettier
+   3:22  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                 prettier/prettier
+   4:27  error  Replace `'@mui/material'` with `"@mui/material"`                                                       prettier/prettier
+   5:23  error  Replace `'./prizeCard'` with `"./prizeCard"`                                                           prettier/prettier
+   6:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                         prettier/prettier
+   7:23  error  Replace `'../../types'` with `"../../types"`                                                           prettier/prettier
+  27:43  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\eventCard.tsx
+  1:47  error  Replace `'react'` with `"react"`                          prettier/prettier
+  2:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+  3:27  error  Replace `'@mui/material'` with `"@mui/material"`          prettier/prettier
+  4:35  error  Replace `'react-icons/ri'` with `"react-icons/ri"`        prettier/prettier
+  5:25  error  Replace `'../../userContext'` with `"../../userContext"`  prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\eventDesc.tsx
+  1:19  error  Replace `'react'` with `"react"`                          prettier/prettier
+  2:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+  3:27  error  Replace `'@mui/material'` with `"@mui/material"`          prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\events.tsx
+    1:45  error  Replace `'react'` with `"react"`                                                                       prettier/prettier
+    2:20  error  Replace `'styled-components'` with `"styled-components"`                                               prettier/prettier
+    3:22  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                 prettier/prettier
+    4:27  error  Replace `'@mui/material'` with `"@mui/material"`                                                       prettier/prettier
+    5:34  error  Replace `'react-icons/ri'` with `"react-icons/ri"`                                                     prettier/prettier
+    6:23  error  Replace `'./eventCard'` with `"./eventCard"`                                                           prettier/prettier
+    7:25  error  Replace `'./deleteModal'` with `"./deleteModal"`                                                       prettier/prettier
+    8:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                         prettier/prettier
+    9:30  error  Replace `'../../types'` with `"../../types"`                                                           prettier/prettier
+   10:25  error  Replace `'../../userContext'` with `"../../userContext"`                                               prettier/prettier
+   37:5   error  Replace `'Sunday'` with `"Sunday"`                                                                     prettier/prettier
+   38:5   error  Replace `'Monday'` with `"Monday"`                                                                     prettier/prettier
+   39:5   error  Replace `'Tuesday'` with `"Tuesday"`                                                                   prettier/prettier
+   40:5   error  Replace `'Wednesday'` with `"Wednesday"`                                                               prettier/prettier
+   41:5   error  Replace `'Thursday'` with `"Thursday"`                                                                 prettier/prettier
+   42:5   error  Replace `'Friday'` with `"Friday"`                                                                     prettier/prettier
+   43:5   error  Replace `'Saturday'` with `"Saturday"`                                                                 prettier/prettier
+   48:63  error  Replace `'en-US'` with `"en-US"`                                                                       prettier/prettier
+   49:15  error  Replace `'UTC'` with `"UTC"`                                                                           prettier/prettier
+   65:40  error  Replace `''` with `""`                                                                                 prettier/prettier
+  107:29  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\formComponents.tsx
+   1:35  error  Replace `'react'` with `"react"`                             prettier/prettier
+   2:20  error  Replace `'styled-components'` with `"styled-components"`     prettier/prettier
+  36:23  error  'default' is restricted from being used as an exported name  no-restricted-exports
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\logHours.tsx
+    1:46  error  Replace `'react'` with `"react"`                                                                       prettier/prettier
+    2:20  error  Replace `'styled-components'` with `"styled-components"`                                               prettier/prettier
+    3:57  error  Replace `'@mui/material'` with `"@mui/material"`                                                       prettier/prettier
+    4:44  error  Replace `'@mui/material/styles'` with `"@mui/material/styles"`                                         prettier/prettier
+    5:59  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                 prettier/prettier
+    6:23  error  Replace `'./eventDesc'` with `"./eventDesc"`                                                           prettier/prettier
+    7:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                         prettier/prettier
+    8:38  error  Replace `'../styledComponents'` with `"../styledComponents"`                                           prettier/prettier
+    9:36  error  Replace `'../../types'` with `"../../types"`                                                           prettier/prettier
+   10:25  error  Replace `'../../userContext'` with `"../../userContext"`                                               prettier/prettier
+   21:11  error  Replace `'&·fieldset'` with `"&·fieldset"`                                                             prettier/prettier
+   22:27  error  Replace `'10px'` with `"10px"`                                                                         prettier/prettier
+   23:24  error  Replace `'border-box'` with `"border-box"`                                                             prettier/prettier
+   24:21  error  Replace `'1px·solid·#c4c4c4'` with `"1px·solid·#c4c4c4"`                                               prettier/prettier
+   25:26  error  Replace `'10px'` with `"10px"`                                                                         prettier/prettier
+   27:19  error  Replace `'5px·0·20px·0'` with `"5px·0·20px·0"`                                                         prettier/prettier
+   33:17  error  Replace `'Poppins'` with `"Poppins"`                                                                   prettier/prettier
+   87:5   error  Replace `'Sunday'` with `"Sunday"`                                                                     prettier/prettier
+   88:5   error  Replace `'Monday'` with `"Monday"`                                                                     prettier/prettier
+   89:5   error  Replace `'Tuesday'` with `"Tuesday"`                                                                   prettier/prettier
+   90:5   error  Replace `'Wednesday'` with `"Wednesday"`                                                               prettier/prettier
+   91:5   error  Replace `'Thursday'` with `"Thursday"`                                                                 prettier/prettier
+   92:5   error  Replace `'Friday'` with `"Friday"`                                                                     prettier/prettier
+   93:5   error  Replace `'Saturday'` with `"Saturday"`                                                                 prettier/prettier
+   98:67  error  Replace `'en-US'` with `"en-US"`                                                                       prettier/prettier
+   99:15  error  Replace `'UTC'` with `"UTC"`                                                                           prettier/prettier
+  100:16  error  Replace `'short'` with `"short"`                                                                       prettier/prettier
+  101:16  error  Replace `'short'` with `"short"`                                                                       prettier/prettier
+  118:34  error  Replace `'editing'` with `"editing"`                                                                   prettier/prettier
+  122:33  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+  133:31  error  Replace `'true'` with `"true"`                                                                         prettier/prettier
+  155:31  error  Replace `'off'` with `"off"`                                                                           prettier/prettier
+  172:44  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  173:46  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  176:42  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  178:34  error  Replace `'editing'` with `"editing"`                                                                   prettier/prettier
+  187:39  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+  196:56  error  Replace `''` with `""`                                                                                 prettier/prettier
+  198:47  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+  211:15  error  Replace `'PUT'` with `"PUT"`                                                                           prettier/prettier
+  213:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                 prettier/prettier
+  224:15  error  Replace `'PUT'` with `"PUT"`                                                                           prettier/prettier
+  226:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                 prettier/prettier
+  241:15  error  Replace `'POST'` with `"POST"`                                                                         prettier/prettier
+  242:18  error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                 prettier/prettier
+  258:18  error  Replace `'/thank-you'` with `"/thank-you"`                                                             prettier/prettier
+  269:15  error  Replace `'PATCH'` with `"PATCH"`                                                                       prettier/prettier
+  270:18  error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                 prettier/prettier
+  277:35  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+  284:32  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+  296:19  error  Replace `'invalid·input'` with `"invalid·input"`                                                       prettier/prettier
+  297:16  error  Replace `'Please·enter·a·positive·number·of·hours'` with `"Please·enter·a·positive·number·of·hours"`   prettier/prettier
+  299:16  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  304:19  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  305:17  error  Replace `'Hours·have·been·submitted.'` with `"Hours·have·been·submitted."`                             prettier/prettier
+  306:15  error  Replace `'View·your·updated·history·here.'` with `"View·your·updated·history·here."`                   prettier/prettier
+  307:16  error  Replace `''` with `""`                                                                                 prettier/prettier
+  310:15  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  311:13  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  332:11  error  Replace `'Loading...'` with `"Loading..."`                                                             prettier/prettier
+  373:32  error  Replace `'Update·hours'·:·'Submit'` with `"Update·hours"·:·"Submit"`                                   prettier/prettier
+  381:43  error  Replace `'/volunteer-log'·:·'/past-shifts'` with `"/volunteer-log"·:·"/past-shifts"`                   prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\pastShifts.tsx
+   1:19  error  Replace `'react'` with `"react"`                                                                       prettier/prettier
+   2:20  error  Replace `'styled-components'` with `"styled-components"`                                               prettier/prettier
+   3:27  error  Replace `'@mui/material'` with `"@mui/material"`                                                       prettier/prettier
+   4:23  error  Replace `'./shiftSlot'` with `"./shiftSlot"`                                                           prettier/prettier
+   5:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                         prettier/prettier
+   6:30  error  Replace `'../../types'` with `"../../types"`                                                           prettier/prettier
+   7:25  error  Replace `'./progressBar'` with `"./progressBar"`                                                       prettier/prettier
+   8:25  error  Replace `'./rewardModal'` with `"./rewardModal"`                                                       prettier/prettier
+  17:5   error  Replace `'Sunday'` with `"Sunday"`                                                                     prettier/prettier
+  18:5   error  Replace `'Monday'` with `"Monday"`                                                                     prettier/prettier
+  19:5   error  Replace `'Tuesday'` with `"Tuesday"`                                                                   prettier/prettier
+  20:5   error  Replace `'Wednesday'` with `"Wednesday"`                                                               prettier/prettier
+  21:5   error  Replace `'Thursday'` with `"Thursday"`                                                                 prettier/prettier
+  22:5   error  Replace `'Friday'` with `"Friday"`                                                                     prettier/prettier
+  23:5   error  Replace `'Saturday'` with `"Saturday"`                                                                 prettier/prettier
+  27:71  error  Replace `'en-US'` with `"en-US"`                                                                       prettier/prettier
+  28:15  error  Replace `'UTC'` with `"UTC"`                                                                           prettier/prettier
+  59:42  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\prizeCard.tsx
+  1:19  error  Replace `'react'` with `"react"`                          prettier/prettier
+  2:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+  3:27  error  Replace `'@mui/material'` with `"@mui/material"`          prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\progressBar.tsx
+   1:19  error  Replace `'react'` with `"react"`                                                            prettier/prettier
+   2:43  error  Replace `'react-step-progress-bar'` with `"react-step-progress-bar"`                        prettier/prettier
+   3:8   error  Replace `'react-step-progress-bar/styles.css'` with `"react-step-progress-bar/styles.css"`  prettier/prettier
+   4:20  error  Replace `'styled-components'` with `"styled-components"`                                    prettier/prettier
+  39:43  error  Replace `'#80ba59'·:·'#ffffff'` with `"#80ba59"·:·"#ffffff"`                                prettier/prettier
+  42:39  error  Replace `'#DDE4DD'·:·'#DDDDDD'` with `"#DDE4DD"·:·"#DDDDDD"`                                prettier/prettier
+  59:16  error  Replace `'Poppins'` with `"Poppins"`                                                        prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\rewardModal.tsx
+    1:33  error  Replace `'react'` with `"react"`                                                                       prettier/prettier
+    2:20  error  Replace `'styled-components'` with `"styled-components"`                                               prettier/prettier
+    3:35  error  Replace `'@mui/material'` with `"@mui/material"`                                                       prettier/prettier
+    4:32  error  Replace `'react-icons/io5'` with `"react-icons/io5"`                                                   prettier/prettier
+    5:24  error  Replace `'../styledComponents'` with `"../styledComponents"`                                           prettier/prettier
+    6:28  error  Replace `'./progressBar'` with `"./progressBar"`                                                       prettier/prettier
+    7:23  error  Replace `'./prizeCard'` with `"./prizeCard"`                                                           prettier/prettier
+    8:23  error  Replace `'../../types'` with `"../../types"`                                                           prettier/prettier
+  119:81  error  Replace `'·'` with `"·"`                                                                               prettier/prettier
+  124:42  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`  arrow-body-style
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\shiftSlot.tsx
+  1:19  error  Replace `'react'` with `"react"`                          prettier/prettier
+  2:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+  3:27  error  Replace `'@mui/material'` with `"@mui/material"`          prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\thankYou.tsx
+    1:19  error  Replace `'react'` with `"react"`                                                    prettier/prettier
+    2:35  error  Replace `'react-router-dom'` with `"react-router-dom"`                              prettier/prettier
+    3:20  error  Replace `'styled-components'` with `"styled-components"`                            prettier/prettier
+    4:27  error  Replace `'@mui/material'` with `"@mui/material"`                                    prettier/prettier
+    6:23  error  Replace `'./shiftSlot'` with `"./shiftSlot"`                                        prettier/prettier
+    7:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                      prettier/prettier
+    8:23  error  Replace `'../../imgs/green_checkmark.svg'` with `"../../imgs/green_checkmark.svg"`  prettier/prettier
+   72:5   error  Replace `'Sunday'` with `"Sunday"`                                                  prettier/prettier
+   73:5   error  Replace `'Monday'` with `"Monday"`                                                  prettier/prettier
+   74:5   error  Replace `'Tuesday'` with `"Tuesday"`                                                prettier/prettier
+   75:5   error  Replace `'Wednesday'` with `"Wednesday"`                                            prettier/prettier
+   76:5   error  Replace `'Thursday'` with `"Thursday"`                                              prettier/prettier
+   77:5   error  Replace `'Friday'` with `"Friday"`                                                  prettier/prettier
+   78:5   error  Replace `'Saturday'` with `"Saturday"`                                              prettier/prettier
+   82:71  error  Replace `'en-US'` with `"en-US"`                                                    prettier/prettier
+   83:15  error  Replace `'UTC'` with `"UTC"`                                                        prettier/prettier
+  105:33  error  Replace `'·'` with `"·"`                                                            prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\pages\volunteerLog.tsx
+    1:33  error  Replace `'react'` with `"react"`                                                                                        prettier/prettier
+    2:20  error  Replace `'styled-components'` with `"styled-components"`                                                                prettier/prettier
+    3:29  error  Replace `'export-to-csv-fix-source-map'` with `"export-to-csv-fix-source-map"`                                          prettier/prettier
+   14:8   error  Replace `'@mui/material'` with `"@mui/material"`                                                                        prettier/prettier
+   15:44  error  Replace `'@mui/material/styles'` with `"@mui/material/styles"`                                                          prettier/prettier
+   16:24  error  Replace `'react-icons/bi'` with `"react-icons/bi"`                                                                      prettier/prettier
+   17:34  error  Replace `'react-icons/ri'` with `"react-icons/ri"`                                                                      prettier/prettier
+   18:22  error  Replace `'react-router-dom'` with `"react-router-dom"`                                                                  prettier/prettier
+   19:24  error  Replace `'../styledComponents'` with `"../styledComponents"`                                                            prettier/prettier
+   20:20  error  Replace `'../navigation/header'` with `"../navigation/header"`                                                          prettier/prettier
+   21:23  error  Replace `'../../types'` with `"../../types"`                                                                            prettier/prettier
+   22:25  error  Replace `'./deleteModal'` with `"./deleteModal"`                                                                        prettier/prettier
+   32:17  error  Replace `'Poppins'` with `"Poppins"`                                                                                    prettier/prettier
+   84:19  error  Replace `','` with `","`                                                                                                prettier/prettier
+   86:21  error  Replace `'.'` with `"."`                                                                                                prettier/prettier
+   89:10  error  Replace `'Volunteer·Log·Test·Data'` with `"Volunteer·Log·Test·Data"`                                                    prettier/prettier
+   90:13  error  Replace `'volunteer_totals'` with `"volunteer_totals"`                                                                  prettier/prettier
+   94:13  error  Replace `'Event·Title',·'Location',·'Date',·'Hours',·'Name'` with `"Event·Title",·"Location",·"Date",·"Hours",·"Name"`  prettier/prettier
+  111:55  error  Replace `'en-US'` with `"en-US"`                                                                                        prettier/prettier
+  112:15  error  Replace `'UTC'` with `"UTC"`                                                                                            prettier/prettier
+  126:55  error  Replace `'en-US'` with `"en-US"`                                                                                        prettier/prettier
+  127:15  error  Replace `'UTC'` with `"UTC"`                                                                                            prettier/prettier
+  132:12  error  Replace `'Filter·by·month',·value:·''` with `"Filter·by·month",·value:·""`                                              prettier/prettier
+  133:12  error  Replace `'January',·value:·'1'` with `"January",·value:·"1"`                                                            prettier/prettier
+  134:12  error  Replace `'February',·value:·'2'` with `"February",·value:·"2"`                                                          prettier/prettier
+  135:12  error  Replace `'March',·value:·'3'` with `"March",·value:·"3"`                                                                prettier/prettier
+  136:12  error  Replace `'April',·value:·'4'` with `"April",·value:·"4"`                                                                prettier/prettier
+  137:12  error  Replace `'May',·value:·'5'` with `"May",·value:·"5"`                                                                    prettier/prettier
+  138:12  error  Replace `'June',·value:·'6'` with `"June",·value:·"6"`                                                                  prettier/prettier
+  139:12  error  Replace `'July',·value:·'7'` with `"July",·value:·"7"`                                                                  prettier/prettier
+  140:12  error  Replace `'August',·value:·'8'` with `"August",·value:·"8"`                                                              prettier/prettier
+  141:12  error  Replace `'September',·value:·'9'` with `"September",·value:·"9"`                                                        prettier/prettier
+  142:12  error  Replace `'October',·value:·'10'` with `"October",·value:·"10"`                                                          prettier/prettier
+  143:12  error  Replace `'November',·value:·'11'` with `"November",·value:·"11"`                                                        prettier/prettier
+  144:12  error  Replace `'December',·value:·'12'` with `"December",·value:·"12"`                                                        prettier/prettier
+  148:12  error  Replace `'Filter·by·year',·value:·''` with `"Filter·by·year",·value:·""`                                                prettier/prettier
+  164:40  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  165:36  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  166:38  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  186:21  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`                   arrow-body-style
+  201:16  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  204:17  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  205:50  error  Replace `'/'` with `"/"`                                                                                                prettier/prettier
+  210:21  error  Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`                   arrow-body-style
+  222:16  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  225:17  error  Replace `''` with `""`                                                                                                  prettier/prettier
+  226:50  error  Replace `'/'` with `"/"`                                                                                                prettier/prettier
+  264:42  error  Replace `'100px'` with `"100px"`                                                                                        prettier/prettier
+  265:45  error  Replace `'#5F8F3E73'` with `"#5F8F3E73"`                                                                                prettier/prettier
+  280:25  error  Replace `'&:last-child·td,·&:last-child·th'` with `"&:last-child·td,·&:last-child·th"`                                  prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\components\styledComponents.tsx
+  1:20  error  Replace `'styled-components'` with `"styled-components"`  prettier/prettier
+  2:22  error  Replace `'react-router-dom'` with `"react-router-dom"`    prettier/prettier
+  3:29  error  Replace `'react-icons/bi'` with `"react-icons/bi"`        prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\index.tsx
+   1:19  error  Replace `'react'` with `"react"`              prettier/prettier
+   2:22  error  Replace `'react-dom'` with `"react-dom"`      prettier/prettier
+   3:8   error  Replace `'./index.css'` with `"./index.css"`  prettier/prettier
+   4:17  error  Replace `'./App'` with `"./App"`              prettier/prettier
+  10:27  error  Replace `'root'` with `"root"`                prettier/prettier
+
+C:\Users\ryanh\Documents\GitHub\Hack4Impact\the-land-conservancy\frontend\src\userContext.tsx
+  1:19  error  Replace `'react'` with `"react"`      prettier/prettier
+  2:22  error  Replace `'./types'` with `"./types"`  prettier/prettier
+
+✖ 461 problems (456 errors, 5 warnings)
+  452 errors and 0 warnings potentially fixable with the `--fix` option.
+
