@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
-import { AuthContainer, ErrorMsg } from './authComponents';
+import React, { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import { AuthContainer, ErrorMsg } from "./authComponents";
 import {
   Content,
   Header,
@@ -10,9 +10,9 @@ import {
   Label,
   Submit,
   StyledBack,
-} from '../styledComponents';
-import UserContext from '../../userContext';
-import { User } from '../../types';
+} from "../styledComponents";
+import UserContext from "../../userContext";
+import { User } from "../../types";
 
 // create account type
 type Account = {
@@ -23,12 +23,12 @@ type Account = {
 };
 
 export default function CreateAccount() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
-  const [pass1, setPass1] = useState('');
-  const [pass2, setPass2] = useState('');
-  const [badMsg, setBadMsg] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [pass1, setPass1] = useState("");
+  const [pass2, setPass2] = useState("");
+  const [badMsg, setBadMsg] = useState("");
   const [disabled, setDisabled] = useState(true);
   const { setUser } = useContext(UserContext);
 
@@ -44,9 +44,9 @@ export default function CreateAccount() {
       pastShifts: [], // no shifts or hours on init
     };
     await fetch(`${PORT}/users`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(mongoUser),
     });
@@ -76,11 +76,11 @@ export default function CreateAccount() {
       try {
         await addUserToDb(userSub);
       } catch (error) {
-        console.log('error adding user to mongoDB:', error);
+        console.log("error adding user to mongoDB:", error);
       }
       return true;
     } catch (error) {
-      console.log('error signing up:', error);
+      console.log("error signing up:", error);
       window.alert(error);
     }
     return false;
@@ -91,7 +91,7 @@ export default function CreateAccount() {
     const account: Account = {
       Name: name,
       Email: email,
-      Number: '+1'.concat(number),
+      Number: "+1".concat(number),
       Password: pass1,
     };
     return account;
@@ -106,12 +106,12 @@ export default function CreateAccount() {
     const hasUpper = (str: string) => /[A-Z]/.test(str);
 
     if (email && !emailRegex.test(email)) {
-      setBadMsg('Please enter a valid email address.');
+      setBadMsg("Please enter a valid email address.");
       return false;
     }
 
     if (number && !(phoneRegex.test(number) && number.length === 10)) {
-      setBadMsg('please enter the 10 digits of your phone number');
+      setBadMsg("please enter the 10 digits of your phone number");
       return false;
     }
     if (
@@ -124,16 +124,16 @@ export default function CreateAccount() {
       )
     ) {
       setBadMsg(
-        'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
+        "Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter"
       );
       return false;
     }
     if (pass1 && pass1 !== pass2) {
-      setBadMsg('Passwords must match');
+      setBadMsg("Passwords must match");
       return false;
     }
 
-    setBadMsg('');
+    setBadMsg("");
     return true;
   };
 
@@ -156,7 +156,7 @@ export default function CreateAccount() {
             // if signup successful, set email & nav to confirm-email page
             if (await signUp(createAccount())) {
               setUser({ email } as User);
-              navigate('/confirm-email');
+              navigate("/confirm-email");
             }
           }}
         >

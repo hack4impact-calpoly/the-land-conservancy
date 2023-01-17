@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Modal, ButtonBase } from '@mui/material';
-import { Shift, Event } from '../../types';
+import React from "react";
+import styled from "styled-components";
+import { Modal, ButtonBase } from "@mui/material";
+import { Shift, Event } from "../../types";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -69,9 +69,9 @@ export default function DeleteModal({
   const deleteShift = async () => {
     setDeleteOpen(false);
     await fetch(`${PORT}/shifts/${itemId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     })
       .then(() => {
@@ -80,7 +80,7 @@ export default function DeleteModal({
           setAllShifts((prev) => prev.filter((shift) => shift._id !== itemId));
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       });
   };
 
@@ -88,9 +88,9 @@ export default function DeleteModal({
   const deleteEvent = async () => {
     setDeleteOpen(false);
     await fetch(`${PORT}/events/${itemId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     })
       .then(() => {
@@ -104,7 +104,7 @@ export default function DeleteModal({
         );
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       });
   };
 

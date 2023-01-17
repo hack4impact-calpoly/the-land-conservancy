@@ -1,8 +1,8 @@
-import React, { ReactChild, useContext } from 'react';
-import styled from 'styled-components';
-import { Container } from '@mui/material';
-import { RiArrowRightSLine } from 'react-icons/ri';
-import UserContext from '../../userContext';
+import React, { ReactChild, useContext } from "react";
+import styled from "styled-components";
+import { Container } from "@mui/material";
+import { RiArrowRightSLine } from "react-icons/ri";
+import UserContext from "../../userContext";
 
 const StyledContainer = styled(Container)`
   background-color: #f1f1f1;

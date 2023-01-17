@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { eachWeekOfInterval, getDay } from 'date-fns';
-import Header from '../navigation/header';
-import Container from './formComponents';
-import { Form, Input, Submit, Label, GreenLink } from '../styledComponents';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { eachWeekOfInterval, getDay } from "date-fns";
+import Header from "../navigation/header";
+import Container from "./formComponents";
+import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -51,26 +51,26 @@ export default function CreateEvent({
 }: {
   setEvents: (val: (prev: Event[]) => Event[]) => void;
 }) {
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [startTime, setSTime] = useState('');
-  const [endTime, setETime] = useState('');
-  const [repeat, setRepeat] = useState('false');
-  const [endAfter, setEnd] = useState('');
-  const [location, setLocation] = useState('');
-  const [notes, setNotes] = useState('');
-  const [submit, setSubmit] = useState('');
-  const [link, setLink] = useState('');
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setSTime] = useState("");
+  const [endTime, setETime] = useState("");
+  const [repeat, setRepeat] = useState("false");
+  const [endAfter, setEnd] = useState("");
+  const [location, setLocation] = useState("");
+  const [notes, setNotes] = useState("");
+  const [submit, setSubmit] = useState("");
+  const [link, setLink] = useState("");
 
   const clearForm = () => {
-    setTitle('');
-    setDate('');
-    setSTime('');
-    setETime('');
-    setRepeat('false');
-    setEnd('');
-    setLocation('');
-    setNotes('');
+    setTitle("");
+    setDate("");
+    setSTime("");
+    setETime("");
+    setRepeat("false");
+    setEnd("");
+    setLocation("");
+    setNotes("");
   };
 
   const postEvent = async (
@@ -109,34 +109,34 @@ export default function CreateEvent({
 
     clearForm(); // clear form first to prevent multiple clicks => multiple submits
     fetch(`${PORT}/events/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newEvent),
     })
       .then((response) => response.json())
       .then((data) => setEvents((prev) => [...prev, data]))
       .then(() => {
-        setSubmit('Your event has been created. ');
-        setLink('Back to events');
+        setSubmit("Your event has been created. ");
+        setLink("Back to events");
       })
       .catch((error) => {
-        console.error('Error:', error);
-        setSubmit('Error submitting event');
+        console.error("Error:", error);
+        setSubmit("Error submitting event");
       });
   };
 
   const submitEvent = async () => {
-    const [startH, startM] = startTime.split(':');
-    const [endH, endM] = endTime.split(':');
+    const [startH, startM] = startTime.split(":");
+    const [endH, endM] = endTime.split(":");
 
-    if (repeat === 'false') {
+    if (repeat === "false") {
       postEvent(date, startH, startM, endH, endM);
     } else {
       // need times to make sure date is correct
-      const startDate = new Date(date.concat(' ', startTime));
-      const endDate = new Date(endAfter.concat(' ', endTime));
+      const startDate = new Date(date.concat(" ", startTime));
+      const endDate = new Date(endAfter.concat(" ", endTime));
       try {
         // get range of dates between the start and end dates
         const dates = eachWeekOfInterval(
@@ -151,7 +151,7 @@ export default function CreateEvent({
         });
       } catch (RangeError) {
         setSubmit(
-          'Invalid date range, make sure starting date is before end date'
+          "Invalid date range, make sure starting date is before end date"
         );
       }
     }
@@ -226,7 +226,7 @@ export default function CreateEvent({
                   placeholder="ends after"
                   value={endAfter}
                   required
-                  disabled={repeat === 'false'}
+                  disabled={repeat === "false"}
                 />
               </Flex>
             </Flex>

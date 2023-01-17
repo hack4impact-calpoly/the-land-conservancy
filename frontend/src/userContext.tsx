@@ -1,5 +1,5 @@
-import React from 'react';
-import { User } from './types';
+import React from "react";
+import { User } from "./types";
 
 const defaultFields = {
   currentUser: {} as User,

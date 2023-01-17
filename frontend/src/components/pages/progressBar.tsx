@@ -1,7 +1,7 @@
-import React from 'react';
-import { ProgressBar as PBar, Step } from 'react-step-progress-bar';
-import 'react-step-progress-bar/styles.css';
-import styled from 'styled-components';
+import React from "react";
+import { ProgressBar as PBar, Step } from "react-step-progress-bar";
+import "react-step-progress-bar/styles.css";
+import styled from "styled-components";
 
 const PBarContainer = styled.div`
   margin-bottom: 40px;
@@ -36,10 +36,10 @@ const StyledHours = styled.span`
 const IndexedStep = styled.div.attrs((props: { acc: boolean }) => props)`
   width: 13px;
   height: 13px;
-  background-color: ${({ acc }) => (acc ? '#80ba59' : '#ffffff')};
+  background-color: ${({ acc }) => (acc ? "#80ba59" : "#ffffff")};
   
   border: 2px solid #C1C1C1;
-  border-color: ${({ acc }) => (acc ? '#DDE4DD' : '#DDDDDD')};
+  border-color: ${({ acc }) => (acc ? "#DDE4DD" : "#DDDDDD")};
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -56,7 +56,7 @@ const IndexedStepPosition = styled.p`
   font-size: 15px;
   color: black;
   font-weight: 600;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   margin-top: 50px;
   @media screen and (min-width: 768px) {
     font-size: 20px;

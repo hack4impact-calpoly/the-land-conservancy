@@ -1,11 +1,11 @@
-import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { Container } from '@mui/material';
+import React from "react";
+import { useLocation, Link } from "react-router-dom";
+import styled from "styled-components";
+import { Container } from "@mui/material";
 
-import ShiftSlot from './shiftSlot';
-import Header from '../navigation/header';
-import checkmark from '../../imgs/green_checkmark.svg';
+import ShiftSlot from "./shiftSlot";
+import Header from "../navigation/header";
+import checkmark from "../../imgs/green_checkmark.svg";
 
 const Check = styled.img`
   padding-top: 10px;
@@ -69,18 +69,18 @@ const Row = styled.div`
 
 const convertDate = (date: string) => {
   const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
   const reformat = new Date(date);
 
-  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString('en-US', {
-    timeZone: 'UTC',
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString("en-US", {
+    timeZone: "UTC",
   })}`;
 };
 
@@ -102,7 +102,7 @@ export default function ThankYou() {
         <Text>
           Thank you for volunteering with The Land Conservancy! The work of
           incredible volunteers like you makes conserving wildlife habitat and
-          agriculture possible.{' '}
+          agriculture possible.{" "}
         </Text>
 
         <Text>
