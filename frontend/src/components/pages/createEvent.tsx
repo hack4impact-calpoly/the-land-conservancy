@@ -4,6 +4,7 @@ import { eachWeekOfInterval, getDay } from "date-fns";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
+import CustomRepeatingDate from "./customRepeatingDate";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -157,109 +158,113 @@ export default function CreateEvent({
     }
   };
   return (
-    <Header headerText="Create Event" back="/events" navbar>
-      <Container>
-        <div>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitEvent();
-            }}
-          >
-            <Input
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Event Title"
-              value={title}
-              required
-            />
-            <Label htmlFor="date">Date</Label>
-            <Input
-              id="date"
-              type="date"
-              onChange={(e) => setDate(e.target.value)}
-              placeholder="Date"
-              value={date}
-              required
-            />
-
-            <Label htmlFor="st">Time</Label>
-            <Flex dir="row">
+    <>
+      <Header headerText="Create Event" back="/events" navbar>
+        <Container>
+          <div>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                submitEvent();
+              }}
+            >
               <Input
-                id="st"
-                type="time"
-                onChange={(e) => setSTime(e.target.value)}
-                placeholder="Start Time"
-                value={startTime}
+                type="text"
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Event Title"
+                value={title}
                 required
               />
-              <To>to</To>
+              <Label htmlFor="date">Date</Label>
               <Input
-                type="time"
-                onChange={(e) => setETime(e.target.value)}
-                placeholder="End Time"
-                value={endTime}
+                id="date"
+                type="date"
+                onChange={(e) => setDate(e.target.value)}
+                placeholder="Date"
+                value={date}
                 required
               />
-            </Flex>
 
-            <Flex dir="row">
-              <Flex dir="column">
-                <Label htmlFor="repeat-select">Weekly Repeat</Label>
-                <Select
-                  name="repeat"
-                  id="repeat-select"
-                  onChange={(e) => setRepeat(e.target.value)}
-                  value={repeat}
-                  required
-                >
-                  <option value="false">Does not repeat</option>
-                  <option value="true">Repeats</option>
-                </Select>
-              </Flex>
-              <Flex dir="column">
-                <Label htmlFor="end-repeat">Ends After</Label>
+              <Label htmlFor="st">Time</Label>
+              <Flex dir="row">
                 <Input
-                  id="end-repeat"
-                  type="date"
-                  onChange={(e) => setEnd(e.target.value)}
-                  placeholder="ends after"
-                  value={endAfter}
+                  id="st"
+                  type="time"
+                  onChange={(e) => setSTime(e.target.value)}
+                  placeholder="Start Time"
+                  value={startTime}
                   required
-                  disabled={repeat === "false"}
+                />
+                <To>to</To>
+                <Input
+                  type="time"
+                  onChange={(e) => setETime(e.target.value)}
+                  placeholder="End Time"
+                  value={endTime}
+                  required
                 />
               </Flex>
-            </Flex>
 
-            <Label htmlFor="location">Location</Label>
-            <Input
-              id="location"
-              type="text"
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="Location"
-              value={location}
-              required
-            />
-            <Label htmlFor="notes">Additional Notes</Label>
-            <Input
-              id="notes"
-              type="text"
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Notes"
-              value={notes}
-              required
-            />
-            <Submit type="submit" value="Create" />
-            <p>
-              <b>
-                {submit}
-                <GreenLink to="/events">{link}</GreenLink>
-              </b>
-            </p>
-          </Form>
-        </div>
-        <div> </div>
-      </Container>
-    </Header>
+              <Flex dir="row">
+                <Flex dir="column">
+                  <Label htmlFor="repeat-select">Weekly Repeat</Label>
+                  <Select
+                    name="repeat"
+                    id="repeat-select"
+                    onChange={(e) => setRepeat(e.target.value)}
+                    value={repeat}
+                    required
+                  >
+                    <option value="false">Does not repeat</option>
+                    <option value="true">Repeats</option>
+                    <option value="">Custom...</option>
+                  </Select>
+                </Flex>
+                <Flex dir="column">
+                  <Label htmlFor="end-repeat">Ends After</Label>
+                  <Input
+                    id="end-repeat"
+                    type="date"
+                    onChange={(e) => setEnd(e.target.value)}
+                    placeholder="ends after"
+                    value={endAfter}
+                    required
+                    disabled={repeat === "false"}
+                  />
+                </Flex>
+              </Flex>
+
+              <Label htmlFor="location">Location</Label>
+              <Input
+                id="location"
+                type="text"
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Location"
+                value={location}
+                required
+              />
+              <Label htmlFor="notes">Additional Notes</Label>
+              <Input
+                id="notes"
+                type="text"
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Notes"
+                value={notes}
+                required
+              />
+              <Submit type="submit" value="Create" />
+              <p>
+                <b>
+                  {submit}
+                  <GreenLink to="/events">{link}</GreenLink>
+                </b>
+              </p>
+            </Form>
+          </div>
+          <div> </div>
+        </Container>
+      </Header>
+      <CustomRepeatingDate />
+    </>
   );
 }
