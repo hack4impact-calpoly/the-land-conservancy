@@ -77,4 +77,22 @@ router.delete("/:eventId", async (req: any, res: any) => {
   }
 });
 
+// edit event by id
+router.patch("/:eventId", async (req: any, res: any) => {
+  try {
+    const { eventId } = req.params;
+    const update = req.body;
+
+    // finds event and updates it
+    const updatedEvent = await Event.findByIdAndUpdate(eventId, update, {
+      new: true,
+    });
+    await updatedEvent.save();
+    res.json(updatedEvent);
+  } catch (error) {
+    res.status(400).send(error);
+    console.log(`Could not edit `);
+  }
+});
+
 export default router;
