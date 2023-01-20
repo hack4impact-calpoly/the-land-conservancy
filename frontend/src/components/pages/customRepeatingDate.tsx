@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
@@ -80,12 +80,21 @@ const DayButton = styled.button`
   padding: 4px;
   cursor: pointer;
   border-radius: 10px;
-  &:hover {
+  &:hover,
+  &:active {
     background-color: #a5b993;
   }
 `;
 
 export default function CustomRepeatingDate() {
+  const [sunday, setSunday] = useState(false);
+  const [monday, setMonday] = useState(false);
+  const [tuesday, setTuesday] = useState(false);
+  const [wednesday, setWednesday] = useState(false);
+  const [thursday, setThursday] = useState(false);
+  const [friday, setFriday] = useState(false);
+  const [saturday, setSaturday] = useState(false);
+
   return (
     <StyledDiv>
       <Title>Custom recurrence</Title>
@@ -101,13 +110,69 @@ export default function CustomRepeatingDate() {
       </HorizDiv>
       <SubText>Repeat on</SubText>
       <HorizDiv>
-        <DayButton type="button">S</DayButton>
-        <DayButton type="button">M</DayButton>
-        <DayButton type="button">T</DayButton>
-        <DayButton type="button">W</DayButton>
-        <DayButton type="button">T</DayButton>
-        <DayButton type="button">F</DayButton>
-        <DayButton type="button">S</DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setSunday(!sunday)}
+          style={{
+            backgroundColor: sunday ? "#a5b993" : "",
+          }}
+        >
+          S
+        </DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setMonday(!monday)}
+          style={{
+            backgroundColor: monday ? "#a5b993" : "",
+          }}
+        >
+          M
+        </DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setTuesday(!tuesday)}
+          style={{
+            backgroundColor: tuesday ? "#a5b993" : "",
+          }}
+        >
+          T
+        </DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setWednesday(!wednesday)}
+          style={{
+            backgroundColor: wednesday ? "#a5b993" : "",
+          }}
+        >
+          W
+        </DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setThursday(!thursday)}
+          style={{
+            backgroundColor: thursday ? "#a5b993" : "",
+          }}
+        >
+          T
+        </DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setFriday(!friday)}
+          style={{
+            backgroundColor: friday ? "#a5b993" : "",
+          }}
+        >
+          F
+        </DayButton>
+        <DayButton
+          type="button"
+          onClick={() => setSaturday(!saturday)}
+          style={{
+            backgroundColor: saturday ? "#a5b993" : "",
+          }}
+        >
+          S
+        </DayButton>
       </HorizDiv>
       <form>
         <Text>Ends</Text>
