@@ -6,11 +6,11 @@ const StyledDiv = styled.div`
   background-color: #f1f1f1;
   padding: 5px 20px;
   border-radius: 5px;
-  position: absolute;
-  right: 34%;
-  top: 25%;
   text-align: left;
-  width: 30%;
+  margin: auto;
+  margin-top: 150px;
+  width: 50%;
+  min-width: fit-content;
   opacity: 95%;
   display: flex;
   flex-direction: column;
