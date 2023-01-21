@@ -47,7 +47,7 @@ const OptionText = styled.p`
   font-size: 13px;
 `;
 
-const ButtonText = styled.p`
+const DoneButton = styled.button`
   font-size: 14px;
   cursor: pointer;
   color: white;
@@ -55,7 +55,10 @@ const ButtonText = styled.p`
   padding: 5px 10px;
   width: fit-content;
   border-radius: 5px;
+  margin: auto;
   margin-top: 0;
+  margin-bottom: 10px;
+  border: none;
 `;
 
 const Cal = styled.input`
@@ -190,7 +193,7 @@ export default function CustomRepeatingDate() {
           After
         </OptionText>
       </form>
-      <ButtonText>Done</ButtonText>
+      <DoneButton type="submit">Done</DoneButton>
     </StyledDiv>
   );
 }
