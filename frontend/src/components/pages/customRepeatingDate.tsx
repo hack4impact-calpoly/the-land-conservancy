@@ -19,6 +19,8 @@ const StyledDiv = styled.div`
 
 const HorizDiv = styled.div`
   display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Title = styled.p`
@@ -30,7 +32,7 @@ const Title = styled.p`
 const Text = styled.p`
   font-size: 15px;
   color: black;
-  margin: 0 10px 0 0;
+  margin: 0;
 `;
 
 const SubText = styled.p`
@@ -44,7 +46,7 @@ const Option = styled.input`
 `;
 
 const OptionText = styled.p`
-  font-size: 13px;
+  font-size: 14px;
 `;
 
 const DoneButton = styled.button`
@@ -65,10 +67,11 @@ const Cal = styled.input`
   margin-left: 10px;
 `;
 
-const WeekInput = styled.input`
+const NumInput = styled.input`
   font-size: 14px;
   width: 40px;
-  margin-right: 10px;
+  margin: 0 10px;
+  height: fit-content;
 `;
 
 const DateType = styled.select`
@@ -100,7 +103,7 @@ export default function CustomRepeatingDate() {
       <Title>Custom recurrence</Title>
       <HorizDiv>
         <Text>Repeat every</Text>
-        <WeekInput type="number" min="1" />
+        <NumInput type="number" min="1" />
         <DateType>
           <option value="days">days</option>
           <option value="weeks">weeks</option>
@@ -185,10 +188,14 @@ export default function CustomRepeatingDate() {
           On
           <Cal type="date" />
         </OptionText>
-        <OptionText>
-          <Option name="repeat" type="radio" value="never" id="never" />
-          After
-        </OptionText>
+        <HorizDiv>
+          <OptionText>
+            <Option name="repeat" type="radio" value="never" id="never" />
+            After
+          </OptionText>
+          <NumInput type="number" min="1" />
+          <OptionText>Occurences</OptionText>
+        </HorizDiv>
       </form>
       <DoneButton type="submit">Done</DoneButton>
     </StyledDiv>
