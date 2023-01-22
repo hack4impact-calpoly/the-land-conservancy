@@ -81,12 +81,9 @@ const DayButton = styled.button`
   background-color: #fff;
   flex: 1;
   padding: 4px;
+  max-width: 25px;
   cursor: pointer;
-  border-radius: 10px;
-  &:hover,
-  &:active {
-    background-color: #a5b993;
-  }
+  border-radius: 25px;
 `;
 
 export default function CustomRepeatingDate() {
