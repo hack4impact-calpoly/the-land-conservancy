@@ -6,6 +6,7 @@ const ShiftSchema = new mongoose.Schema(
     hours: { type: Number, required: true },
     user: { type: String, required: true },
     userName: { type: String, required: true },
+    notes: { type: String, required: false },
   },
   { collection: "Shifts" }
 );
