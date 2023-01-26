@@ -1,6 +1,4 @@
-import { timeStamp } from "console";
 import express from "express";
-import { start } from "repl";
 import Event from "../models/eventSchema";
 import { deleteShift } from "./shifts";
 
