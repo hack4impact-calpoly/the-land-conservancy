@@ -195,6 +195,8 @@ export default function LogHours({
   }
   const [hours, setHours] = React.useState(oldHours || "");
 
+  const [notes, setNotes] = React.useState("");
+
   const thisEvent = eventData.find((event) => event._id === eventId);
 
   // data to pass to thank-you page
@@ -359,6 +361,29 @@ export default function LogHours({
               onChange={(e) => setHours(e.target.value)}
               disabled={new Date(thisEvent.start) > new Date()}
               required
+            />
+          ) : (
+            <div />
+          )}
+
+          <StyledLabel htmlFor="notes">Additional Notes</StyledLabel>
+          {thisEvent ? (
+            <textarea
+              rows={5}
+              cols={50}
+              style={{
+                fontSize: 20,
+                borderRadius: 10,
+                resize: "none",
+                fontFamily: "Poppins",
+                border: "1px solid #c4c4c4",
+                paddingLeft: 10,
+                margin: "5px 0 20px 0",
+                width: "100%",
+              }}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              disabled={new Date(thisEvent.start) > new Date()}
             />
           ) : (
             <div />
