@@ -11,25 +11,27 @@ router.get("/", async (req: any, res: any) => {
   try {
     const temp = await Event.find({});
     const query = req.query.search;
-    
+
     /* if a search query was given */
-    if (query != undefined) {
+    if (query !== undefined) {
       /* filters events by date if query is a valid date */
       const timestamp = Date.parse(query);
-      if (isNaN(timestamp) == false) {
-        var filteredDates: any = []
-        temp?.map((event) => {
+      if (Number.isNaN(timestamp) === false) {
+        const filteredDates: any = [];
+        temp?.forEach((event) => {
           const startTime = event.start.toISOString().substring(0, 10);
           const endTime = event.end.toISOString().substring(0, 10);
           const date = new Date(timestamp).toISOString();
           if (date.startsWith(startTime) && date.startsWith(endTime)) {
             filteredDates.push(event);
           }
-        })
+        });
         res.send(filteredDates);
       } else {
         /* find all events with query in location or notes field */
-        const search = await Event.find({ location: { $regex: query, $options: "$i" }});
+        const search = await Event.find({
+          location: { $regex: query, $options: "$i" },
+        });
         res.send(search);
       }
     } else {
