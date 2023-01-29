@@ -29,7 +29,7 @@ router.get("/", async (req: any, res: any) => {
         res.send(filteredDates);
       } else {
         /* find all events with query in location or notes field */
-        const search = await Event.find({ $or: [{ location: { $regex: query, $options: "$i" }}, { notes: { $regex: query, $options: "i" }}]});
+        const search = await Event.find({ location: { $regex: query, $options: "$i" }});
         res.send(search);
       }
     } else {
