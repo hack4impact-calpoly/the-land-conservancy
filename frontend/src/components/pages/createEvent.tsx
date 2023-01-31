@@ -218,7 +218,6 @@ export default function CreateEvent({
                     id="repeat-select"
                     onChange={(e) => {
                       setRepeat(e.target.value);
-                      console.log(e.target.value);
                       if (e.target.value === "custom") {
                         setOpenCustomDate(true);
                       }
