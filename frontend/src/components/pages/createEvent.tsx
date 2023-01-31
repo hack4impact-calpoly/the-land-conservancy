@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { eachWeekOfInterval, getDay } from "date-fns";
 import Header from "../navigation/header";
@@ -62,6 +62,7 @@ export default function CreateEvent({
   const [notes, setNotes] = useState("");
   const [submit, setSubmit] = useState("");
   const [link, setLink] = useState("");
+  const [openCustomDate, setOpenCustomDate] = useState(false);
 
   const clearForm = () => {
     setTitle("");
@@ -73,6 +74,10 @@ export default function CreateEvent({
     setLocation("");
     setNotes("");
   };
+
+  useEffect(() => {
+    console.log(openCustomDate);
+  }, [openCustomDate]);
 
   const postEvent = async (
     curDate: string,
@@ -211,13 +216,19 @@ export default function CreateEvent({
                   <Select
                     name="repeat"
                     id="repeat-select"
-                    onChange={(e) => setRepeat(e.target.value)}
+                    onChange={(e) => {
+                      setRepeat(e.target.value);
+                      console.log(e.target.value);
+                      if (e.target.value === "custom") {
+                        setOpenCustomDate(true);
+                      }
+                    }}
                     value={repeat}
                     required
                   >
                     <option value="false">Does not repeat</option>
                     <option value="true">Repeats</option>
-                    <option value="">Custom...</option>
+                    <option value="custom">Custom...</option>
                   </Select>
                 </Flex>
                 <Flex dir="column">
@@ -264,7 +275,9 @@ export default function CreateEvent({
           <div> </div>
         </Container>
       </Header>
-      <CustomRepeatingDate />
+      {openCustomDate && (
+        <CustomRepeatingDate setOpenCustomDate={setOpenCustomDate} />
+      )}
     </>
   );
 }

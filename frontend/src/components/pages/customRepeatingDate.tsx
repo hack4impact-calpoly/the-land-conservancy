@@ -89,7 +89,11 @@ const DayButton = styled.button`
   border-radius: 25px;
 `;
 
-export default function CustomRepeatingDate() {
+export default function CustomRepeatingDate({
+  setOpenCustomDate,
+}: {
+  setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [sunday, setSunday] = useState(false);
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
@@ -197,7 +201,9 @@ export default function CustomRepeatingDate() {
           <OptionText>Occurences</OptionText>
         </HorizDiv>
       </form>
-      <DoneButton type="submit">Done</DoneButton>
+      <DoneButton type="submit" onClick={() => setOpenCustomDate(false)}>
+        Done
+      </DoneButton>
     </StyledDiv>
   );
 }
