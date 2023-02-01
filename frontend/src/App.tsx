@@ -13,6 +13,7 @@ import Events from "./components/pages/events";
 import LogHours from "./components/pages/logHours";
 import ThankYou from "./components/pages/thankYou";
 import CreateEvent from "./components/pages/createEvent";
+import EditEvent from "./components/pages/editEvent";
 import VolunteerLog from "./components/pages/volunteerLog";
 import EditPrizes from "./components/pages/editPrizes";
 import EditOnePrize from "./components/pages/editOnePrize";
@@ -193,6 +194,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CreateEvent setEvents={setEvents} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-event"
+              element={
+                <ProtectedRoute>
+                  <EditEvent />
                 </ProtectedRoute>
               }
             />

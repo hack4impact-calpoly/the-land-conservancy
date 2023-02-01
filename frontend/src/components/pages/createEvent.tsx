@@ -209,7 +209,6 @@ export default function CreateEvent({
                   required
                 />
               </Flex>
-
               <Flex dir="row">
                 <Flex dir="column">
                   <Label htmlFor="repeat-select">Weekly Repeat</Label>
@@ -260,7 +259,6 @@ export default function CreateEvent({
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Notes"
                 value={notes}
-                required
               />
               <Submit type="submit" value="Create" />
               <p>

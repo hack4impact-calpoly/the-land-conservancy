@@ -6,11 +6,37 @@ export {};
 
 const router = express.Router();
 
-/* gets all events */
+/* gets all events or events based on search parameter */
 router.get("/", async (req: any, res: any) => {
   try {
     const temp = await Event.find({});
-    res.send(temp);
+    const query = req.query.search;
+
+    /* if a search query was given */
+    if (query !== undefined) {
+      /* filters events by date if query is a valid date */
+      const timestamp = Date.parse(query);
+      if (Number.isNaN(timestamp) === false) {
+        const filteredDates: any = [];
+        temp?.forEach((event) => {
+          const startTime = event.start.toISOString().substring(0, 10);
+          const endTime = event.end.toISOString().substring(0, 10);
+          const date = new Date(timestamp).toISOString();
+          if (date.startsWith(startTime) && date.startsWith(endTime)) {
+            filteredDates.push(event);
+          }
+        });
+        res.send(filteredDates);
+      } else {
+        /* find all events with query in location or notes field */
+        const search = await Event.find({
+          location: { $regex: query, $options: "$i" },
+        });
+        res.send(search);
+      }
+    } else {
+      res.send(temp);
+    }
   } catch (error) {
     res.status(400).send(error);
   }
@@ -74,6 +100,24 @@ router.delete("/:eventId", async (req: any, res: any) => {
     res.send(temp);
   } catch (error) {
     res.status(400).send(error);
+  }
+});
+
+// edit event by id
+router.patch("/:eventId", async (req: any, res: any) => {
+  try {
+    const { eventId } = req.params;
+    const update = req.body;
+
+    // finds event and updates it
+    const updatedEvent = await Event.findByIdAndUpdate(eventId, update, {
+      new: true,
+    });
+    await updatedEvent.save();
+    res.json(updatedEvent);
+  } catch (error) {
+    res.status(400).send(error);
+    console.log(`Could not edit `);
   }
 });
 
