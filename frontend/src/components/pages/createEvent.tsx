@@ -247,7 +247,6 @@ export default function CreateEvent({
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Notes"
               value={notes}
-              required
             />
             <Submit type="submit" value="Create" />
             <p>
