@@ -8,6 +8,7 @@ import DeleteModal from "./deleteModal";
 import Header from "../navigation/header";
 import { Event, Shift } from "../../types";
 import UserContext from "../../userContext";
+import SearchBar from "./SearchBar";
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -83,6 +84,7 @@ export default function Events({
   return (
     <Header headerText="Events" navbar>
       <StyledContainer maxWidth="md">
+        <SearchBar />
         {eventData ? (
           eventData
             .filter((event) => {
