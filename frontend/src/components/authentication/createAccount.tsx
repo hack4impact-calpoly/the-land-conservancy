@@ -57,10 +57,10 @@ export default function CreateAccount() {
   const signUp = async (newAccount: Account) => {
     // check if the backend is runing before calling anything else
     const response = await fetch('/user');
-      if (!response.ok) {
-        console.log("Backend not running error")
-        throw new Error('Backend is n ot running.');
-      }
+    if (!response.ok) {
+      console.log('Backend not running error');
+      throw new Error('Backend is n ot running.');
+    }
     try {
       /* Auth.signUp() returns an ISignUpResult {
         user: CognitoUser;
