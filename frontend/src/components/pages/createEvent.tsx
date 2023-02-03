@@ -10,9 +10,17 @@ const PORT = process.env.REACT_APP_API_URL;
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
-  align-items: left;
+  align-items: center;
   justify-content: space-between;
   flex-direction: ${({ dir }) => dir};
+`;
+
+const Edit = styled.button`
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
 `;
 
 const To = styled.p`
@@ -249,7 +257,12 @@ export default function CreateEvent({
               </Flex>
               <Flex dir="row">
                 <Flex dir="column">
-                  <Label htmlFor="repeat-select">Weekly Repeat</Label>
+                  <Flex dir="row">
+                    <Label htmlFor="repeat-select">Weekly Repeat</Label>
+                    {repeat === "custom" && (
+                      <Edit onClick={() => setOpenCustomDate(true)}>edit</Edit>
+                    )}
+                  </Flex>
                   <Select
                     name="repeat"
                     id="repeat-select"
@@ -276,11 +289,10 @@ export default function CreateEvent({
                     placeholder="ends after"
                     value={endAfter}
                     required
-                    disabled={repeat === "false"}
+                    disabled={repeat === "false" || repeat === "custom"}
                   />
                 </Flex>
               </Flex>
-
               <Label htmlFor="location">Location</Label>
               <Input
                 id="location"
@@ -315,6 +327,7 @@ export default function CreateEvent({
           setOpenCustomDate={setOpenCustomDate}
           setCustomDays={setCustomDays}
           customDays={customDays}
+          endAfter={endAfter}
           sunday={sunday}
           monday={monday}
           tuesday={tuesday}
@@ -329,6 +342,7 @@ export default function CreateEvent({
           setThursday={setThursday}
           setFriday={setFriday}
           setSaturday={setSaturday}
+          setEnd={setEnd}
         />
       )}
     </>

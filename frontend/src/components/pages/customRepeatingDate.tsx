@@ -92,6 +92,7 @@ const DayButton = styled.button`
 export default function CustomRepeatingDate({
   setOpenCustomDate,
   setCustomDays,
+  endAfter,
   customDays,
   monday,
   tuesday,
@@ -107,10 +108,12 @@ export default function CustomRepeatingDate({
   setThursday,
   setFriday,
   setSaturday,
+  setEnd,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
   customDays: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
+  endAfter: string;
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;
@@ -125,16 +128,17 @@ export default function CustomRepeatingDate({
   setThursday: React.Dispatch<React.SetStateAction<boolean>>;
   setFriday: React.Dispatch<React.SetStateAction<boolean>>;
   setSaturday: React.Dispatch<React.SetStateAction<boolean>>;
+  setEnd: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <StyledDiv>
       <Title>Custom recurrence</Title>
       <HorizDiv>
         <Text>Repeat every</Text>
-        <NumInput type="number" min="1" />
+        <NumInput type="number" min="1" placeholder="1" />
         <DateType>
-          <option value="days">days</option>
           <option value="weeks">weeks</option>
+          <option value="days">days</option>
           <option value="months">months</option>
           <option value="years">years</option>
         </DateType>
@@ -263,7 +267,11 @@ export default function CustomRepeatingDate({
         <OptionText>
           <Option name="repeat" type="radio" value="never" id="never" />
           On
-          <Cal type="date" />
+          <Cal
+            type="date"
+            onChange={(e) => setEnd(e.target.value)}
+            value={endAfter}
+          />
         </OptionText>
         <HorizDiv>
           <OptionText>
