@@ -81,6 +81,7 @@ export default function CreateEvent({
   const [thursday, setThursday] = useState(false);
   const [friday, setFriday] = useState(false);
   const [saturday, setSaturday] = useState(false);
+  const [customEnd, setCustomEnd] = useState("");
 
   const clearForm = () => {
     setTitle("");
@@ -184,21 +185,20 @@ export default function CreateEvent({
       const endDate = new Date(endAfter.concat(" ", endTime));
       try {
         // get range of dates between the start and end dates
-        // DUPLICATES -- FIG OUT HOW TO SELECT VRY DAY IN INTERVAL
-        // gets day before DATE if in day interval (how to get rid)
-        // PASS DOWN DAY FR PARENT TO CHILD (DOESNT STICK IF CLOSE CHILD)
-        for (let i = 0; i < customDays.length; i++) {
-          const dates = eachWeekOfInterval(
-            {
-              start: startDate,
-              end: endDate,
-            },
-            { weekStartsOn: customDays[i] }
-          ).filter((x) => !isBefore(x, startDate));
-          dates.forEach((curDate) => {
-            console.log(curDate.toUTCString(), startH, startM, endH, endM);
-            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
-          });
+        if (customEnd === "on") {
+          for (let i = 0; i < customDays.length; i++) {
+            const dates = eachWeekOfInterval(
+              {
+                start: startDate,
+                end: endDate,
+              },
+              { weekStartsOn: customDays[i] }
+            ).filter((x) => !isBefore(x, startDate));
+            dates.forEach((curDate) => {
+              console.log(curDate.toUTCString(), startH, startM, endH, endM);
+              // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+            });
+          }
         }
         console.log(repeat);
       } catch (RangeError) {
@@ -327,6 +327,7 @@ export default function CreateEvent({
           setOpenCustomDate={setOpenCustomDate}
           setCustomDays={setCustomDays}
           customDays={customDays}
+          customEnd={customEnd}
           endAfter={endAfter}
           sunday={sunday}
           monday={monday}
@@ -343,6 +344,7 @@ export default function CreateEvent({
           setFriday={setFriday}
           setSaturday={setSaturday}
           setEnd={setEnd}
+          setCustomEnd={setCustomEnd}
         />
       )}
     </>

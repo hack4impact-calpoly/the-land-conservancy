@@ -92,6 +92,7 @@ const DayButton = styled.button`
 export default function CustomRepeatingDate({
   setOpenCustomDate,
   setCustomDays,
+  customEnd,
   endAfter,
   customDays,
   monday,
@@ -109,10 +110,12 @@ export default function CustomRepeatingDate({
   setFriday,
   setSaturday,
   setEnd,
+  setCustomEnd,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
   customDays: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
+  customEnd: string;
   endAfter: string;
   monday: boolean;
   tuesday: boolean;
@@ -129,6 +132,7 @@ export default function CustomRepeatingDate({
   setFriday: React.Dispatch<React.SetStateAction<boolean>>;
   setSaturday: React.Dispatch<React.SetStateAction<boolean>>;
   setEnd: React.Dispatch<React.SetStateAction<string>>;
+  setCustomEnd: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <StyledDiv>
@@ -261,13 +265,16 @@ export default function CustomRepeatingDate({
       <form>
         <Text>Ends</Text>
         <OptionText>
-          <Option name="repeat" type="radio" value="never" id="never" />
-          Never
-        </OptionText>
-        <OptionText>
-          <Option name="repeat" type="radio" value="never" id="never" />
+          <Option
+            name="repeat"
+            type="radio"
+            value="never"
+            id="never"
+            onClick={() => setCustomEnd("on")}
+          />
           On
           <Cal
+            disabled={customEnd !== "on"}
             type="date"
             onChange={(e) => setEnd(e.target.value)}
             value={endAfter}
@@ -275,7 +282,7 @@ export default function CustomRepeatingDate({
         </OptionText>
         <HorizDiv>
           <OptionText>
-            <Option name="repeat" type="radio" value="never" id="never" />
+            <Option name="repeat" type="radio" value="after" id="after" />
             After
           </OptionText>
           <NumInput type="number" min="1" />
