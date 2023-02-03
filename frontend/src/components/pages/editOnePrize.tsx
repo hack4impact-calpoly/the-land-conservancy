@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Container } from '@mui/material';
-import Header from '../navigation/header';
-import { Form, Input, Submit, Label } from '../styledComponents';
-import { Prize } from '../../types';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useParams, useNavigate } from "react-router-dom";
+import { Container } from "@mui/material";
+import Header from "../navigation/header";
+import { Form, Input, Submit, Label } from "../styledComponents";
+import { Prize } from "../../types";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -26,9 +26,9 @@ type EditPrizeProps = {
 };
 
 export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
-  const [itemName, setItemName] = useState('');
-  const [sponsorName, setSponsorName] = useState('');
-  const [sponsorImg, setSponsorImg] = useState('');
+  const [itemName, setItemName] = useState("");
+  const [sponsorName, setSponsorName] = useState("");
+  const [sponsorImg, setSponsorImg] = useState("");
   const { prizeId } = useParams();
   const navigate = useNavigate();
 
@@ -39,32 +39,30 @@ export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
   ) => {
     // only pass in fields that have been filled out
     const prizeToAdd: { [k: string]: string | undefined } = {};
-    if (item !== '') {
+    if (item !== "") {
       prizeToAdd.itemName = item;
     }
-    if (sponsor !== '') {
+    if (sponsor !== "") {
       prizeToAdd.sponsorName = sponsor;
     }
-    if (imageUrl !== '') {
+    if (imageUrl !== "") {
       prizeToAdd.sponsorImage = imageUrl;
     }
 
     // post to backend
     const response = await fetch(`${PORT}/prizes/${prizeId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(prizeToAdd),
     });
     const newPrize = await response.json();
 
     // set updated prizes on the frontend
-    setPrizes((prev) => {
-      return prev.map((prize) =>
-        prize._id === newPrize._id ? newPrize : prize
-      );
-    });
+    setPrizes((prev) =>
+      prev.map((prize) => (prize._id === newPrize._id ? newPrize : prize))
+    );
   };
 
   return (
@@ -76,7 +74,7 @@ export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
             onSubmit={(e) => {
               e.preventDefault();
               addToPrize(itemName, sponsorName, sponsorImg).then(() =>
-                navigate('/edit-prizes')
+                navigate("/edit-prizes")
               );
             }}
           >

@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
-import { Auth } from 'aws-amplify';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../imgs/logo.png';
-import { AuthContainer } from './authComponents';
-import { Content, Form, Input } from '../styledComponents';
-import landscape from '../../imgs/tlc_background.jpeg';
-import UserContext from '../../userContext';
-import { User } from '../../types';
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
+import { Auth } from "aws-amplify";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../imgs/logo.png";
+import { AuthContainer } from "./authComponents";
+import { Content, Form, Input } from "../styledComponents";
+import landscape from "../../imgs/tlc_background.jpeg";
+import UserContext from "../../userContext";
+import { User } from "../../types";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -81,8 +81,8 @@ const FLink = styled(Link)`
 `;
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -96,9 +96,9 @@ export default function LoginPage() {
   const sendConfirmationcode = async (userEmail: string) => {
     try {
       await Auth.resendSignUp(userEmail);
-      console.log('code sent successfully!');
+      console.log("code sent successfully!");
     } catch (err) {
-      console.log('error resending code: ', err);
+      console.log("error resending code: ", err);
     }
   };
 
@@ -106,13 +106,16 @@ export default function LoginPage() {
   const getMongoUser = async (id: string) => {
     try {
       fetch(`${PORT}/users/${id}`)
-        .then((res) => res.json())
+        .then((res) => {
+          console.log(`${PORT}/users/${id}`);
+          return res.json();
+        })
         .then((data) => {
           setUser(data);
         })
         .catch((err) => console.log(err));
     } catch (error) {
-      console.log('error getting user from mongodb', error);
+      console.log("error getting user from mongodb", error);
     }
     return true;
   };
@@ -132,14 +135,14 @@ export default function LoginPage() {
       const mongoUser = await getMongoUser(user.attributes.sub);
       if (user && mongoUser) {
         console.log(`Successful sign in for user: ${username}`);
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
-      console.log('error signing in', error);
-      if ((error as Error).name === 'UserNotConfirmedException') {
+      console.log("error signing in", error);
+      if ((error as Error).name === "UserNotConfirmedException") {
         setUser({ email: `${username}` } as User);
         sendConfirmationcode(username).then(() => {
-          navigate('/confirm-email');
+          navigate("/confirm-email");
         });
       } else {
         window.alert((error as Error).message);
@@ -179,13 +182,13 @@ export default function LoginPage() {
             <Flex dir="row">
               <CLink to="/create-account">
                 <Button type="button" c="#5F8F3E" wid="100%">
-                  {' '}
-                  Create Account{' '}
+                  {" "}
+                  Create Account{" "}
                 </Button>
               </CLink>
               <Button type="submit" bc="#5F8F3E" c="#ffffff" wid="45%">
-                {' '}
-                Sign in{' '}
+                {" "}
+                Sign in{" "}
               </Button>
             </Flex>
           </Form>

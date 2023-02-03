@@ -1,13 +1,13 @@
-import React, { useEffect, useContext } from 'react';
-import styled from 'styled-components';
-import { Container, Autocomplete, TextField, Box } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
-import EventDesc from './eventDesc';
-import Header from '../navigation/header';
-import { Input, Label, Submit } from '../styledComponents';
-import { Event, Shift, User } from '../../types';
-import UserContext from '../../userContext';
+import React, { useEffect, useContext } from "react";
+import styled from "styled-components";
+import { Container, Autocomplete, TextField, Box } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import EventDesc from "./eventDesc";
+import Header from "../navigation/header";
+import { Input, Label, Submit } from "../styledComponents";
+import { Event, Shift, User } from "../../types";
+import UserContext from "../../userContext";
 
 const PORT = process.env.REACT_APP_API_URL;
 
@@ -18,19 +18,19 @@ const theme = createTheme({
       styleOverrides: {
         // Name of the slot
         root: {
-          '& fieldset': {
-            borderRadius: '10px',
-            boxSizing: 'border-box',
-            border: '1px solid #c4c4c4',
-            paddingLeft: '10px',
+          "& fieldset": {
+            borderRadius: "10px",
+            boxSizing: "border-box",
+            border: "1px solid #c4c4c4",
+            paddingLeft: "10px",
           },
-          margin: '5px 0 20px 0',
+          margin: "5px 0 20px 0",
         },
       },
     },
   },
   typography: {
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins",
     fontSize: 16,
   },
 });
@@ -84,21 +84,21 @@ type AutoCompleteProps = {
 
 const convertDate = (date: string) => {
   const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
 
   const reformat = new Date(date);
 
-  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleString('en-US', {
-    timeZone: 'UTC',
-    dateStyle: 'short',
-    timeStyle: 'short',
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleString("en-US", {
+    timeZone: "UTC",
+    dateStyle: "short",
+    timeStyle: "short",
   })}`;
 };
 
@@ -115,13 +115,13 @@ interface LocationState {
 }
 
 function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
-  const editing = useQuery().get('editing');
+  const editing = useQuery().get("editing");
   const location = useLocation();
   let user = null;
   if (location.state) {
-    user = allUsers.find((u) => {
-      return u._id === (location.state as LocationState).user._id;
-    });
+    user = allUsers.find(
+      (u) => u._id === (location.state as LocationState).user._id
+    );
   }
   return (
     <ThemeProvider theme={theme}>
@@ -130,7 +130,7 @@ function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
         sx={{ maxWidth: 400 }}
         options={allUsers}
         defaultValue={user || null}
-        disabled={editing === 'true'}
+        disabled={editing === "true"}
         onChange={(_e, value) => setVolunteer(value || ({} as User))}
         autoHighlight
         getOptionLabel={(option) => option.name}
@@ -152,7 +152,7 @@ function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
               required
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'off', // disable autocomplete and autofill
+                autoComplete: "off", // disable autocomplete and autofill
               }}
             />
           </StyledLabel>
@@ -169,13 +169,13 @@ export default function LogHours({
   allUsers,
 }: LogHoursProps) {
   const { currentUser } = useContext(UserContext);
-  const [valid, setValid] = React.useState(' ');
-  const [submit, setSubmit] = React.useState(' ');
+  const [valid, setValid] = React.useState(" ");
+  const [submit, setSubmit] = React.useState(" ");
   const [volunteer, setVolunteer] = React.useState({} as User);
 
-  const [link, setLink] = React.useState(' ');
+  const [link, setLink] = React.useState(" ");
   const { eventId } = useParams();
-  const editing = useQuery().get('editing');
+  const editing = useQuery().get("editing");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -184,20 +184,20 @@ export default function LogHours({
   let oldHours = null;
   let shiftId: string | null = null;
   if (location.state) {
-    const user = allUsers.find((u) => {
-      return u._id === (location.state as LocationState).user._id;
-    });
+    const user = allUsers.find(
+      (u) => u._id === (location.state as LocationState).user._id
+    );
     if (user) {
       submittingUser = user;
     }
     oldHours = (location.state as LocationState).oldHours;
     shiftId = (location.state as LocationState).shiftId;
   }
-  const [hours, setHours] = React.useState(oldHours || '');
+  const [hours, setHours] = React.useState(oldHours || "");
 
-  const thisEvent = eventData.find((event) => {
-    return event._id === eventId;
-  });
+  const [notes, setNotes] = React.useState("");
+
+  const thisEvent = eventData.find((event) => event._id === eventId);
 
   // data to pass to thank-you page
   const shiftData = {
@@ -208,9 +208,9 @@ export default function LogHours({
 
   const addToUser = async (id: string) => {
     await fetch(`${PORT}/users/${submittingUser._id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         shiftId: id,
@@ -221,9 +221,9 @@ export default function LogHours({
 
   const addToEvent = async (id: string) => {
     await fetch(`${PORT}/events/${eventId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ shiftId: id }),
     });
@@ -238,8 +238,8 @@ export default function LogHours({
     };
 
     await fetch(`${PORT}/shifts`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(shift),
     })
       .then((res) => res.json())
@@ -255,7 +255,7 @@ export default function LogHours({
         setAllShifts((prev: Shift[]) => [...prev, data]);
       })
       .then(() => {
-        navigate('/thank-you', { state: shiftData });
+        navigate("/thank-you", { state: shiftData });
       })
       .catch((err) => console.log(err));
   };
@@ -266,26 +266,26 @@ export default function LogHours({
     };
 
     await fetch(`${PORT}/shifts/${shiftId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newShiftHours),
     })
       .then((res) => res.json())
       .then((updatedShift) => {
         if (currentUser._id === submittingUser._id) {
           // update pastShifts for /past-shifts page
-          setPastShifts((prev) => {
-            return prev.map((shift) =>
+          setPastShifts((prev) =>
+            prev.map((shift) =>
               shift._id === updatedShift._id ? updatedShift : shift
-            );
-          });
+            )
+          );
         }
         // (if admin) update allShifts for the volunteer log
-        setAllShifts((prev) => {
-          return prev.map((shift) =>
+        setAllShifts((prev) =>
+          prev.map((shift) =>
             shift._id === updatedShift._id ? updatedShift : shift
-          );
-        });
+          )
+        );
       })
       .catch((err) => console.log(err));
   };
@@ -293,22 +293,22 @@ export default function LogHours({
   const validateHours = () => {
     // check: filled, isNumber, is > 0
     if (hours && (Number.isNaN(hours) || !(+hours > 0))) {
-      console.log('invalid input');
-      setValid('Please enter a positive number of hours');
+      console.log("invalid input");
+      setValid("Please enter a positive number of hours");
     } else {
-      setValid(' ');
+      setValid(" ");
     }
   };
 
   const submitHours = () => {
-    if (valid === ' ') {
-      setSubmit('Hours have been submitted.');
-      setLink('View your updated history here.');
-      setHours('');
+    if (valid === " ") {
+      setSubmit("Hours have been submitted.");
+      setLink("View your updated history here.");
+      setHours("");
       return true;
     } // else
-    setSubmit(' ');
-    setLink(' ');
+    setSubmit(" ");
+    setLink(" ");
     return false;
   };
 
@@ -329,7 +329,7 @@ export default function LogHours({
             notes={thisEvent.notes}
           />
         ) : (
-          'Loading...'
+          "Loading..."
         )}
 
         <form
@@ -366,11 +366,34 @@ export default function LogHours({
             <div />
           )}
 
+          <StyledLabel htmlFor="notes">Additional Notes</StyledLabel>
+          {thisEvent ? (
+            <textarea
+              rows={5}
+              cols={50}
+              style={{
+                fontSize: 20,
+                borderRadius: 10,
+                resize: "none",
+                fontFamily: "Poppins",
+                border: "1px solid #c4c4c4",
+                paddingLeft: 10,
+                margin: "5px 0 20px 0",
+                width: "100%",
+              }}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              disabled={new Date(thisEvent.start) > new Date()}
+            />
+          ) : (
+            <div />
+          )}
+
           <Feedback>{valid}</Feedback>
           {thisEvent ? (
             <Submit
               type="submit"
-              value={editing ? 'Update hours' : 'Submit'}
+              value={editing ? "Update hours" : "Submit"}
               // cannot submit hours for events that haven't started yet
               disabled={new Date(thisEvent.start) > new Date()}
             />
@@ -378,7 +401,7 @@ export default function LogHours({
             <div />
           )}
           <p>{submit}</p>
-          <Link to={currentUser.isAdmin ? '/volunteer-log' : '/past-shifts'}>
+          <Link to={currentUser.isAdmin ? "/volunteer-log" : "/past-shifts"}>
             {link}
           </Link>
         </form>

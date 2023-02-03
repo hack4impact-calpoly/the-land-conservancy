@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Container } from '@mui/material';
+import React from "react";
+import styled from "styled-components";
+import { Container } from "@mui/material";
 
 const StyledEventContainer = styled(Container)`
   background-color: #f1f1f1;

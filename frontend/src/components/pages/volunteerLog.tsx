@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { ExportToCsv } from 'export-to-csv-fix-source-map';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { ExportToCsv } from "export-to-csv-fix-source-map";
 
 import {
   Container,
@@ -11,15 +11,15 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { BiEdit } from 'react-icons/bi';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
-import { Submit } from '../styledComponents';
-import Header from '../navigation/header';
-import { Shift } from '../../types';
-import DeleteModal from './deleteModal';
+} from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { Submit } from "../styledComponents";
+import Header from "../navigation/header";
+import { Shift } from "../../types";
+import DeleteModal from "./deleteModal";
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -29,7 +29,7 @@ const StyledContainer = styled(Container)`
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins",
     fontSize: 16,
   },
 });
@@ -81,17 +81,17 @@ const Export = styled(Submit)`
 `;
 
 const options = {
-  fieldSeparator: ',',
+  fieldSeparator: ",",
   quoteStrings: '"',
-  decimalSeparator: '.',
+  decimalSeparator: ".",
   showLabels: true,
   showTitle: false, // currently, don't show title
-  title: 'Volunteer Log Test Data', // we can remove this from csv
-  filename: 'volunteer_totals', // title of downloaded csv
+  title: "Volunteer Log Test Data", // we can remove this from csv
+  filename: "volunteer_totals", // title of downloaded csv
   useTextFile: false,
   useBom: true,
   useKeysAsHeaders: false,
-  headers: ['Event Title', 'Location', 'Date', 'Hours', 'Name'],
+  headers: ["Event Title", "Location", "Date", "Hours", "Name"],
 };
 
 const csvExporter = new ExportToCsv(options);
@@ -108,8 +108,8 @@ function createData(
   user: string,
   name: string
 ) {
-  const date = new Date(eventDate).toLocaleDateString('en-US', {
-    timeZone: 'UTC',
+  const date = new Date(eventDate).toLocaleDateString("en-US", {
+    timeZone: "UTC",
   });
   return { _id, eventId, eventTitle, eventLocation, date, hours, user, name };
 }
@@ -123,29 +123,29 @@ function createCsvRow(
   hours: number,
   name: string
 ) {
-  const date = new Date(eventDate).toLocaleDateString('en-US', {
-    timeZone: 'UTC',
+  const date = new Date(eventDate).toLocaleDateString("en-US", {
+    timeZone: "UTC",
   });
   return { eventTitle, eventLocation, date, hours, name };
 }
 const monthOptions = [
-  { label: 'Filter by month', value: '', key: 0 },
-  { label: 'January', value: '1', key: 1 },
-  { label: 'February', value: '2', key: 2 },
-  { label: 'March', value: '3', key: 3 },
-  { label: 'April', value: '4', key: 4 },
-  { label: 'May', value: '5', key: 5 },
-  { label: 'June', value: '6', key: 6 },
-  { label: 'July', value: '7', key: 7 },
-  { label: 'August', value: '8', key: 8 },
-  { label: 'September', value: '9', key: 9 },
-  { label: 'October', value: '10', key: 10 },
-  { label: 'November', value: '11', key: 11 },
-  { label: 'December', value: '12', key: 12 },
+  { label: "Filter by month", value: "", key: 0 },
+  { label: "January", value: "1", key: 1 },
+  { label: "February", value: "2", key: 2 },
+  { label: "March", value: "3", key: 3 },
+  { label: "April", value: "4", key: 4 },
+  { label: "May", value: "5", key: 5 },
+  { label: "June", value: "6", key: 6 },
+  { label: "July", value: "7", key: 7 },
+  { label: "August", value: "8", key: 8 },
+  { label: "September", value: "9", key: 9 },
+  { label: "October", value: "10", key: 10 },
+  { label: "November", value: "11", key: 11 },
+  { label: "December", value: "12", key: 12 },
 ];
 
 const yearOptions: { label: string; value: string; key: number }[] = [
-  { label: 'Filter by year', value: '', key: 0 },
+  { label: "Filter by year", value: "", key: 0 },
 ];
 for (let i = 2000; i < 2050; i += 1) {
   yearOptions.push({ label: i.toString(), value: i.toString(), key: i });
@@ -161,9 +161,9 @@ export default function VolunteerLog({
   setAllShifts,
 }: ShiftProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [shiftId, setShift] = useState('');
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
+  const [shiftId, setShift] = useState("");
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
 
   allShiftData.sort((a: Shift, b: Shift) => {
     if (a.event.start > b.event.start) {
@@ -183,8 +183,8 @@ export default function VolunteerLog({
   // convert allShiftData to an array of rows that hold all atributes
   // on same level, this also formats the rows for exporting to csv correctly
   const rows = allShiftData
-    .map((shift) => {
-      return createData(
+    .map((shift) =>
+      createData(
         shift._id,
         shift.event._id,
         shift.event.title,
@@ -194,36 +194,36 @@ export default function VolunteerLog({
         shift.hours,
         shift.user,
         shift.userName
-      );
-    })
+      )
+    )
     // filter based on user selection of year & month
     .filter((row) =>
-      year !== '' ? row.date.substring(row.date.length - 4) === year : row
+      year !== "" ? row.date.substring(row.date.length - 4) === year : row
     )
     .filter((row) =>
-      month !== ''
-        ? row.date.substring(0, row.date.indexOf('/')) === month
+      month !== ""
+        ? row.date.substring(0, row.date.indexOf("/")) === month
         : row
     );
 
   const csvRows = allShiftData
-    .map((shift) => {
-      return createCsvRow(
+    .map((shift) =>
+      createCsvRow(
         shift.event.title,
         shift.event.location,
         // convert shift date from string to Date type so we can print it nicely
         shift.event.start,
         shift.hours,
         shift.userName
-      );
-    })
+      )
+    )
     // filter based on user selection of year & month
     .filter((row) =>
-      year !== '' ? row.date.substring(row.date.length - 4) === year : row
+      year !== "" ? row.date.substring(row.date.length - 4) === year : row
     )
     .filter((row) =>
-      month !== ''
-        ? row.date.substring(0, row.date.indexOf('/')) === month
+      month !== ""
+        ? row.date.substring(0, row.date.indexOf("/")) === month
         : row
     );
 
@@ -261,8 +261,8 @@ export default function VolunteerLog({
 
           <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
-              <TableHead sx={{ fontSize: '100px' }}>
-                <TableRow sx={{ background: '#5F8F3E73' }}>
+              <TableHead sx={{ fontSize: "100px" }}>
+                <TableRow sx={{ background: "#5F8F3E73" }}>
                   <TableCell sx={{ fontWeight: 600 }}>Event Title</TableCell>
                   <TableCell sx={{ fontWeight: 600 }}>Event Location</TableCell>
                   <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
@@ -277,7 +277,7 @@ export default function VolunteerLog({
                     <TableRow
                       key={row._id}
                       sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
+                        "&:last-child td, &:last-child th": { border: 0 },
                       }}
                     >
                       <TableCell>{row.eventTitle}</TableCell>

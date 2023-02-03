@@ -1,15 +1,15 @@
-import express from 'express';
+import express from "express";
 
-import Shift from '../models/shiftSchema';
-import Event from '../models/eventSchema';
-import User from '../models/userSchema';
+import Shift from "../models/shiftSchema";
+import Event from "../models/eventSchema";
+import User from "../models/userSchema";
 
 const router = express.Router();
 
 // get all shifts
-router.get('/', async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
   try {
-    const temp = await Shift.find({}).populate('event');
+    const temp = await Shift.find({}).populate("event");
     res.send(temp);
   } catch (error) {
     res.status(400).send(error);
@@ -17,7 +17,7 @@ router.get('/', async (req: any, res: any) => {
 });
 
 // get specific shift
-router.get('/:shiftId', async (req: any, res: any) => {
+router.get("/:shiftId", async (req: any, res: any) => {
   try {
     const temp = await Shift.findOne({ _id: req.params.shiftId });
     res.send(temp);
@@ -29,7 +29,7 @@ router.get('/:shiftId', async (req: any, res: any) => {
 router.use(express.json());
 
 // posts a new shift to the database
-router.post('/', async (req: any, res: any) => {
+router.post("/", async (req: any, res: any) => {
   const { event, hours, user, userName } = req.body;
   let shift = new Shift({
     event,
@@ -40,7 +40,7 @@ router.post('/', async (req: any, res: any) => {
 
   try {
     shift = await shift.save();
-    const final = await shift.populate('event');
+    const final = await shift.populate("event");
     res.json(final);
   } catch (error) {
     res.status(400).send(error);
@@ -48,7 +48,7 @@ router.post('/', async (req: any, res: any) => {
 });
 
 // update a shift in the database
-router.patch('/:id', async (req: any, res: any) => {
+router.patch("/:id", async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const updates = req.body;
@@ -58,7 +58,7 @@ router.patch('/:id', async (req: any, res: any) => {
       id,
       updates,
       options
-    ).populate('event');
+    ).populate("event");
 
     res.json(newShift);
   } catch (error) {
@@ -81,7 +81,7 @@ export async function deleteShift(shiftId: string) {
 }
 
 // delete shift by id + its references
-router.delete('/:shiftId', async (req: any, res: any) => {
+router.delete("/:shiftId", async (req: any, res: any) => {
   try {
     const { shiftId } = req.params;
     const temp = deleteShift(shiftId);

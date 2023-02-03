@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
-import { useMatch } from 'react-router-dom';
-import Sidebar from 'react-sidebar';
-import { Auth } from 'aws-amplify';
+import React, { useState, useContext } from "react";
+import { useMatch } from "react-router-dom";
+import Sidebar from "react-sidebar";
+import { Auth } from "aws-amplify";
 import {
   BarIcon,
   ClipboardIcon,
@@ -16,10 +16,10 @@ import {
   StyledLink,
   LogoImage,
   EditPrizeIcon,
-} from './navComponents';
-import logo from '../../imgs/logo.png';
-import UserContext from '../../userContext';
-import { User } from '../../types';
+} from "./navComponents";
+import logo from "../../imgs/logo.png";
+import UserContext from "../../userContext";
+import { User } from "../../types";
 
 type Props = {
   children: React.ReactChild;
@@ -36,7 +36,7 @@ export default function NavBar({ children }: Props) {
       await Auth.signOut();
       setUser({} as User);
     } catch (error) {
-      console.log('error signing out: ', error);
+      console.log("error signing out: ", error);
     }
   };
 
@@ -48,25 +48,25 @@ export default function NavBar({ children }: Props) {
           {currentUser.isAdmin ? (
             <div>
               <StyledLink to="/create-event">
-                <Path active={!!useMatch('/create-event')}>
+                <Path active={!!useMatch("/create-event")}>
                   <AddIcon />
                   <Label>Create event</Label>
                 </Path>
               </StyledLink>
               <StyledLink to="/events">
-                <Path active={!!useMatch('/events')}>
+                <Path active={!!useMatch("/events")}>
                   <CalendarIcon />
                   <Label>Events</Label>
                 </Path>
               </StyledLink>
               <StyledLink to="/volunteer-log">
-                <Path active={!!useMatch('/volunteer-log')}>
+                <Path active={!!useMatch("/volunteer-log")}>
                   <ClipboardIcon />
                   <Label>Volunteer log</Label>
                 </Path>
               </StyledLink>
               <StyledLink to="/edit-prizes">
-                <Path active={!!useMatch('/edit-prizes')}>
+                <Path active={!!useMatch("/edit-prizes")}>
                   <EditPrizeIcon />
                   <Label>Edit Prizes</Label>
                 </Path>
@@ -75,13 +75,13 @@ export default function NavBar({ children }: Props) {
           ) : (
             <div>
               <StyledLink to="/events">
-                <Path active={!!useMatch('/events')}>
+                <Path active={!!useMatch("/events")}>
                   <ClipboardIcon />
                   <Label>Events</Label>
                 </Path>
               </StyledLink>
               <StyledLink to="/past-shifts">
-                <Path active={!!useMatch('/past-shifts')}>
+                <Path active={!!useMatch("/past-shifts")}>
                   <ClockIcon />
                   <Label>Past shifts</Label>
                 </Path>
@@ -99,7 +99,7 @@ export default function NavBar({ children }: Props) {
       open={navOpen}
       onSetOpen={setNavOpen}
       styles={{
-        sidebar: { background: '#8ea974', width: '250px' },
+        sidebar: { background: "#8ea974", width: "250px" },
       }}
     >
       <Button onClick={() => setNavOpen(true)}>

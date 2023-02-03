@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
-import { AuthContainer, ErrorMsg } from './authComponents';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import { AuthContainer, ErrorMsg } from "./authComponents";
 import {
   Content,
   Header,
@@ -10,14 +10,14 @@ import {
   Label,
   Submit,
   StyledBack,
-} from '../styledComponents';
+} from "../styledComponents";
 
 export default function ResetPassword() {
-  const [pass1, setPass1] = useState('');
-  const [pass2, setPass2] = useState('');
-  const [currentUser, setCurrentUser] = useState('');
-  const [code, setCode] = useState('');
-  const [badPassMsg, setBadpassMsg] = useState('');
+  const [pass1, setPass1] = useState("");
+  const [pass2, setPass2] = useState("");
+  const [currentUser, setCurrentUser] = useState("");
+  const [code, setCode] = useState("");
+  const [badPassMsg, setBadpassMsg] = useState("");
   const [disabled, setDisabled] = useState(true);
   const firstRender = useRef(true);
 
@@ -36,15 +36,15 @@ export default function ResetPassword() {
       )
     ) {
       setBadpassMsg(
-        'Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter'
+        "Passwords must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 lowercase letter"
       );
       return false;
     }
     if (pass1 !== pass2) {
-      setBadpassMsg('Passwords must match');
+      setBadpassMsg("Passwords must match");
       return false;
     }
-    setBadpassMsg('');
+    setBadpassMsg("");
     return true;
   };
 
@@ -53,13 +53,13 @@ export default function ResetPassword() {
     if (validatePass()) {
       Auth.forgotPasswordSubmit(currentUser, code, pass1)
         .then(() => {
-          alert('Password successfully reset!');
-          navigate('/login');
+          alert("Password successfully reset!");
+          navigate("/login");
         })
         .catch((err) => {
           console.log(err);
           alert(
-            'Could not change password, please confirm email and code are correct. New Password must be different than old password.'
+            "Could not change password, please confirm email and code are correct. New Password must be different than old password."
           );
         });
     }

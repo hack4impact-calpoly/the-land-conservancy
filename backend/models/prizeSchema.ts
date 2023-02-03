@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
 
 const PrizeSchema = new mongoose.Schema(
   {
@@ -7,8 +7,8 @@ const PrizeSchema = new mongoose.Schema(
     sponsorName: String,
     sponsorImage: String,
   },
-  { collection: 'Prizes' }
+  { collection: "Prizes" }
 );
 
-const Prize = mongoose.model('Prize', PrizeSchema);
+const Prize = mongoose.model("Prize", PrizeSchema);
 export default Prize;

@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Container } from '@mui/material';
-import ShiftSlot from './shiftSlot';
-import Header from '../navigation/header';
-import { Prize, Shift } from '../../types';
-import ProgressBar from './progressBar';
-import RewardModal from './rewardModal';
+import React from "react";
+import styled from "styled-components";
+import { Container } from "@mui/material";
+import ShiftSlot from "./shiftSlot";
+import Header from "../navigation/header";
+import { Prize, Shift } from "../../types";
+import ProgressBar from "./progressBar";
+import RewardModal from "./rewardModal";
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -14,18 +14,18 @@ const StyledContainer = styled(Container)`
 
 const convertDate = (date: string) => {
   const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
   const reformat = new Date(date);
 
-  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString('en-US', {
-    timeZone: 'UTC',
+  return `${days[reformat.getUTCDay()]} ${reformat.toLocaleDateString("en-US", {
+    timeZone: "UTC",
   })}`;
 };
 
@@ -56,16 +56,14 @@ export default function PastShifts({ pastShiftData, prizes }: ShiftProps) {
         <RewardModal hours={totalHours} prizes={prizes} />
         <StyledContainer maxWidth="md">
           {pastShiftData ? (
-            pastShiftData.map((shift) => {
-              return (
-                <ShiftSlot
-                  key={shift._id}
-                  title={shift.event.title}
-                  date={convertDate(shift.event.start)}
-                  hours={shift.hours}
-                />
-              );
-            })
+            pastShiftData.map((shift) => (
+              <ShiftSlot
+                key={shift._id}
+                title={shift.event.title}
+                date={convertDate(shift.event.start)}
+                hours={shift.hours}
+              />
+            ))
           ) : (
             <p key="load"> Loading ...</p>
           )}
