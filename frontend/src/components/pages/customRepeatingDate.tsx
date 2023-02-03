@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
@@ -93,19 +93,39 @@ export default function CustomRepeatingDate({
   setOpenCustomDate,
   setCustomDays,
   customDays,
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
+  saturday,
+  sunday,
+  setSunday,
+  setMonday,
+  setTuesday,
+  setWednesday,
+  setThursday,
+  setFriday,
+  setSaturday,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
-  customDays: Array<number>;
+  customDays: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
+  setSunday: React.Dispatch<React.SetStateAction<boolean>>;
+  setMonday: React.Dispatch<React.SetStateAction<boolean>>;
+  setTuesday: React.Dispatch<React.SetStateAction<boolean>>;
+  setWednesday: React.Dispatch<React.SetStateAction<boolean>>;
+  setThursday: React.Dispatch<React.SetStateAction<boolean>>;
+  setFriday: React.Dispatch<React.SetStateAction<boolean>>;
+  setSaturday: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [sunday, setSunday] = useState(false);
-  const [monday, setMonday] = useState(false);
-  const [tuesday, setTuesday] = useState(false);
-  const [wednesday, setWednesday] = useState(false);
-  const [thursday, setThursday] = useState(false);
-  const [friday, setFriday] = useState(false);
-  const [saturday, setSaturday] = useState(false);
-
   return (
     <StyledDiv>
       <Title>Custom recurrence</Title>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { eachWeekOfInterval, getDay } from "date-fns";
+import { eachWeekOfInterval, getDay, differenceInYears } from "date-fns";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
@@ -63,7 +63,16 @@ export default function CreateEvent({
   const [submit, setSubmit] = useState("");
   const [link, setLink] = useState("");
   const [openCustomDate, setOpenCustomDate] = useState(false);
-  const [customDays, setCustomDays] = useState<number[]>([]);
+  const [customDays, setCustomDays] = useState<(0 | 1 | 2 | 3 | 4 | 5 | 6)[]>(
+    []
+  );
+  const [sunday, setSunday] = useState(false);
+  const [monday, setMonday] = useState(false);
+  const [tuesday, setTuesday] = useState(false);
+  const [wednesday, setWednesday] = useState(false);
+  const [thursday, setThursday] = useState(false);
+  const [friday, setFriday] = useState(false);
+  const [saturday, setSaturday] = useState(false);
 
   const clearForm = () => {
     setTitle("");
@@ -79,6 +88,10 @@ export default function CreateEvent({
   useEffect(() => {
     console.log(customDays);
   }, [customDays]);
+
+  function isBefore(date1: Date, date2: Date) {
+    return differenceInYears(date1, date2) > 0;
+  }
 
   const postEvent = async (
     curDate: string,
@@ -167,16 +180,24 @@ export default function CreateEvent({
       const endDate = new Date(endAfter.concat(" ", endTime));
       try {
         // get range of dates between the start and end dates
-        const dates = eachWeekOfInterval(
-          {
-            start: startDate,
-            end: endDate,
-          },
-          { weekStartsOn: getDay(startDate) }
-        );
-        dates.forEach((curDate) => {
-          postEvent(curDate.toUTCString(), startH, startM, endH, endM);
-        });
+        // DUPLICATES -- FIG OUT HOW TO SELECT VRY DAY IN INTERVAL
+        // gets day before DATE if in day interval (how to get rid)
+        // PASS DOWN DAY FR PARENT TO CHILD (DOESNT STICK IF CLOSE CHILD)
+        for (let i = 0; i < customDays.length; i++) {
+          const dates = eachWeekOfInterval(
+            {
+              start: startDate,
+              end: endDate,
+            },
+            { weekStartsOn: customDays[i] }
+          ).filter((x) => isBefore(x, startDate));
+          dates.forEach((curDate) => {
+            console.log(isBefore(curDate, startDate));
+            console.log(curDate.toUTCString(), startH, startM, endH, endM);
+            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        }
+        console.log(repeat);
       } catch (RangeError) {
         setSubmit(
           "Invalid date range, make sure starting date is before end date"
@@ -299,6 +320,20 @@ export default function CreateEvent({
           setOpenCustomDate={setOpenCustomDate}
           setCustomDays={setCustomDays}
           customDays={customDays}
+          sunday={sunday}
+          monday={monday}
+          tuesday={tuesday}
+          wednesday={wednesday}
+          thursday={thursday}
+          friday={friday}
+          saturday={saturday}
+          setSunday={setSunday}
+          setMonday={setMonday}
+          setTuesday={setTuesday}
+          setWednesday={setWednesday}
+          setThursday={setThursday}
+          setFriday={setFriday}
+          setSaturday={setSaturday}
         />
       )}
     </>
