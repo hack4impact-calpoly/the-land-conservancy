@@ -63,6 +63,7 @@ export default function CreateEvent({
   const [submit, setSubmit] = useState("");
   const [link, setLink] = useState("");
   const [openCustomDate, setOpenCustomDate] = useState(false);
+  const [customDays, setCustomDays] = useState<number[]>([]);
 
   const clearForm = () => {
     setTitle("");
@@ -76,8 +77,8 @@ export default function CreateEvent({
   };
 
   useEffect(() => {
-    console.log(openCustomDate);
-  }, [openCustomDate]);
+    console.log(customDays);
+  }, [customDays]);
 
   const postEvent = async (
     curDate: string,
@@ -139,6 +140,27 @@ export default function CreateEvent({
 
     if (repeat === "false") {
       postEvent(date, startH, startM, endH, endM);
+    } else if (repeat === "true") {
+      // need times to make sure date is correct
+      const startDate = new Date(date.concat(" ", startTime));
+      const endDate = new Date(endAfter.concat(" ", endTime));
+      try {
+        // get range of dates between the start and end dates
+        const dates = eachWeekOfInterval(
+          {
+            start: startDate,
+            end: endDate,
+          },
+          { weekStartsOn: getDay(startDate) }
+        );
+        dates.forEach((curDate) => {
+          postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+        });
+      } catch (RangeError) {
+        setSubmit(
+          "Invalid date range, make sure starting date is before end date"
+        );
+      }
     } else {
       // need times to make sure date is correct
       const startDate = new Date(date.concat(" ", startTime));
@@ -273,7 +295,11 @@ export default function CreateEvent({
         </Container>
       </Header>
       {openCustomDate && (
-        <CustomRepeatingDate setOpenCustomDate={setOpenCustomDate} />
+        <CustomRepeatingDate
+          setOpenCustomDate={setOpenCustomDate}
+          setCustomDays={setCustomDays}
+          customDays={customDays}
+        />
       )}
     </>
   );

@@ -91,8 +91,12 @@ const DayButton = styled.button`
 
 export default function CustomRepeatingDate({
   setOpenCustomDate,
+  setCustomDays,
+  customDays,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
+  setCustomDays: React.Dispatch<React.SetStateAction<any>>;
+  customDays: Array<number>;
 }) {
   const [sunday, setSunday] = useState(false);
   const [monday, setMonday] = useState(false);
@@ -119,7 +123,14 @@ export default function CustomRepeatingDate({
       <HorizDiv>
         <DayButton
           type="button"
-          onClick={() => setSunday(!sunday)}
+          onClick={() => {
+            if (!sunday) {
+              setCustomDays([...customDays, 0]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 0));
+            }
+            setSunday(!sunday);
+          }}
           style={{
             backgroundColor: sunday ? "#a5b993" : "",
           }}
@@ -128,7 +139,14 @@ export default function CustomRepeatingDate({
         </DayButton>
         <DayButton
           type="button"
-          onClick={() => setMonday(!monday)}
+          onClick={() => {
+            if (!monday) {
+              setCustomDays([...customDays, 1]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 1));
+            }
+            setMonday(!monday);
+          }}
           style={{
             backgroundColor: monday ? "#a5b993" : "",
           }}
@@ -137,7 +155,14 @@ export default function CustomRepeatingDate({
         </DayButton>
         <DayButton
           type="button"
-          onClick={() => setTuesday(!tuesday)}
+          onClick={() => {
+            if (!tuesday) {
+              setCustomDays([...customDays, 2]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 2));
+            }
+            setTuesday(!tuesday);
+          }}
           style={{
             backgroundColor: tuesday ? "#a5b993" : "",
           }}
@@ -146,7 +171,14 @@ export default function CustomRepeatingDate({
         </DayButton>
         <DayButton
           type="button"
-          onClick={() => setWednesday(!wednesday)}
+          onClick={() => {
+            if (!wednesday) {
+              setCustomDays([...customDays, 3]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 3));
+            }
+            setWednesday(!wednesday);
+          }}
           style={{
             backgroundColor: wednesday ? "#a5b993" : "",
           }}
@@ -155,7 +187,14 @@ export default function CustomRepeatingDate({
         </DayButton>
         <DayButton
           type="button"
-          onClick={() => setThursday(!thursday)}
+          onClick={() => {
+            if (!thursday) {
+              setCustomDays([...customDays, 4]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 4));
+            }
+            setThursday(!thursday);
+          }}
           style={{
             backgroundColor: thursday ? "#a5b993" : "",
           }}
@@ -164,7 +203,14 @@ export default function CustomRepeatingDate({
         </DayButton>
         <DayButton
           type="button"
-          onClick={() => setFriday(!friday)}
+          onClick={() => {
+            if (!friday) {
+              setCustomDays([...customDays, 5]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 5));
+            }
+            setFriday(!friday);
+          }}
           style={{
             backgroundColor: friday ? "#a5b993" : "",
           }}
@@ -173,7 +219,14 @@ export default function CustomRepeatingDate({
         </DayButton>
         <DayButton
           type="button"
-          onClick={() => setSaturday(!saturday)}
+          onClick={() => {
+            if (!saturday) {
+              setCustomDays([...customDays, 6]);
+            } else {
+              setCustomDays(customDays.filter((x) => x !== 6));
+            }
+            setSaturday(!saturday);
+          }}
           style={{
             backgroundColor: saturday ? "#a5b993" : "",
           }}
