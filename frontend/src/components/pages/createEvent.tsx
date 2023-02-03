@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { eachWeekOfInterval, getDay, differenceInYears } from "date-fns";
+import { eachWeekOfInterval, getDay, isBefore } from "date-fns";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
@@ -88,10 +88,6 @@ export default function CreateEvent({
   useEffect(() => {
     console.log(customDays);
   }, [customDays]);
-
-  function isBefore(date1: Date, date2: Date) {
-    return differenceInYears(date1, date2) > 0;
-  }
 
   const postEvent = async (
     curDate: string,
@@ -190,9 +186,8 @@ export default function CreateEvent({
               end: endDate,
             },
             { weekStartsOn: customDays[i] }
-          ).filter((x) => isBefore(x, startDate));
+          ).filter((x) => !isBefore(x, startDate));
           dates.forEach((curDate) => {
-            console.log(isBefore(curDate, startDate));
             console.log(curDate.toUTCString(), startH, startM, endH, endM);
             // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
