@@ -83,7 +83,7 @@ export default function CreateEvent({
   const [saturday, setSaturday] = useState(false);
   const [customEnd, setCustomEnd] = useState("");
   const [customPeriod, setCustomPeriod] = useState("weeks");
-  const [customPeriodNum, setCustomPeriodNum] = useState(0);
+  const [customPeriodNum, setCustomPeriodNum] = useState(1);
 
   const clearForm = () => {
     setTitle("");

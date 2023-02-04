@@ -305,7 +305,13 @@ export default function CustomRepeatingDate({
         </OptionText>
         <HorizDiv>
           <OptionText>
-            <Option name="repeat" type="radio" value="after" id="after" />
+            <Option
+              name="repeat"
+              type="radio"
+              value="after"
+              id="after"
+              onClick={() => setCustomEnd("after")}
+            />
             After
           </OptionText>
           <NumInput type="number" min="1" />
