@@ -94,6 +94,7 @@ export default function CustomRepeatingDate({
   setCustomDays,
   customEnd,
   customPeriod,
+  customPeriodNum,
   endAfter,
   customDays,
   monday,
@@ -113,12 +114,14 @@ export default function CustomRepeatingDate({
   setEnd,
   setCustomEnd,
   setCustomPeriod,
+  setCustomPeriodNum,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
   customDays: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
   customEnd: string;
   customPeriod: string;
+  customPeriodNum: number;
   endAfter: string;
   monday: boolean;
   tuesday: boolean;
@@ -137,13 +140,20 @@ export default function CustomRepeatingDate({
   setEnd: React.Dispatch<React.SetStateAction<string>>;
   setCustomEnd: React.Dispatch<React.SetStateAction<string>>;
   setCustomPeriod: React.Dispatch<React.SetStateAction<string>>;
+  setCustomPeriodNum: React.Dispatch<React.SetStateAction<number>>;
 }) {
   return (
     <StyledDiv>
       <Title>Custom recurrence</Title>
       <HorizDiv>
         <Text>Repeat every</Text>
-        <NumInput type="number" min="1" placeholder="1" />
+        <NumInput
+          type="number"
+          min="1"
+          placeholder="1"
+          value={customPeriodNum}
+          onChange={(e) => setCustomPeriodNum(parseInt(e.target.value, 10))}
+        />
         <DateType
           onChange={(e) => {
             setCustomPeriod(e.target.value);

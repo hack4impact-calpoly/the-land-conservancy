@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { eachWeekOfInterval, getDay, isBefore } from "date-fns";
+import { addDays, eachWeekOfInterval, getDay, isBefore } from "date-fns";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
@@ -82,7 +82,8 @@ export default function CreateEvent({
   const [friday, setFriday] = useState(false);
   const [saturday, setSaturday] = useState(false);
   const [customEnd, setCustomEnd] = useState("");
-  const [customPeriod, setCustomPeriod] = useState("");
+  const [customPeriod, setCustomPeriod] = useState("weeks");
+  const [customPeriodNum, setCustomPeriodNum] = useState(0);
 
   const clearForm = () => {
     setTitle("");
@@ -181,12 +182,13 @@ export default function CreateEvent({
         );
       }
     } else {
-      // need times to make sure date is correct
+      // CUSTOM REPEAT -- need times to make sure date is correct
       const startDate = new Date(date.concat(" ", startTime));
       const endDate = new Date(endAfter.concat(" ", endTime));
       try {
         // get range of dates between the start and end dates
-        if (customEnd === "on") {
+        if (customEnd === "on" && customPeriod === "weeks") {
+          // dates for weekly repeat
           for (let i = 0; i < customDays.length; i++) {
             const dates = eachWeekOfInterval(
               {
@@ -200,8 +202,22 @@ export default function CreateEvent({
               // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
             });
           }
+        } else if (customEnd === "on" && customPeriod === "days") {
+          let dates = [];
+          for (
+            let d = startDate;
+            d <= endDate;
+            d = addDays(d, customPeriodNum)
+          ) {
+            dates.push(d);
+          }
+          dates = dates.filter((x) => isBefore(x, endDate));
+          dates.forEach((curDate) => {
+            console.log(curDate.toUTCString(), startH, startM, endH, endM);
+            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
         }
-        console.log(repeat);
+        console.log("outside", customEnd, customPeriod);
       } catch (RangeError) {
         setSubmit(
           "Invalid date range, make sure starting date is before end date"
@@ -329,6 +345,7 @@ export default function CreateEvent({
           setCustomDays={setCustomDays}
           customDays={customDays}
           customPeriod={customPeriod}
+          customPeriodNum={customPeriodNum}
           customEnd={customEnd}
           endAfter={endAfter}
           sunday={sunday}
@@ -348,6 +365,7 @@ export default function CreateEvent({
           setEnd={setEnd}
           setCustomEnd={setCustomEnd}
           setCustomPeriod={setCustomPeriod}
+          setCustomPeriodNum={setCustomPeriodNum}
         />
       )}
     </>
