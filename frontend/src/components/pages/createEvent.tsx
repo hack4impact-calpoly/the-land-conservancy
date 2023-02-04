@@ -82,6 +82,7 @@ export default function CreateEvent({
   const [friday, setFriday] = useState(false);
   const [saturday, setSaturday] = useState(false);
   const [customEnd, setCustomEnd] = useState("");
+  const [customPeriod, setCustomPeriod] = useState("");
 
   const clearForm = () => {
     setTitle("");
@@ -327,6 +328,7 @@ export default function CreateEvent({
           setOpenCustomDate={setOpenCustomDate}
           setCustomDays={setCustomDays}
           customDays={customDays}
+          customPeriod={customPeriod}
           customEnd={customEnd}
           endAfter={endAfter}
           sunday={sunday}
@@ -345,6 +347,7 @@ export default function CreateEvent({
           setSaturday={setSaturday}
           setEnd={setEnd}
           setCustomEnd={setCustomEnd}
+          setCustomPeriod={setCustomPeriod}
         />
       )}
     </>

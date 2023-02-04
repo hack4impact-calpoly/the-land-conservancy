@@ -93,6 +93,7 @@ export default function CustomRepeatingDate({
   setOpenCustomDate,
   setCustomDays,
   customEnd,
+  customPeriod,
   endAfter,
   customDays,
   monday,
@@ -111,11 +112,13 @@ export default function CustomRepeatingDate({
   setSaturday,
   setEnd,
   setCustomEnd,
+  setCustomPeriod,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
   customDays: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
   customEnd: string;
+  customPeriod: string;
   endAfter: string;
   monday: boolean;
   tuesday: boolean;
@@ -133,6 +136,7 @@ export default function CustomRepeatingDate({
   setSaturday: React.Dispatch<React.SetStateAction<boolean>>;
   setEnd: React.Dispatch<React.SetStateAction<string>>;
   setCustomEnd: React.Dispatch<React.SetStateAction<string>>;
+  setCustomPeriod: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <StyledDiv>
@@ -140,128 +144,137 @@ export default function CustomRepeatingDate({
       <HorizDiv>
         <Text>Repeat every</Text>
         <NumInput type="number" min="1" placeholder="1" />
-        <DateType>
+        <DateType
+          onChange={(e) => {
+            setCustomPeriod(e.target.value);
+            console.log(e.target.value);
+          }}
+        >
           <option value="weeks">weeks</option>
           <option value="days">days</option>
           <option value="months">months</option>
           <option value="years">years</option>
         </DateType>
       </HorizDiv>
-      <SubText>Repeat on</SubText>
-      <HorizDiv>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!sunday) {
-              setCustomDays([...customDays, 0]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 0));
-            }
-            setSunday(!sunday);
-          }}
-          style={{
-            backgroundColor: sunday ? "#a5b993" : "",
-          }}
-        >
-          S
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!monday) {
-              setCustomDays([...customDays, 1]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 1));
-            }
-            setMonday(!monday);
-          }}
-          style={{
-            backgroundColor: monday ? "#a5b993" : "",
-          }}
-        >
-          M
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!tuesday) {
-              setCustomDays([...customDays, 2]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 2));
-            }
-            setTuesday(!tuesday);
-          }}
-          style={{
-            backgroundColor: tuesday ? "#a5b993" : "",
-          }}
-        >
-          T
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!wednesday) {
-              setCustomDays([...customDays, 3]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 3));
-            }
-            setWednesday(!wednesday);
-          }}
-          style={{
-            backgroundColor: wednesday ? "#a5b993" : "",
-          }}
-        >
-          W
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!thursday) {
-              setCustomDays([...customDays, 4]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 4));
-            }
-            setThursday(!thursday);
-          }}
-          style={{
-            backgroundColor: thursday ? "#a5b993" : "",
-          }}
-        >
-          T
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!friday) {
-              setCustomDays([...customDays, 5]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 5));
-            }
-            setFriday(!friday);
-          }}
-          style={{
-            backgroundColor: friday ? "#a5b993" : "",
-          }}
-        >
-          F
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => {
-            if (!saturday) {
-              setCustomDays([...customDays, 6]);
-            } else {
-              setCustomDays(customDays.filter((x) => x !== 6));
-            }
-            setSaturday(!saturday);
-          }}
-          style={{
-            backgroundColor: saturday ? "#a5b993" : "",
-          }}
-        >
-          S
-        </DayButton>
-      </HorizDiv>
+      {customPeriod !== "days" && (
+        <>
+          <SubText>Repeat on</SubText>
+          <HorizDiv>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!sunday) {
+                  setCustomDays([...customDays, 0]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 0));
+                }
+                setSunday(!sunday);
+              }}
+              style={{
+                backgroundColor: sunday ? "#a5b993" : "",
+              }}
+            >
+              S
+            </DayButton>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!monday) {
+                  setCustomDays([...customDays, 1]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 1));
+                }
+                setMonday(!monday);
+              }}
+              style={{
+                backgroundColor: monday ? "#a5b993" : "",
+              }}
+            >
+              M
+            </DayButton>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!tuesday) {
+                  setCustomDays([...customDays, 2]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 2));
+                }
+                setTuesday(!tuesday);
+              }}
+              style={{
+                backgroundColor: tuesday ? "#a5b993" : "",
+              }}
+            >
+              T
+            </DayButton>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!wednesday) {
+                  setCustomDays([...customDays, 3]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 3));
+                }
+                setWednesday(!wednesday);
+              }}
+              style={{
+                backgroundColor: wednesday ? "#a5b993" : "",
+              }}
+            >
+              W
+            </DayButton>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!thursday) {
+                  setCustomDays([...customDays, 4]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 4));
+                }
+                setThursday(!thursday);
+              }}
+              style={{
+                backgroundColor: thursday ? "#a5b993" : "",
+              }}
+            >
+              T
+            </DayButton>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!friday) {
+                  setCustomDays([...customDays, 5]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 5));
+                }
+                setFriday(!friday);
+              }}
+              style={{
+                backgroundColor: friday ? "#a5b993" : "",
+              }}
+            >
+              F
+            </DayButton>
+            <DayButton
+              type="button"
+              onClick={() => {
+                if (!saturday) {
+                  setCustomDays([...customDays, 6]);
+                } else {
+                  setCustomDays(customDays.filter((x) => x !== 6));
+                }
+                setSaturday(!saturday);
+              }}
+              style={{
+                backgroundColor: saturday ? "#a5b993" : "",
+              }}
+            >
+              S
+            </DayButton>
+          </HorizDiv>
+        </>
+      )}
       <form>
         <Text>Ends</Text>
         <OptionText>
