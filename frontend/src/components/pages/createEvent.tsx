@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { addDays, eachWeekOfInterval, getDay, isBefore } from "date-fns";
+import {
+  addDays,
+  addWeeks,
+  eachWeekOfInterval,
+  getDay,
+  isBefore,
+} from "date-fns";
+import { BsFillPencilFill } from "react-icons/bs";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
@@ -15,12 +22,13 @@ const Flex = styled.div.attrs((props: { dir: string }) => props)`
   flex-direction: ${({ dir }) => dir};
 `;
 
-const Edit = styled.button`
-  padding: 5px 10px;
-  border-radius: 5px;
-  border: none;
+const PencilIcon = styled(BsFillPencilFill)`
+  margin-left: 8px;
+  color: black;
+  text-align: left;
+  display: block;
+  font-size: 18px;
   cursor: pointer;
-  margin-left: 5px;
 `;
 
 const To = styled.p`
@@ -84,6 +92,7 @@ export default function CreateEvent({
   const [customEnd, setCustomEnd] = useState("");
   const [customPeriod, setCustomPeriod] = useState("weeks");
   const [customPeriodNum, setCustomPeriodNum] = useState(1);
+  const [occurences, setOccurences] = useState(1);
 
   const clearForm = () => {
     setTitle("");
@@ -202,7 +211,21 @@ export default function CreateEvent({
               // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
             });
           }
+        } else if (customEnd === "after" && customPeriod === "weeks") {
+          // dates for weekly repeat after X occurences
+          const dates = eachWeekOfInterval(
+            {
+              start: startDate,
+              end: addWeeks(startDate, occurences - 1),
+            },
+            { weekStartsOn: getDay(startDate) }
+          );
+          dates.forEach((curDate) => {
+            console.log(curDate.toUTCString(), startH, startM, endH, endM);
+            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
         } else if (customEnd === "on" && customPeriod === "days") {
+          // dates for day-based repeats
           let dates = [];
           for (
             let d = startDate;
@@ -216,8 +239,9 @@ export default function CreateEvent({
             console.log(curDate.toUTCString(), startH, startM, endH, endM);
             // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
+          console.log("func hit");
         }
-        console.log("outside", customEnd, customPeriod);
+        console.log("func called");
       } catch (RangeError) {
         setSubmit(
           "Invalid date range, make sure starting date is before end date"
@@ -277,7 +301,7 @@ export default function CreateEvent({
                   <Flex dir="row">
                     <Label htmlFor="repeat-select">Weekly Repeat</Label>
                     {repeat === "custom" && (
-                      <Edit onClick={() => setOpenCustomDate(true)}>edit</Edit>
+                      <PencilIcon onClick={() => setOpenCustomDate(true)} />
                     )}
                   </Flex>
                   <Select
@@ -348,6 +372,7 @@ export default function CreateEvent({
           customPeriodNum={customPeriodNum}
           customEnd={customEnd}
           endAfter={endAfter}
+          occurences={occurences}
           sunday={sunday}
           monday={monday}
           tuesday={tuesday}
@@ -366,6 +391,7 @@ export default function CreateEvent({
           setCustomEnd={setCustomEnd}
           setCustomPeriod={setCustomPeriod}
           setCustomPeriodNum={setCustomPeriodNum}
+          setOccurences={setOccurences}
         />
       )}
     </>

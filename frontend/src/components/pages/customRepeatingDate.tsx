@@ -97,6 +97,7 @@ export default function CustomRepeatingDate({
   customPeriodNum,
   endAfter,
   customDays,
+  occurences,
   monday,
   tuesday,
   wednesday,
@@ -115,6 +116,7 @@ export default function CustomRepeatingDate({
   setCustomEnd,
   setCustomPeriod,
   setCustomPeriodNum,
+  setOccurences,
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
@@ -123,6 +125,7 @@ export default function CustomRepeatingDate({
   customPeriod: string;
   customPeriodNum: number;
   endAfter: string;
+  occurences: number;
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;
@@ -141,6 +144,7 @@ export default function CustomRepeatingDate({
   setCustomEnd: React.Dispatch<React.SetStateAction<string>>;
   setCustomPeriod: React.Dispatch<React.SetStateAction<string>>;
   setCustomPeriodNum: React.Dispatch<React.SetStateAction<number>>;
+  setOccurences: React.Dispatch<React.SetStateAction<number>>;
 }) {
   return (
     <StyledDiv>
@@ -316,7 +320,13 @@ export default function CustomRepeatingDate({
             />
             After
           </OptionText>
-          <NumInput type="number" min="1" />
+          <NumInput
+            type="number"
+            min="1"
+            disabled={customEnd !== "after"}
+            value={occurences}
+            onChange={(e) => setOccurences(parseInt(e.target.value, 10))}
+          />
           <OptionText>Occurences</OptionText>
         </HorizDiv>
       </form>
