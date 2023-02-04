@@ -293,6 +293,7 @@ export default function CustomRepeatingDate({
             type="radio"
             value="never"
             id="never"
+            checked={customEnd === "on"}
             onClick={() => setCustomEnd("on")}
           />
           On
@@ -310,6 +311,7 @@ export default function CustomRepeatingDate({
               type="radio"
               value="after"
               id="after"
+              checked={customEnd === "after"}
               onClick={() => setCustomEnd("after")}
             />
             After
