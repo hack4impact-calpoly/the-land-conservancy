@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { BiEdit } from "react-icons/bi";
 import EventCard from "./eventCard";
 import DeleteModal from "./deleteModal";
 import Header from "../navigation/header";
@@ -20,11 +21,24 @@ const StyledContainer = styled(Container)`
   text-decoration: none;
 `;
 
+const StyledCont = styled(Container)`
+  justify-content: right;
+`;
+
 const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
 const StyledDelete = styled(RiDeleteBin6Line)`
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  &:hover {
+    color: white;
+  }
+`;
+
+const StyledEdit = styled(BiEdit)`
   font-size: 20px;
   cursor: pointer;
   color: black;
@@ -114,12 +128,20 @@ export default function Events({
                     date={convertDate(event.start)}
                     key={event._id}
                   >
-                    <StyledDelete
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setDeleteStates(event._id);
-                      }}
-                    />
+                    <StyledCont>
+                      <StyledDelete
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setDeleteStates(event._id);
+                        }}
+                      />
+                      <StyledLink
+                        to={`/edit-event/${event._id}`}
+                        key={event._id}
+                      >
+                        <StyledEdit />
+                      </StyledLink>
+                    </StyledCont>
                   </EventCard>
                 </StyledLink>
               ) : (

@@ -166,7 +166,7 @@ export default function EditEvent() {
               value={notes}
               required
             />
-            <Submit type="submit" value="Create" />
+            <Submit type="submit" value="Update" />
             <p>
               <b>
                 {submit}
