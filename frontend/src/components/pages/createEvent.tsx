@@ -241,6 +241,19 @@ export default function CreateEvent({
             console.log(curDate.toUTCString(), startH, startM, endH, endM);
             // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
+        } else if (customEnd === "after" && customPeriod === "days") {
+          // dates for day-based repeats after X occurences
+          let i = 0;
+          let d = startDate;
+          const dates = [];
+          while (i++ < occurences - 1) {
+            dates.push(d);
+            d = addDays(d, customPeriodNum);
+          }
+          dates.forEach((curDate) => {
+            console.log(curDate.toUTCString(), startH, startM, endH, endM);
+            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
         }
       } catch (RangeError) {
         setSubmit(

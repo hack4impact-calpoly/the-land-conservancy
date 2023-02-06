@@ -163,6 +163,7 @@ export default function CustomRepeatingDate({
             setCustomPeriod(e.target.value);
             console.log(e.target.value);
           }}
+          value={customPeriod}
         >
           <option value="weeks">weeks</option>
           <option value="days">days</option>
