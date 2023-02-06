@@ -5,6 +5,7 @@ import {
   addWeeks,
   eachWeekOfInterval,
   getDay,
+  isAfter,
   isBefore,
 } from "date-fns";
 import { BsFillPencilFill } from "react-icons/bs";
@@ -197,25 +198,21 @@ export default function CreateEvent({
       try {
         // get range of dates between the start and end dates
         if (customEnd === "on" && customPeriod === "weeks") {
-          // dates for CUSTOM weekly repeat on custom days
-          const dates = [];
+          // dates for CUSTOM INTERVAL week repeat on custom days
+          let dates = [];
           for (
             let j = startDate;
             j <= endDate;
             j = addWeeks(j, customPeriodNum)
           ) {
             for (let k = 0; k < customDays.length; k++) {
-              dates.push(addDays(j, customDays[k] - getDay(startDate)));
+              const diff = customDays[k] - getDay(startDate);
+              dates.push(addDays(j, diff));
             }
           }
-          // for (let i = 0; i < customDays.length; i++) {
-          //   const dates = eachWeekOfInterval(
-          //     {
-          //       start: startDate,
-          //       end: endDate,
-          //     },
-          //     { weekStartsOn: customDays[i] }
-          //   );
+          dates = dates.filter(
+            (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
+          );
           dates.forEach((curDate) => {
             console.log(curDate.toUTCString(), startH, startM, endH, endM);
             // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
