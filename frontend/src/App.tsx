@@ -201,7 +201,7 @@ function App() {
               path="/edit-event/:eventId"
               element={
                 <ProtectedRoute>
-                  <EditEvent />
+                  <EditEvent eventData={events} setEvents={setEvents} />
                 </ProtectedRoute>
               }
             />
