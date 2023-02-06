@@ -197,20 +197,29 @@ export default function CreateEvent({
       try {
         // get range of dates between the start and end dates
         if (customEnd === "on" && customPeriod === "weeks") {
-          // dates for weekly repeat on custom days
-          for (let i = 0; i < customDays.length; i++) {
-            const dates = eachWeekOfInterval(
-              {
-                start: startDate,
-                end: endDate,
-              },
-              { weekStartsOn: customDays[i] }
-            );
-            dates.forEach((curDate) => {
-              console.log(curDate.toUTCString(), startH, startM, endH, endM);
-              // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
-            });
+          // dates for CUSTOM weekly repeat on custom days
+          const dates = [];
+          for (
+            let j = startDate;
+            j <= endDate;
+            j = addWeeks(j, customPeriodNum)
+          ) {
+            for (let k = 0; k < customDays.length; k++) {
+              dates.push(addDays(j, customDays[k] - getDay(startDate)));
+            }
           }
+          // for (let i = 0; i < customDays.length; i++) {
+          //   const dates = eachWeekOfInterval(
+          //     {
+          //       start: startDate,
+          //       end: endDate,
+          //     },
+          //     { weekStartsOn: customDays[i] }
+          //   );
+          dates.forEach((curDate) => {
+            console.log(curDate.toUTCString(), startH, startM, endH, endM);
+            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
         } else if (customEnd === "after" && customPeriod === "weeks") {
           // dates for weekly repeat after X occurences
           for (let i = 0; i < customDays.length; i++) {
