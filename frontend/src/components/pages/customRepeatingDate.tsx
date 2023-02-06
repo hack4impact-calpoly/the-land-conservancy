@@ -120,7 +120,7 @@ export default function CustomRepeatingDate({
 }: {
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
-  customDays: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
+  customDays: number[];
   customEnd: string;
   customPeriod: string;
   customPeriodNum: number;

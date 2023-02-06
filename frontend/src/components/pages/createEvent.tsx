@@ -80,9 +80,7 @@ export default function CreateEvent({
   const [submit, setSubmit] = useState("");
   const [link, setLink] = useState("");
   const [openCustomDate, setOpenCustomDate] = useState(false);
-  const [customDays, setCustomDays] = useState<(0 | 1 | 2 | 3 | 4 | 5 | 6)[]>(
-    []
-  );
+  const [customDays, setCustomDays] = useState<number[]>([]);
   const [sunday, setSunday] = useState(false);
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
@@ -218,20 +216,20 @@ export default function CreateEvent({
             // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
         } else if (customEnd === "after" && customPeriod === "weeks") {
-          // dates for weekly repeat after X occurences
-          for (let i = 0; i < customDays.length; i++) {
-            const dates = eachWeekOfInterval(
-              {
-                start: startDate,
-                end: addWeeks(startDate, occurences - 1),
-              },
-              { weekStartsOn: customDays[i] }
-            );
-            dates.forEach((curDate) => {
-              console.log(curDate.toUTCString(), startH, startM, endH, endM);
-              // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
-            });
+          // dates for custom interval weekly repeat after X occurences
+          let dates = [];
+          const end = addWeeks(startDate, customPeriodNum * (occurences - 1));
+          for (let j = startDate; j <= end; j = addWeeks(j, customPeriodNum)) {
+            for (let k = 0; k < customDays.length; k++) {
+              const diff = customDays[k] - getDay(startDate);
+              dates.push(addDays(j, diff));
+            }
           }
+          dates = dates.filter((x) => !isBefore(x, startDate));
+          dates.forEach((curDate) => {
+            console.log(curDate.toUTCString(), startH, startM, endH, endM);
+            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
         } else if (customEnd === "on" && customPeriod === "days") {
           // dates for day-based repeats
           let dates = [];
