@@ -197,7 +197,7 @@ export default function CreateEvent({
       try {
         // get range of dates between the start and end dates
         if (customEnd === "on" && customPeriod === "weeks") {
-          // dates for weekly repeat
+          // dates for weekly repeat on custom days
           for (let i = 0; i < customDays.length; i++) {
             const dates = eachWeekOfInterval(
               {
@@ -205,7 +205,7 @@ export default function CreateEvent({
                 end: endDate,
               },
               { weekStartsOn: customDays[i] }
-            ).filter((x) => !isBefore(x, startDate));
+            );
             dates.forEach((curDate) => {
               console.log(curDate.toUTCString(), startH, startM, endH, endM);
               // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
@@ -213,6 +213,7 @@ export default function CreateEvent({
           }
         } else if (customEnd === "after" && customPeriod === "weeks") {
           // dates for weekly repeat after X occurences
+          // NEED TO DO IT FOR CUSTOM DAYS
           const dates = eachWeekOfInterval(
             {
               start: startDate,
@@ -239,9 +240,7 @@ export default function CreateEvent({
             console.log(curDate.toUTCString(), startH, startM, endH, endM);
             // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
-          console.log("func hit");
         }
-        console.log("func called");
       } catch (RangeError) {
         setSubmit(
           "Invalid date range, make sure starting date is before end date"

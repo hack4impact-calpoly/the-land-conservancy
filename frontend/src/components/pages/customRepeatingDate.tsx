@@ -170,7 +170,7 @@ export default function CustomRepeatingDate({
           <option value="years">years</option>
         </DateType>
       </HorizDiv>
-      {customPeriod === "days" && (
+      {customPeriod === "weeks" && (
         <>
           <SubText>Repeat on</SubText>
           <HorizDiv>
