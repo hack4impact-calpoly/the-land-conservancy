@@ -56,10 +56,11 @@ export default function CreateAccount() {
 
   const signUp = async (newAccount: Account) => {
     // check if the backend is runing before calling anything else
-    const response = await fetch('/user');
+    // if the backend is not running, then response will be ERR_CONNECTION_REFUSED
+    const response = await fetch(`${PORT}/users`);
     if (!response.ok) {
-      console.log('Backend not running error');
-      throw new Error('Backend is n ot running.');
+      console.log("Backend not running error");
+      throw new Error("Backend is not running.");
     }
     try {
       /* Auth.signUp() returns an ISignUpResult {
