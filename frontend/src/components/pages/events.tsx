@@ -45,6 +45,7 @@ const StyledEdit = styled(BiEdit)`
   &:hover {
     color: white;
   }
+  margin-right: 10px;
 `;
 
 const convertDate = (dateString: string) => {
@@ -129,18 +130,18 @@ export default function Events({
                     key={event._id}
                   >
                     <StyledCont>
-                      <StyledDelete
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setDeleteStates(event._id);
-                        }}
-                      />
                       <StyledLink
                         to={`/edit-event/${event._id}`}
                         key={event._id}
                       >
                         <StyledEdit />
                       </StyledLink>
+                      <StyledDelete
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setDeleteStates(event._id);
+                        }}
+                      />
                     </StyledCont>
                   </EventCard>
                 </StyledLink>
