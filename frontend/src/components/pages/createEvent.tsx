@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {
   addDays,
+  addMonths,
   addWeeks,
   eachWeekOfInterval,
   getDay,
@@ -248,6 +249,23 @@ export default function CreateEvent({
             dates.push(d);
             d = addDays(d, customPeriodNum);
           }
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "on" && customPeriod === "months") {
+          // dates for custom-month repeat
+          let dates = [];
+          for (
+            let j = startDate;
+            j <= endDate;
+            j = addMonths(j, customPeriodNum)
+          ) {
+            dates.push(j);
+          }
+          if (dates[0] !== startDate) dates.push(startDate);
+          dates = dates.filter(
+            (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
+          );
           dates.forEach((curDate) => {
             postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
