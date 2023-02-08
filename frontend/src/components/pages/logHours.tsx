@@ -235,6 +235,7 @@ export default function LogHours({
       hours,
       user: submittingUser._id,
       userName: submittingUser.name,
+      notes,
     };
 
     await fetch(`${PORT}/shifts`, {
