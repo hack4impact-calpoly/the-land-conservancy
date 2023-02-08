@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   addDays,
@@ -104,10 +104,6 @@ export default function CreateEvent({
     setNotes("");
   };
 
-  useEffect(() => {
-    console.log(customDays);
-  }, [customDays]);
-
   const postEvent = async (
     curDate: string,
     startH: string,
@@ -208,12 +204,12 @@ export default function CreateEvent({
               dates.push(addDays(j, diff));
             }
           }
+          if (dates[0] !== startDate) dates.push(startDate);
           dates = dates.filter(
             (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
           );
           dates.forEach((curDate) => {
-            console.log(curDate.toUTCString(), startH, startM, endH, endM);
-            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
         } else if (customEnd === "after" && customPeriod === "weeks") {
           // dates for custom interval weekly repeat after X occurences
@@ -227,8 +223,7 @@ export default function CreateEvent({
           }
           dates = dates.filter((x) => !isBefore(x, startDate));
           dates.forEach((curDate) => {
-            console.log(curDate.toUTCString(), startH, startM, endH, endM);
-            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
         } else if (customEnd === "on" && customPeriod === "days") {
           // dates for day-based repeats
@@ -242,21 +237,19 @@ export default function CreateEvent({
           }
           dates = dates.filter((x) => isBefore(x, endDate));
           dates.forEach((curDate) => {
-            console.log(curDate.toUTCString(), startH, startM, endH, endM);
-            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
         } else if (customEnd === "after" && customPeriod === "days") {
           // dates for day-based repeats after X occurences
           let i = 0;
           let d = startDate;
           const dates = [];
-          while (i++ < occurences - 1) {
+          while (i++ < occurences) {
             dates.push(d);
             d = addDays(d, customPeriodNum);
           }
           dates.forEach((curDate) => {
-            console.log(curDate.toUTCString(), startH, startM, endH, endM);
-            // postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
         }
       } catch (RangeError) {
