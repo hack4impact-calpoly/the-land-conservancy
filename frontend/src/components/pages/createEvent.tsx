@@ -262,10 +262,21 @@ export default function CreateEvent({
           ) {
             dates.push(j);
           }
-          if (dates[0] !== startDate) dates.push(startDate);
           dates = dates.filter(
             (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
           );
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "after" && customPeriod === "months") {
+          // dates for custom-month repeat after X occurences
+          const dates = [];
+          let i = 0;
+          let j = startDate;
+          while (i++ < occurences) {
+            dates.push(j);
+            j = addMonths(j, customPeriodNum);
+          }
           dates.forEach((curDate) => {
             postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
