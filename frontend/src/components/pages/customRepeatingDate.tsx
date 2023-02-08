@@ -161,7 +161,6 @@ export default function CustomRepeatingDate({
         <DateType
           onChange={(e) => {
             setCustomPeriod(e.target.value);
-            console.log(e.target.value);
           }}
           value={customPeriod}
         >
