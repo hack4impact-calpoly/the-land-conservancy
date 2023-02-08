@@ -264,6 +264,7 @@ export default function LogHours({
   const editShift = async () => {
     const newShiftHours = {
       hours,
+      notes,
     };
 
     await fetch(`${PORT}/shifts/${shiftId}`, {
