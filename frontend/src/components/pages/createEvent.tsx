@@ -4,6 +4,7 @@ import {
   addDays,
   addMonths,
   addWeeks,
+  addYears,
   eachWeekOfInterval,
   getDay,
   isAfter,
@@ -276,6 +277,34 @@ export default function CreateEvent({
           while (i++ < occurences) {
             dates.push(j);
             j = addMonths(j, customPeriodNum);
+          }
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "on" && customPeriod === "years") {
+          // dates for custom-year repeat
+          let dates = [];
+          for (
+            let j = startDate;
+            j <= endDate;
+            j = addYears(j, customPeriodNum)
+          ) {
+            dates.push(j);
+          }
+          dates = dates.filter(
+            (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
+          );
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "after" && customPeriod === "years") {
+          // dates for custom-year repeat after X occurences
+          const dates = [];
+          let i = 0;
+          let j = startDate;
+          while (i++ < occurences) {
+            dates.push(j);
+            j = addYears(j, customPeriodNum);
           }
           dates.forEach((curDate) => {
             postEvent(curDate.toUTCString(), startH, startM, endH, endM);
