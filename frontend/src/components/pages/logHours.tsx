@@ -61,7 +61,7 @@ const Feedback = styled.div`
   color: red;
 `;
 
-const TextArea = styled.div`
+const StyledTextArea = styled.textarea`
   fontSize: 20,
   borderRadius: 10,
   resize: none,
@@ -379,15 +379,13 @@ export default function LogHours({
 
           <StyledLabel htmlFor="notes">Additional Notes</StyledLabel>
           {thisEvent ? (
-            <TextArea>
-              <textarea
-                rows={5}
-                cols={50}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                disabled={new Date(thisEvent.start) > new Date()}
-              />
-            </TextArea>
+            <StyledTextArea
+              rows={5}
+              cols={50}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              disabled={new Date(thisEvent.start) > new Date()}
+            />
           ) : (
             <div />
           )}
