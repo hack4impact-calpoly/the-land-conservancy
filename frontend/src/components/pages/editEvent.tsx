@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-// import { eachWeekOfInterval, getDay } from "date-fns";
+import { eachWeekOfInterval, getDay } from "date-fns";
+import { useParams } from "react-router-dom";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
 
-// const PORT = process.env.REACT_APP_API_URL;
+const PORT = process.env.REACT_APP_API_URL;
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
@@ -36,42 +37,137 @@ const Select = styled.select`
   width: 100%;
 `;
 
-// interface Event {
-//   _id: string;
-//   title: string;
-//   start: string;
-//   end: string;
-//   location: string;
-//   notes: string;
-//   shifts: string[];
-// }
+interface Event {
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
 
-export default function EditEvent() {
-  const [title, setTitle] = useState("");
+type EditEventProps = {
+  eventData: Event[];
+  setEvents: (val: (prev: Event[]) => Event[]) => void;
+};
+
+export default function EditEvent({ eventData, setEvents }: EditEventProps) {
+  const { eventId } = useParams();
+  const thisEvent = eventData.find((event) => event._id === eventId);
+  const [title, setTitle] = useState(thisEvent ? thisEvent.title : "");
   const [date, setDate] = useState("");
   const [startTime, setSTime] = useState("");
   const [endTime, setETime] = useState("");
   const [repeat, setRepeat] = useState("false");
   const [endAfter, setEnd] = useState("");
-  const [location, setLocation] = useState("");
-  const [notes, setNotes] = useState("");
-  const [submit] = useState("");
-  const [link] = useState("");
+  const [location, setLocation] = useState(thisEvent ? thisEvent.location : "");
+  const [notes, setNotes] = useState(thisEvent ? thisEvent.notes : "");
+  const [submit, setSubmit] = useState("");
+  const [link, setLink] = useState("");
+  const [shifts] = useState(thisEvent ? thisEvent.shifts : "");
 
-  // const clearForm = () => {
-  //   setTitle("");
-  //   setDate("");
-  //   setSTime("");
-  //   setETime("");
-  //   setRepeat("false");
-  //   setEnd("");
-  //   setLocation("");
-  //   setNotes("");
-  // };
+  const clearForm = () => {
+    setTitle("");
+    setDate("");
+    setSTime("");
+    setETime("");
+    setRepeat("false");
+    setEnd("");
+    setLocation("");
+    setNotes("");
+  };
 
-  // const postEvent = async () => {};
+  const postEvent = async (
+    curDate: string,
+    startH: string,
+    startM: string,
+    endH: string,
+    endM: string
+  ) => {
+    const startTimeDate = new Date(curDate);
+    const [sYear, sMonth, sDay] = [
+      startTimeDate.getUTCFullYear(),
+      startTimeDate.getUTCMonth(),
+      startTimeDate.getUTCDate(),
+    ];
+    const convertedStart = new Date(
+      Date.UTC(sYear, sMonth, sDay, +startH, +startM)
+    );
 
-  const submitEvent = async () => {};
+    const endTimeDate = new Date(curDate);
+    const [eYear, eMonth, eDay] = [
+      endTimeDate.getUTCFullYear(),
+      endTimeDate.getUTCMonth(),
+      endTimeDate.getUTCDate(),
+    ];
+    const convertedEnd = new Date(Date.UTC(eYear, eMonth, eDay, +endH, +endM));
+
+    const newEvent = {
+      _id: eventId,
+      title,
+      start: convertedStart,
+      end: convertedEnd,
+      location,
+      notes,
+      shifts,
+    };
+
+    clearForm(); // clear form first to prevent multiple clicks => multiple submits
+    fetch(`${PORT}/events/${eventId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newEvent),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // update event in events in App.tsx
+        setEvents((prev) => [
+          ...prev.filter((event) => event._id !== eventId),
+          data,
+        ]);
+      })
+      .then(() => {
+        setSubmit("Your event has been updated. ");
+        setLink("Back to events");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setSubmit("Error editting event");
+      });
+  };
+
+  const submitEvent = async () => {
+    const [startH, startM] = startTime.split(":");
+    const [endH, endM] = endTime.split(":");
+
+    if (repeat === "false") {
+      postEvent(date, startH, startM, endH, endM);
+    } else {
+      // need times to make sure date is correct
+      const startDate = new Date(date.concat(" ", startTime));
+      const endDate = new Date(endAfter.concat(" ", endTime));
+      try {
+        // get range of dates between the start and end dates
+        const dates = eachWeekOfInterval(
+          {
+            start: startDate,
+            end: endDate,
+          },
+          { weekStartsOn: getDay(startDate) }
+        );
+        dates.forEach((curDate) => {
+          postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+        });
+      } catch (RangeError) {
+        setSubmit(
+          "Invalid date range, make sure starting date is before end date"
+        );
+      }
+    }
+  };
 
   return (
     <Header headerText="Edit Event" back="/events" navbar>
@@ -166,7 +262,7 @@ export default function EditEvent() {
               value={notes}
               required
             />
-            <Submit type="submit" value="Create" />
+            <Submit type="submit" value="Update" />
             <p>
               <b>
                 {submit}
