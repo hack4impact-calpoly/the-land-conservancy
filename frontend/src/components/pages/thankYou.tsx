@@ -89,6 +89,7 @@ interface LocationState {
   title: string;
   date: string;
   hours: number;
+  notes?: string;
 }
 
 export default function ThankYou() {
@@ -116,6 +117,7 @@ export default function ThankYou() {
             title={data.title}
             date={convertDate(data.date)}
             hours={data.hours}
+            notes={data.notes || ""}
           />
         ) : (
           <p key="load"> Loading ...</p>

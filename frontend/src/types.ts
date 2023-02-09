@@ -14,6 +14,7 @@ interface Shift {
   hours: number;
   user: string;
   userName: string;
+  notes?: string;
 }
 
 // user interface for lifting state of user,

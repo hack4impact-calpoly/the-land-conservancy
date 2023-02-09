@@ -112,6 +112,7 @@ interface LocationState {
   user: User;
   oldHours: string;
   shiftId: string;
+  oldNotes: string;
 }
 
 function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
@@ -183,6 +184,7 @@ export default function LogHours({
   let submittingUser = currentUser.isAdmin ? volunteer : currentUser;
   let oldHours = null;
   let shiftId: string | null = null;
+  let oldNotes: string | null = null;
   if (location.state) {
     const user = allUsers.find(
       (u) => u._id === (location.state as LocationState).user._id
@@ -192,10 +194,12 @@ export default function LogHours({
     }
     oldHours = (location.state as LocationState).oldHours;
     shiftId = (location.state as LocationState).shiftId;
+    oldNotes = (location.state as LocationState).oldNotes;
+    console.log(location.state as LocationState);
   }
   const [hours, setHours] = React.useState(oldHours || "");
 
-  const [notes, setNotes] = React.useState("");
+  const [notes, setNotes] = React.useState(oldNotes || "");
 
   const thisEvent = eventData.find((event) => event._id === eventId);
 
@@ -204,6 +208,7 @@ export default function LogHours({
     title: thisEvent?.title,
     date: thisEvent?.start,
     hours,
+    notes,
   };
 
   const addToUser = async (id: string) => {
