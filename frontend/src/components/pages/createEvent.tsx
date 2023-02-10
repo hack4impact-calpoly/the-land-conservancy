@@ -14,6 +14,7 @@ import { BsFillPencilFill } from "react-icons/bs";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
+import { DaysSelected } from "../../types";
 import CustomRepeatingDate from "./customRepeatingDate";
 
 const PORT = process.env.REACT_APP_API_URL;
@@ -83,17 +84,20 @@ export default function CreateEvent({
   const [link, setLink] = useState("");
   const [openCustomDate, setOpenCustomDate] = useState(false);
   const [customDays, setCustomDays] = useState<number[]>([]);
-  const [sunday, setSunday] = useState(false);
-  const [monday, setMonday] = useState(false);
-  const [tuesday, setTuesday] = useState(false);
-  const [wednesday, setWednesday] = useState(false);
-  const [thursday, setThursday] = useState(false);
-  const [friday, setFriday] = useState(false);
-  const [saturday, setSaturday] = useState(false);
   const [customEnd, setCustomEnd] = useState("");
   const [customPeriod, setCustomPeriod] = useState("weeks");
   const [customPeriodNum, setCustomPeriodNum] = useState(1);
   const [occurences, setOccurences] = useState(1);
+
+  const [daysSelected, setDaysSelected] = useState<DaysSelected>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const clearForm = () => {
     setTitle("");
@@ -196,6 +200,10 @@ export default function CreateEvent({
         if (customEnd === "on" && customPeriod === "weeks") {
           // dates for CUSTOM INTERVAL week repeat on custom days
           let dates = [];
+          // add start date if its Day is not included in custom repeat
+          if (!daysSelected[getDay(startDate)]) {
+            dates.push(startDate);
+          }
           for (
             let j = startDate;
             j <= endDate;
@@ -206,7 +214,6 @@ export default function CreateEvent({
               dates.push(addDays(j, diff));
             }
           }
-          if (dates[0] !== startDate) dates.push(startDate);
           dates = dates.filter(
             (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
           );
@@ -216,7 +223,11 @@ export default function CreateEvent({
         } else if (customEnd === "after" && customPeriod === "weeks") {
           // dates for custom interval weekly repeat after X occurences
           let dates = [];
-          const end = addWeeks(startDate, customPeriodNum * (occurences - 1));
+          // add start date if its Day is not included in custom repeat
+          if (!daysSelected[getDay(startDate)]) {
+            dates.push(startDate);
+          }
+          const end = addWeeks(startDate, customPeriodNum * occurences);
           for (let j = startDate; j <= end; j = addWeeks(j, customPeriodNum)) {
             for (let k = 0; k < customDays.length; k++) {
               const diff = customDays[k] - getDay(startDate);
@@ -441,25 +452,13 @@ export default function CreateEvent({
           customEnd={customEnd}
           endAfter={endAfter}
           occurences={occurences}
-          sunday={sunday}
-          monday={monday}
-          tuesday={tuesday}
-          wednesday={wednesday}
-          thursday={thursday}
-          friday={friday}
-          saturday={saturday}
-          setSunday={setSunday}
-          setMonday={setMonday}
-          setTuesday={setTuesday}
-          setWednesday={setWednesday}
-          setThursday={setThursday}
-          setFriday={setFriday}
-          setSaturday={setSaturday}
           setEnd={setEnd}
           setCustomEnd={setCustomEnd}
           setCustomPeriod={setCustomPeriod}
           setCustomPeriodNum={setCustomPeriodNum}
           setOccurences={setOccurences}
+          daysSelected={daysSelected}
+          setDaysSelected={setDaysSelected}
         />
       )}
     </>

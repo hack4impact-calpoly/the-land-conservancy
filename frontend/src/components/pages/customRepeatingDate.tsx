@@ -1,5 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { DaysSelected } from "../../types";
+
+const DAY_NAMES = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 const StyledDiv = styled.div`
   text-decoration: none;
@@ -90,6 +101,8 @@ const DayButton = styled.button`
 `;
 
 export default function CustomRepeatingDate({
+  daysSelected,
+  setDaysSelected,
   setOpenCustomDate,
   setCustomDays,
   customEnd,
@@ -98,26 +111,14 @@ export default function CustomRepeatingDate({
   endAfter,
   customDays,
   occurences,
-  monday,
-  tuesday,
-  wednesday,
-  thursday,
-  friday,
-  saturday,
-  sunday,
-  setSunday,
-  setMonday,
-  setTuesday,
-  setWednesday,
-  setThursday,
-  setFriday,
-  setSaturday,
   setEnd,
   setCustomEnd,
   setCustomPeriod,
   setCustomPeriodNum,
   setOccurences,
 }: {
+  daysSelected: DaysSelected;
+  setDaysSelected: React.Dispatch<React.SetStateAction<DaysSelected>>;
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
   setCustomDays: React.Dispatch<React.SetStateAction<any>>;
   customDays: number[];
@@ -126,20 +127,6 @@ export default function CustomRepeatingDate({
   customPeriodNum: number;
   endAfter: string;
   occurences: number;
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-  saturday: boolean;
-  sunday: boolean;
-  setSunday: React.Dispatch<React.SetStateAction<boolean>>;
-  setMonday: React.Dispatch<React.SetStateAction<boolean>>;
-  setTuesday: React.Dispatch<React.SetStateAction<boolean>>;
-  setWednesday: React.Dispatch<React.SetStateAction<boolean>>;
-  setThursday: React.Dispatch<React.SetStateAction<boolean>>;
-  setFriday: React.Dispatch<React.SetStateAction<boolean>>;
-  setSaturday: React.Dispatch<React.SetStateAction<boolean>>;
   setEnd: React.Dispatch<React.SetStateAction<string>>;
   setCustomEnd: React.Dispatch<React.SetStateAction<string>>;
   setCustomPeriod: React.Dispatch<React.SetStateAction<string>>;
@@ -174,118 +161,28 @@ export default function CustomRepeatingDate({
         <>
           <SubText>Repeat on</SubText>
           <HorizDiv>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!sunday) {
-                  setCustomDays([...customDays, 0]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 0));
-                }
-                setSunday(!sunday);
-              }}
-              style={{
-                backgroundColor: sunday ? "#a5b993" : "",
-              }}
-            >
-              S
-            </DayButton>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!monday) {
-                  setCustomDays([...customDays, 1]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 1));
-                }
-                setMonday(!monday);
-              }}
-              style={{
-                backgroundColor: monday ? "#a5b993" : "",
-              }}
-            >
-              M
-            </DayButton>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!tuesday) {
-                  setCustomDays([...customDays, 2]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 2));
-                }
-                setTuesday(!tuesday);
-              }}
-              style={{
-                backgroundColor: tuesday ? "#a5b993" : "",
-              }}
-            >
-              T
-            </DayButton>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!wednesday) {
-                  setCustomDays([...customDays, 3]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 3));
-                }
-                setWednesday(!wednesday);
-              }}
-              style={{
-                backgroundColor: wednesday ? "#a5b993" : "",
-              }}
-            >
-              W
-            </DayButton>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!thursday) {
-                  setCustomDays([...customDays, 4]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 4));
-                }
-                setThursday(!thursday);
-              }}
-              style={{
-                backgroundColor: thursday ? "#a5b993" : "",
-              }}
-            >
-              T
-            </DayButton>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!friday) {
-                  setCustomDays([...customDays, 5]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 5));
-                }
-                setFriday(!friday);
-              }}
-              style={{
-                backgroundColor: friday ? "#a5b993" : "",
-              }}
-            >
-              F
-            </DayButton>
-            <DayButton
-              type="button"
-              onClick={() => {
-                if (!saturday) {
-                  setCustomDays([...customDays, 6]);
-                } else {
-                  setCustomDays(customDays.filter((x) => x !== 6));
-                }
-                setSaturday(!saturday);
-              }}
-              style={{
-                backgroundColor: saturday ? "#a5b993" : "",
-              }}
-            >
-              S
-            </DayButton>
+            {daysSelected.map((daySelected, index) => (
+              <DayButton
+                key={DAY_NAMES[index]}
+                type="button"
+                onClick={() => {
+                  if (!daysSelected[index]) {
+                    setCustomDays([...customDays, index]);
+                  } else {
+                    setCustomDays(customDays.filter((x) => x !== index));
+                  }
+                  const newDays: DaysSelected = [...daysSelected];
+                  newDays[index] = !daysSelected[index];
+                  setDaysSelected(newDays);
+                  console.log(customDays);
+                }}
+                style={{
+                  backgroundColor: daysSelected[index] ? "#a5b993" : "",
+                }}
+              >
+                {DAY_NAMES[index][0]}
+              </DayButton>
+            ))}
           </HorizDiv>
         </>
       )}

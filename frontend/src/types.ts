@@ -36,3 +36,13 @@ interface Prize {
 }
 
 export type { Event, Shift, User, Prize };
+
+export type DaysSelected = [
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean
+];
