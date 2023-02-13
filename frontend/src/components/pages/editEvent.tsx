@@ -170,7 +170,7 @@ export default function EditEvent({ eventData, setEvents }: EditEventProps) {
   };
 
   return (
-    <Header headerText="Edit Event" back="/events" navbar>
+    <Header headerText="Edit Event" back="/events">
       <Container>
         <div>
           <Form
