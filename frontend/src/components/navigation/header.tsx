@@ -54,7 +54,7 @@ type HeaderPropTypes = {
 };
 
 /* note for future devs: pages that can be accessed from the navbar
- * will pass navbar as a prop, otherwise the back arrow will show
+ * will only show navbar, other pages will show nav bar and back arrow
  */
 export default function Header({
   headerText,
@@ -82,11 +82,15 @@ export default function Header({
           </Container>
         </NavBar>
       ) : (
-        <>
-          <StyledHeader>{headerText}</StyledHeader>
+        <Container>
+          <NavBar>
+            <Container>
+              <StyledHeader>{headerText}</StyledHeader>
+              {children}
+            </Container>
+          </NavBar>
           {previous}
-          {children}
-        </>
+        </Container>
       )}
     </Navigation>
   );
