@@ -62,14 +62,14 @@ const Feedback = styled.div`
 `;
 
 const StyledTextArea = styled.textarea`
-  fontSize: 20,
-  borderRadius: 10,
-  resize: none,
-  fontFamily: Poppins,
-  border: 1px solid #c4c4c4,
-  paddingLeft: 10,
-  margin: 5px 0 20px 0,
-  width: 100%,
+  font-size: 20px;
+  border-radius: 10px;
+  resize: none;
+  font-family: Poppins;
+  border: 1px solid #c4c4c4;
+  padding-left: 10px;
+  margin: 5px 0 20px 0;
+  width: 100%;
 `;
 
 const NameBox = styled.div`
