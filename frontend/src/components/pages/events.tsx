@@ -99,7 +99,7 @@ export default function Events({
   return (
     <Header headerText="Events" navbar>
       <StyledContainer maxWidth="md">
-        <SearchBar />
+        <SearchBar setAllEvents={setAllEvents} />
         {eventData ? (
           eventData
             .filter((event) => {
