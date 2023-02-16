@@ -106,12 +106,23 @@ function createData(
   eventDate: string,
   hours: number,
   user: string,
-  name: string
+  name: string,
+  notes: string
 ) {
   const date = new Date(eventDate).toLocaleDateString("en-US", {
     timeZone: "UTC",
   });
-  return { _id, eventId, eventTitle, eventLocation, date, hours, user, name };
+  return {
+    _id,
+    eventId,
+    eventTitle,
+    eventLocation,
+    date,
+    hours,
+    user,
+    name,
+    notes,
+  };
 }
 
 // creates a row of data for the csv file
@@ -193,7 +204,8 @@ export default function VolunteerLog({
         shift.event.start,
         shift.hours,
         shift.user,
-        shift.userName
+        shift.userName,
+        shift.notes || ""
       )
     )
     // filter based on user selection of year & month
@@ -292,6 +304,7 @@ export default function VolunteerLog({
                             user: { _id: row.user },
                             oldHours: row.hours,
                             shiftId: row._id,
+                            oldNotes: row.notes,
                           }}
                         >
                           <StyledEdit />

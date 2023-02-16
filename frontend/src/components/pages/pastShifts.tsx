@@ -62,6 +62,7 @@ export default function PastShifts({ pastShiftData, prizes }: ShiftProps) {
                 title={shift.event.title}
                 date={convertDate(shift.event.start)}
                 hours={shift.hours}
+                notes={shift.notes || ""}
               />
             ))
           ) : (
