@@ -37,6 +37,17 @@ const Select = styled.select`
   width: 100%;
 `;
 
+const Notes = styled.textarea`
+  font-size: 20px;
+  border-radius: 10px;
+  resize: none;
+  font-family: Poppins;
+  border: 1px solid #c4c4c4;
+  padding-left: 10px;
+  margin: 5px 0px 20px 0px;
+  width: 98%;
+`;
+
 interface Event {
   _id: string;
   title: string;
@@ -254,9 +265,10 @@ export default function EditEvent({ eventData, setEvents }: EditEventProps) {
               required
             />
             <Label htmlFor="notes">Additional Notes</Label>
-            <Input
+            <Notes
               id="notes"
-              type="text"
+              rows={5}
+              cols={50}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Notes"
               value={notes}
