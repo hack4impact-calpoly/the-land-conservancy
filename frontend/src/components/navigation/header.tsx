@@ -23,7 +23,6 @@ const BackArrow = styled(BiArrowBack)`
   font-size: 25px;
   cursor: pointer;
   @media screen and (min-width: 768px) {
-    left: 80px;
     font-size: 30px;
   }
 `;
@@ -54,7 +53,7 @@ type HeaderPropTypes = {
 };
 
 /* note for future devs: pages that can be accessed from the navbar
- * will only show navbar, other pages will show nav bar and back arrow
+ * will only show navbar, other pages will only show back arrow
  */
 export default function Header({
   headerText,
@@ -83,12 +82,8 @@ export default function Header({
         </NavBar>
       ) : (
         <Container>
-          <NavBar>
-            <Container>
-              <StyledHeader>{headerText}</StyledHeader>
-              {children}
-            </Container>
-          </NavBar>
+          <StyledHeader>{headerText}</StyledHeader>
+          {children}
           {previous}
         </Container>
       )}
