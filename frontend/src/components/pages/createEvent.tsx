@@ -200,6 +200,9 @@ export default function CreateEvent({
         if (customEnd === "on" && customPeriod === "weeks") {
           // dates for CUSTOM INTERVAL week repeat on custom days
           let dates = [];
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
           // add start date if its Day is not included in custom repeat
           if (!daysSelected[getDay(startDate)]) {
             dates.push(startDate);
@@ -221,7 +224,7 @@ export default function CreateEvent({
             postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
         } else if (customEnd === "after" && customPeriod === "weeks") {
-          // dates for custom interval weekly repeat after X occurences
+          // dates for custom interval repeat after X occurences
           let dates = [];
           // add start date if its Day is not included in custom repeat
           if (!daysSelected[getDay(startDate)]) {
@@ -241,6 +244,9 @@ export default function CreateEvent({
         } else if (customEnd === "on" && customPeriod === "days") {
           // dates for day-based repeats
           let dates = [];
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
           for (
             let d = startDate;
             d <= endDate;
@@ -266,6 +272,9 @@ export default function CreateEvent({
           });
         } else if (customEnd === "on" && customPeriod === "months") {
           // dates for custom-month repeat
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
           let dates = [];
           for (
             let j = startDate;
@@ -294,6 +303,9 @@ export default function CreateEvent({
           });
         } else if (customEnd === "on" && customPeriod === "years") {
           // dates for custom-year repeat
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
           let dates = [];
           for (
             let j = startDate;
@@ -378,7 +390,7 @@ export default function CreateEvent({
               <Flex dir="row">
                 <Flex dir="column">
                   <Flex dir="row">
-                    <Label htmlFor="repeat-select">Weekly Repeat</Label>
+                    <Label htmlFor="repeat-select">Repeat</Label>
                     {repeat === "custom" && (
                       <PencilIcon onClick={() => setOpenCustomDate(true)} />
                     )}
