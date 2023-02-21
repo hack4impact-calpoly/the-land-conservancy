@@ -332,6 +332,8 @@ export default function CreateEvent({
           dates.forEach((curDate) => {
             postEvent(curDate.toUTCString(), startH, startM, endH, endM);
           });
+        } else {
+          alert("Custom repeat form must be filled out.");
         }
       } catch (RangeError) {
         setSubmit(
