@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FileUploader } from "react-drag-drop-files";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container } from "@mui/material";
@@ -25,12 +26,19 @@ type EditPrizeProps = {
   setPrizes: (val: (prev: Prize[]) => Prize[]) => void;
 };
 
+const fileTypes = ["JPG", "PNG", "GIF"];
+
 export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
   const [itemName, setItemName] = useState("");
   const [sponsorName, setSponsorName] = useState("");
   const [sponsorImg, setSponsorImg] = useState("");
+  const [, setFile] = useState<File>();
   const { prizeId } = useParams();
   const navigate = useNavigate();
+
+  const handleChange = (event: File) => {
+    setFile(event);
+  };
 
   const addToPrize = async (
     item: string,
@@ -94,13 +102,20 @@ export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
               placeholder="Sponsor Name"
               value={sponsorName}
             />
-            <Label htmlFor="sponsorImg">Sponsor Image URL</Label>
+            <Label htmlFor="sponsorImgURL">Sponsor Image URL</Label>
             <Input
-              id="SponsorImg"
+              id="SponsorImgURL"
               type="text"
               onChange={(e) => setSponsorImg(e.target.value)}
               placeholder="url"
               value={sponsorImg}
+            />
+            <Label htmlFor="sponsorImg">Sponsor Image</Label>
+            <FileUploader
+              multiple
+              handleChange={handleChange}
+              name="file"
+              types={fileTypes}
             />
             <Submit type="submit" value="Save Changes" />
           </Form>
