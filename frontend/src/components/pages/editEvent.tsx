@@ -58,8 +58,8 @@ export default function EditEvent({ eventData, setEvents }: EditEventProps) {
   const autofillDate = (thisEvent ? thisEvent.start : "")
     .split("T", 1)
     .toString();
-  const autofillStart = (thisEvent ? thisEvent.start : "").slice(11, 16);
-  const autofillEnd = (thisEvent ? thisEvent.end : "").slice(11, 16);
+  const autofillStart = (thisEvent ? thisEvent.start : "").slice(11, 16); // slice start time to hours:minutes
+  const autofillEnd = (thisEvent ? thisEvent.end : "").slice(11, 16); // slice end time to hours:minutes
   const [title, setTitle] = useState(thisEvent ? thisEvent.title : "");
   const [date, setDate] = useState(autofillDate);
   const [startTime, setSTime] = useState(autofillStart);
