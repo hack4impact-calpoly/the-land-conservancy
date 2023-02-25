@@ -66,10 +66,15 @@ type EditEventProps = {
 export default function EditEvent({ eventData, setEvents }: EditEventProps) {
   const { eventId } = useParams();
   const thisEvent = eventData.find((event) => event._id === eventId);
+  const autofillDate = (thisEvent ? thisEvent.start : "")
+    .split("T", 1)
+    .toString();
+  const autofillStart = (thisEvent ? thisEvent.start : "").slice(11, 16); // slice start time to hours:minutes
+  const autofillEnd = (thisEvent ? thisEvent.end : "").slice(11, 16); // slice end time to hours:minutes
   const [title, setTitle] = useState(thisEvent ? thisEvent.title : "");
-  const [date, setDate] = useState("");
-  const [startTime, setSTime] = useState("");
-  const [endTime, setETime] = useState("");
+  const [date, setDate] = useState(autofillDate);
+  const [startTime, setSTime] = useState(autofillStart);
+  const [endTime, setETime] = useState(autofillEnd);
   const [repeat, setRepeat] = useState("false");
   const [endAfter, setEnd] = useState("");
   const [location, setLocation] = useState(thisEvent ? thisEvent.location : "");
@@ -179,7 +184,6 @@ export default function EditEvent({ eventData, setEvents }: EditEventProps) {
       }
     }
   };
-
   return (
     <Header headerText="Edit Event" back="/events">
       <Container>
