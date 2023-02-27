@@ -6,16 +6,27 @@ export {};
 
 const router = express.Router();
 
-/* gets all events or events based on search parameter */
+/* gets all events or events based on search/filter query parameter */
 router.get("/", async (req: any, res: any) => {
   try {
     const temp = await Event.find({});
-    const query = req.query.search;
+    const searchQuery = req.query.search;
+    const filterQuery = req.query.filter;
 
-    /* if a search query was given */
-    if (query !== undefined) {
+    /* if a filter query was given */
+    if (filterQuery !== undefined) {
+      /* returns whole string match by location, case insensitive */
+      const query = await Event.find({
+        location: { $regex: `^${filterQuery}$`, $options: "i" },
+      });
+      res.send(query);
+      return;
+    }
+
+    /* if search query was given */
+    if (searchQuery !== undefined) {
       /* filters events by date if query is a valid date */
-      const timestamp = Date.parse(query);
+      const timestamp = Date.parse(searchQuery);
       if (Number.isNaN(timestamp) === false) {
         const filteredDates: any = [];
         temp?.forEach((event) => {
@@ -30,7 +41,10 @@ router.get("/", async (req: any, res: any) => {
       } else {
         /* find all events with query in location or notes field */
         const search = await Event.find({
-          location: { $regex: query, $options: "$i" },
+          $or: [
+            { location: { $regex: searchQuery, $options: "$i" } },
+            { notes: { $regex: searchQuery, $options: "$i" } },
+          ],
         });
         res.send(search);
       }
