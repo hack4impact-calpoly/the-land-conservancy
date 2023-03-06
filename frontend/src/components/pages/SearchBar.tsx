@@ -99,7 +99,7 @@ const ListItem = styled("ul")`
   }
 `;
 
-const locations = [
+let locations = [
   "All Locations",
   "San Luis Obispo",
   "Arroyo Grande",
@@ -163,6 +163,10 @@ export default function SearchBar({
         .then((res) => res.json())
         .then((data) => {
           setAllEvents(data);
+          const allLocations = data.map((x: { location: any }) => x.location);
+          let setLocations = new Set<string>();
+          setLocations = new Set(allLocations);
+          locations = ["All Locations", ...setLocations];
         })
         .catch((err) => console.log(err));
     };
