@@ -103,7 +103,7 @@ const locations = [
   "All Locations",
   "San Luis Obispo",
   "Arroyo Grande",
-  "Pismo Beach",
+  "Pismo Preserve",
   "Morro Bay",
   "Atascadero",
   "Cambria",
@@ -111,6 +111,9 @@ const locations = [
   "Avila Beach",
   "Nipomo",
   "Santa Maria",
+  "Santa Rita Ranch",
+  "Kathleen's Canyon Overlook",
+  "Santa Margarita Elementary",
 ];
 
 export default function SearchBar({
@@ -124,10 +127,22 @@ export default function SearchBar({
 
   const toggling = () => setIsOpen(!isOpen);
 
+  const handleLocationSearch = async (option: string) => {
+    await fetch(`${PORT}/events?filter=${option}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setAllEvents(data);
+        console.log("from search", option);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const onOptionClicked = (option: string) => () => {
     setSelectedOption(option);
     setIsOpen(false);
     console.log(selectedOption);
+    handleLocationSearch(option);
   };
 
   // If search bar is empty, display all events
