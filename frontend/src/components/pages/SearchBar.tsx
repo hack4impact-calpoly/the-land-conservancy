@@ -134,7 +134,6 @@ export default function SearchBar({
         .then((data) => {
           console.log(data);
           setAllEvents(data);
-          console.log("from search", option);
         })
         .catch((err) => console.log(err));
     } else {
@@ -143,7 +142,6 @@ export default function SearchBar({
         .then((data) => {
           console.log(data);
           setAllEvents(data);
-          console.log("from search", option);
         })
         .catch((err) => console.log(err));
     }
