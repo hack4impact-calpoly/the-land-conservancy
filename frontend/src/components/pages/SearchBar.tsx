@@ -128,14 +128,25 @@ export default function SearchBar({
   const toggling = () => setIsOpen(!isOpen);
 
   const handleLocationSearch = async (option: string) => {
-    await fetch(`${PORT}/events?filter=${option}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setAllEvents(data);
-        console.log("from search", option);
-      })
-      .catch((err) => console.log(err));
+    if (option === "All Locations") {
+      await fetch(`${PORT}/events`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setAllEvents(data);
+          console.log("from search", option);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      await fetch(`${PORT}/events?filter=${option}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setAllEvents(data);
+          console.log("from search", option);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const onOptionClicked = (option: string) => () => {
