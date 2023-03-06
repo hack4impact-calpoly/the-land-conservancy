@@ -166,7 +166,8 @@ export default function SearchBar({
           const allLocations = data.map((x: { location: any }) => x.location);
           let setLocations = new Set<string>();
           setLocations = new Set(allLocations);
-          locations = ["All Locations", ...setLocations];
+          const tempSort = [...setLocations].sort();
+          locations = ["All Locations", ...tempSort];
         })
         .catch((err) => console.log(err));
     };
