@@ -179,7 +179,7 @@ export default function SearchBar({
       <StyledDiv>
         <Search
           type="text"
-          placeholder="Location or Date (dd/mm/yyyy)"
+          placeholder="Location or Date (mm/dd/yyyy)"
           onChange={handleSearchBarInput}
           onKeyDown={handleEnterPress}
           value={query}
