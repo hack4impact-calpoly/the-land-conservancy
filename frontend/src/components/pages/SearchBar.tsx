@@ -99,11 +99,11 @@ const ListItem = styled("ul")`
   }
 `;
 
-const locations = [
+let locations = [
   "All Locations",
   "San Luis Obispo",
   "Arroyo Grande",
-  "Pismo Beach",
+  "Pismo Preserve",
   "Morro Bay",
   "Atascadero",
   "Cambria",
@@ -111,6 +111,9 @@ const locations = [
   "Avila Beach",
   "Nipomo",
   "Santa Maria",
+  "Santa Rita Ranch",
+  "Kathleen's Canyon Overlook",
+  "Santa Margarita Elementary",
 ];
 
 export default function SearchBar({
@@ -124,10 +127,31 @@ export default function SearchBar({
 
   const toggling = () => setIsOpen(!isOpen);
 
+  const handleLocationSearch = async (option: string) => {
+    if (option === "All Locations") {
+      await fetch(`${PORT}/events`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setAllEvents(data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      await fetch(`${PORT}/events?filter=${option}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setAllEvents(data);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   const onOptionClicked = (option: string) => () => {
     setSelectedOption(option);
     setIsOpen(false);
     console.log(selectedOption);
+    handleLocationSearch(option);
   };
 
   // If search bar is empty, display all events
@@ -137,6 +161,11 @@ export default function SearchBar({
         .then((res) => res.json())
         .then((data) => {
           setAllEvents(data);
+          const allLocations = data.map((x: { location: any }) => x.location);
+          let setLocations = new Set<string>();
+          setLocations = new Set(allLocations);
+          const tempSort = [...setLocations].sort();
+          locations = ["All Locations", ...tempSort];
         })
         .catch((err) => console.log(err));
     };
