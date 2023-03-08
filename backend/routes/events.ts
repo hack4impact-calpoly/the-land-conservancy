@@ -25,18 +25,31 @@ router.get("/", async (req: any, res: any) => {
 
     /* if search query was given */
     if (searchQuery !== undefined) {
-      /* filters events by date if query is a valid date */
+      /* filters events by date if query is a full valid date */
       const timestamp = Date.parse(searchQuery);
+      const filteredDates: any = [];
       if (Number.isNaN(timestamp) === false) {
-        const filteredDates: any = [];
-        temp?.forEach((event) => {
-          const startTime = event.start.toISOString().substring(0, 10);
-          const endTime = event.end.toISOString().substring(0, 10);
-          const date = new Date(timestamp).toISOString();
-          if (date.startsWith(startTime) && date.startsWith(endTime)) {
-            filteredDates.push(event);
-          }
-        });
+        /* filters events by date if only given MM/DD */
+        if ((searchQuery.match(/\//g) || []).length === 1) {
+          const date = new Date(searchQuery).toISOString().substring(5, 10);
+          temp?.forEach((event) => {
+            const startTime = event.start.toISOString().substring(5, 10);
+            const endTime = event.end.toISOString().substring(5, 10);
+            if (date === startTime && date === endTime) {
+              filteredDates.push(event);
+            }
+          });
+        } else {
+          /* filters events by date if given MM/DD/YYYY */
+          temp?.forEach((event) => {
+            const startTime = event.start.toISOString().substring(0, 10);
+            const endTime = event.end.toISOString().substring(0, 10);
+            const date = new Date(timestamp).toISOString();
+            if (date.startsWith(startTime) && date.startsWith(endTime)) {
+              filteredDates.push(event);
+            }
+          });
+        }
         res.send(filteredDates);
       } else {
         /* find all events with query in location or notes field */
