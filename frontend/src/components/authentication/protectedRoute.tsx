@@ -7,9 +7,17 @@ const PORT = process.env.REACT_APP_API_URL;
 
 export type ProtectedRouteProps = {
   children: JSX.Element;
+  // only admin has access to page
+  adminOnly?: boolean;
+  // whether currentUser is admin, evaluated in App.tsx
+  adminStatus?: boolean;
 };
 
-function ProtectedRoute({ children }: ProtectedRouteProps) {
+function ProtectedRoute({
+  children,
+  adminOnly,
+  adminStatus,
+}: ProtectedRouteProps) {
   const { setUser } = useContext(UserContext);
   const [pending, setPending] = useState(true);
   const [found, setFound] = useState();
@@ -57,8 +65,17 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   if (!found) {
     return <Navigate to="/login" />;
   }
+  if (adminOnly && !adminStatus) {
+    alert("You do not have permission to access this page.");
+    return <Navigate to="/login" />;
+  }
 
   return children;
 }
+
+ProtectedRoute.defaultProps = {
+  adminOnly: false,
+  adminStatus: false,
+};
 
 export default ProtectedRoute;
