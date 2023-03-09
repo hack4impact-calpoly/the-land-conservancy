@@ -1,5 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import { DaysSelected } from "../../types";
+
+const DAY_NAMES = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 const StyledDiv = styled.div`
   text-decoration: none;
@@ -90,114 +101,129 @@ const DayButton = styled.button`
 `;
 
 export default function CustomRepeatingDate({
+  daysSelected,
+  setDaysSelected,
   setOpenCustomDate,
+  setCustomDays,
+  customEnd,
+  customPeriod,
+  customPeriodNum,
+  endAfter,
+  customDays,
+  occurences,
+  setEnd,
+  setCustomEnd,
+  setCustomPeriod,
+  setCustomPeriodNum,
+  setOccurences,
 }: {
+  daysSelected: DaysSelected;
+  setDaysSelected: React.Dispatch<React.SetStateAction<DaysSelected>>;
   setOpenCustomDate: React.Dispatch<React.SetStateAction<boolean>>;
+  setCustomDays: React.Dispatch<React.SetStateAction<any>>;
+  customDays: number[];
+  customEnd: string;
+  customPeriod: string;
+  customPeriodNum: number;
+  endAfter: string;
+  occurences: number;
+  setEnd: React.Dispatch<React.SetStateAction<string>>;
+  setCustomEnd: React.Dispatch<React.SetStateAction<string>>;
+  setCustomPeriod: React.Dispatch<React.SetStateAction<string>>;
+  setCustomPeriodNum: React.Dispatch<React.SetStateAction<number>>;
+  setOccurences: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const [sunday, setSunday] = useState(false);
-  const [monday, setMonday] = useState(false);
-  const [tuesday, setTuesday] = useState(false);
-  const [wednesday, setWednesday] = useState(false);
-  const [thursday, setThursday] = useState(false);
-  const [friday, setFriday] = useState(false);
-  const [saturday, setSaturday] = useState(false);
-
   return (
     <StyledDiv>
       <Title>Custom recurrence</Title>
       <HorizDiv>
         <Text>Repeat every</Text>
-        <NumInput type="number" min="1" />
-        <DateType>
-          <option value="days">days</option>
+        <NumInput
+          type="number"
+          min="1"
+          placeholder="1"
+          value={customPeriodNum}
+          onChange={(e) => setCustomPeriodNum(parseInt(e.target.value, 10))}
+        />
+        <DateType
+          onChange={(e) => {
+            setCustomPeriod(e.target.value);
+          }}
+          value={customPeriod}
+        >
           <option value="weeks">weeks</option>
+          <option value="days">days</option>
           <option value="months">months</option>
           <option value="years">years</option>
         </DateType>
       </HorizDiv>
-      <SubText>Repeat on</SubText>
-      <HorizDiv>
-        <DayButton
-          type="button"
-          onClick={() => setSunday(!sunday)}
-          style={{
-            backgroundColor: sunday ? "#a5b993" : "",
-          }}
-        >
-          S
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => setMonday(!monday)}
-          style={{
-            backgroundColor: monday ? "#a5b993" : "",
-          }}
-        >
-          M
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => setTuesday(!tuesday)}
-          style={{
-            backgroundColor: tuesday ? "#a5b993" : "",
-          }}
-        >
-          T
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => setWednesday(!wednesday)}
-          style={{
-            backgroundColor: wednesday ? "#a5b993" : "",
-          }}
-        >
-          W
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => setThursday(!thursday)}
-          style={{
-            backgroundColor: thursday ? "#a5b993" : "",
-          }}
-        >
-          T
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => setFriday(!friday)}
-          style={{
-            backgroundColor: friday ? "#a5b993" : "",
-          }}
-        >
-          F
-        </DayButton>
-        <DayButton
-          type="button"
-          onClick={() => setSaturday(!saturday)}
-          style={{
-            backgroundColor: saturday ? "#a5b993" : "",
-          }}
-        >
-          S
-        </DayButton>
-      </HorizDiv>
+      {customPeriod === "weeks" && (
+        <>
+          <SubText>Repeat on</SubText>
+          <HorizDiv>
+            {daysSelected.map((daySelected, index) => (
+              <DayButton
+                key={DAY_NAMES[index]}
+                type="button"
+                onClick={() => {
+                  if (!daysSelected[index]) {
+                    setCustomDays([...customDays, index]);
+                  } else {
+                    setCustomDays(customDays.filter((x) => x !== index));
+                  }
+                  const newDays: DaysSelected = [...daysSelected];
+                  newDays[index] = !daysSelected[index];
+                  setDaysSelected(newDays);
+                  console.log(customDays);
+                }}
+                style={{
+                  backgroundColor: daysSelected[index] ? "#a5b993" : "",
+                }}
+              >
+                {DAY_NAMES[index][0]}
+              </DayButton>
+            ))}
+          </HorizDiv>
+        </>
+      )}
       <form>
         <Text>Ends</Text>
         <OptionText>
-          <Option name="repeat" type="radio" value="never" id="never" />
-          Never
-        </OptionText>
-        <OptionText>
-          <Option name="repeat" type="radio" value="never" id="never" />
+          <Option
+            name="repeat"
+            type="radio"
+            value="never"
+            id="never"
+            defaultChecked={customEnd === "on"}
+            onClick={() => setCustomEnd("on")}
+          />
           On
-          <Cal type="date" />
+          <Cal
+            disabled={customEnd !== "on"}
+            type="date"
+            onChange={(e) => setEnd(e.target.value)}
+            value={endAfter}
+          />
         </OptionText>
         <HorizDiv>
           <OptionText>
-            <Option name="repeat" type="radio" value="never" id="never" />
+            <Option
+              name="repeat"
+              type="radio"
+              value="after"
+              id="after"
+              defaultChecked={customEnd === "after"}
+              onClick={() => setCustomEnd("after")}
+            />
             After
           </OptionText>
-          <NumInput type="number" min="1" />
+          <NumInput
+            type="number"
+            min="1"
+            disabled={customEnd !== "after"}
+            value={occurences}
+            onChange={(e) => setOccurences(parseInt(e.target.value, 10))}
+          />
           <OptionText>Occurences</OptionText>
         </HorizDiv>
       </form>

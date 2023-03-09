@@ -1,18 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { eachWeekOfInterval, getDay } from "date-fns";
+import {
+  addDays,
+  addMonths,
+  addWeeks,
+  addYears,
+  eachWeekOfInterval,
+  getDay,
+  isAfter,
+  isBefore,
+} from "date-fns";
+import { BsFillPencilFill } from "react-icons/bs";
 import Header from "../navigation/header";
 import Container from "./formComponents";
 import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
+import { DaysSelected } from "../../types";
 import CustomRepeatingDate from "./customRepeatingDate";
 
 const PORT = process.env.REACT_APP_API_URL;
 
 const Flex = styled.div.attrs((props: { dir: string }) => props)`
   display: flex;
-  align-items: left;
+  align-items: center;
   justify-content: space-between;
   flex-direction: ${({ dir }) => dir};
+`;
+
+const PencilIcon = styled(BsFillPencilFill)`
+  margin-left: 8px;
+  color: black;
+  text-align: left;
+  display: block;
+  font-size: 18px;
+  cursor: pointer;
 `;
 
 const To = styled.p`
@@ -74,6 +94,21 @@ export default function CreateEvent({
   const [submit, setSubmit] = useState("");
   const [link, setLink] = useState("");
   const [openCustomDate, setOpenCustomDate] = useState(false);
+  const [customDays, setCustomDays] = useState<number[]>([]);
+  const [customEnd, setCustomEnd] = useState("");
+  const [customPeriod, setCustomPeriod] = useState("weeks");
+  const [customPeriodNum, setCustomPeriodNum] = useState(1);
+  const [occurences, setOccurences] = useState(1);
+
+  const [daysSelected, setDaysSelected] = useState<DaysSelected>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const clearForm = () => {
     setTitle("");
@@ -85,10 +120,6 @@ export default function CreateEvent({
     setLocation("");
     setNotes("");
   };
-
-  useEffect(() => {
-    console.log(openCustomDate);
-  }, [openCustomDate]);
 
   const postEvent = async (
     curDate: string,
@@ -150,7 +181,7 @@ export default function CreateEvent({
 
     if (repeat === "false") {
       postEvent(date, startH, startM, endH, endM);
-    } else {
+    } else if (repeat === "true") {
       // need times to make sure date is correct
       const startDate = new Date(date.concat(" ", startTime));
       const endDate = new Date(endAfter.concat(" ", endTime));
@@ -166,6 +197,155 @@ export default function CreateEvent({
         dates.forEach((curDate) => {
           postEvent(curDate.toUTCString(), startH, startM, endH, endM);
         });
+      } catch (RangeError) {
+        setSubmit(
+          "Invalid date range, make sure starting date is before end date"
+        );
+      }
+    } else {
+      // CUSTOM REPEAT -- need times to make sure date is correct
+      const startDate = new Date(date.concat(" ", startTime));
+      const endDate = new Date(endAfter.concat(" ", endTime));
+      try {
+        // get range of dates between the start and end dates
+        if (customEnd === "on" && customPeriod === "weeks") {
+          // dates for CUSTOM INTERVAL week repeat on custom days
+          let dates = [];
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
+          // add start date if its Day is not included in custom repeat
+          if (!daysSelected[getDay(startDate)]) {
+            dates.push(startDate);
+          }
+          for (
+            let j = startDate;
+            j <= endDate;
+            j = addWeeks(j, customPeriodNum)
+          ) {
+            for (let k = 0; k < customDays.length; k++) {
+              const diff = customDays[k] - getDay(startDate);
+              dates.push(addDays(j, diff));
+            }
+          }
+          dates = dates.filter(
+            (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
+          );
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "after" && customPeriod === "weeks") {
+          // dates for custom interval repeat after X occurences
+          let dates = [];
+          // add start date if its Day is not included in custom repeat
+          if (!daysSelected[getDay(startDate)]) {
+            dates.push(startDate);
+          }
+          const end = addWeeks(startDate, customPeriodNum * occurences);
+          for (let j = startDate; j <= end; j = addWeeks(j, customPeriodNum)) {
+            for (let k = 0; k < customDays.length; k++) {
+              const diff = customDays[k] - getDay(startDate);
+              dates.push(addDays(j, diff));
+            }
+          }
+          dates = dates.filter((x) => !isBefore(x, startDate));
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "on" && customPeriod === "days") {
+          // dates for day-based repeats
+          let dates = [];
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
+          for (
+            let d = startDate;
+            d <= endDate;
+            d = addDays(d, customPeriodNum)
+          ) {
+            dates.push(d);
+          }
+          dates = dates.filter((x) => isBefore(x, endDate));
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "after" && customPeriod === "days") {
+          // dates for day-based repeats after X occurences
+          let i = 0;
+          let d = startDate;
+          const dates = [];
+          while (i++ < occurences) {
+            dates.push(d);
+            d = addDays(d, customPeriodNum);
+          }
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "on" && customPeriod === "months") {
+          // dates for custom-month repeat
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
+          let dates = [];
+          for (
+            let j = startDate;
+            j <= endDate;
+            j = addMonths(j, customPeriodNum)
+          ) {
+            dates.push(j);
+          }
+          dates = dates.filter(
+            (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
+          );
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "after" && customPeriod === "months") {
+          // dates for custom-month repeat after X occurences
+          const dates = [];
+          let i = 0;
+          let j = startDate;
+          while (i++ < occurences) {
+            dates.push(j);
+            j = addMonths(j, customPeriodNum);
+          }
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "on" && customPeriod === "years") {
+          // dates for custom-year repeat
+          if (endDate < startDate) {
+            alert("End date cannot be before start date");
+          }
+          let dates = [];
+          for (
+            let j = startDate;
+            j <= endDate;
+            j = addYears(j, customPeriodNum)
+          ) {
+            dates.push(j);
+          }
+          dates = dates.filter(
+            (x) => !isBefore(x, startDate) && !isAfter(x, endDate)
+          );
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else if (customEnd === "after" && customPeriod === "years") {
+          // dates for custom-year repeat after X occurences
+          const dates = [];
+          let i = 0;
+          let j = startDate;
+          while (i++ < occurences) {
+            dates.push(j);
+            j = addYears(j, customPeriodNum);
+          }
+          dates.forEach((curDate) => {
+            postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+          });
+        } else {
+          alert("Custom repeat form must be filled out.");
+        }
       } catch (RangeError) {
         setSubmit(
           "Invalid date range, make sure starting date is before end date"
@@ -222,7 +402,12 @@ export default function CreateEvent({
               </Flex>
               <Flex dir="row">
                 <Flex dir="column">
-                  <Label htmlFor="repeat-select">Weekly Repeat</Label>
+                  <Flex dir="row">
+                    <Label htmlFor="repeat-select">Repeat</Label>
+                    {repeat === "custom" && (
+                      <PencilIcon onClick={() => setOpenCustomDate(true)} />
+                    )}
+                  </Flex>
                   <Select
                     name="repeat"
                     id="repeat-select"
@@ -249,11 +434,10 @@ export default function CreateEvent({
                     placeholder="ends after"
                     value={endAfter}
                     required
-                    disabled={repeat === "false"}
+                    disabled={repeat === "false" || repeat === "custom"}
                   />
                 </Flex>
               </Flex>
-
               <Label htmlFor="location">Location</Label>
               <Input
                 id="location"
@@ -285,7 +469,23 @@ export default function CreateEvent({
         </Container>
       </Header>
       {openCustomDate && (
-        <CustomRepeatingDate setOpenCustomDate={setOpenCustomDate} />
+        <CustomRepeatingDate
+          setOpenCustomDate={setOpenCustomDate}
+          setCustomDays={setCustomDays}
+          customDays={customDays}
+          customPeriod={customPeriod}
+          customPeriodNum={customPeriodNum}
+          customEnd={customEnd}
+          endAfter={endAfter}
+          occurences={occurences}
+          setEnd={setEnd}
+          setCustomEnd={setCustomEnd}
+          setCustomPeriod={setCustomPeriod}
+          setCustomPeriodNum={setCustomPeriodNum}
+          setOccurences={setOccurences}
+          daysSelected={daysSelected}
+          setDaysSelected={setDaysSelected}
+        />
       )}
     </>
   );
