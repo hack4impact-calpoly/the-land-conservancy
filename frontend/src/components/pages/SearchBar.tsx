@@ -54,7 +54,7 @@ const DropDownHeader = styled("div")`
   border: 1px solid #ccc;
   border-radius: 7px;
   font-size: 15px;
-  width: 10.5em;
+  width: 13em;
   padding: 14px;
   display: flex;
   justify-content: space-between;
@@ -82,14 +82,14 @@ const DropDownList = styled("ul")`
   font-size: 1rem;
   font-weight: 500;
   left: 0;
-  &:first-child {
-    padding-top: 0.8em;
-  }
+  max-height: 55vh;
+  overflow-y: auto;
 `;
 
 const ListItem = styled("ul")`
   list-style: none;
-  padding: 2em;
+  padding: 1.1em;
+  border-bottom: 0.5px solid rgba(197, 194, 194, 0.469);
   cursor: pointer;
   transiiton: all 0.3 ease-in-out;
   margin-left: -2.5em;
