@@ -26,51 +26,67 @@ type EditPrizeProps = {
   setPrizes: (val: (prev: Prize[]) => Prize[]) => void;
 };
 
-const fileTypes = ["JPG", "PNG", "GIF"];
+const fileTypes = ["JPG", "JPEG", "PNG", "GIF"];
 
 export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
   const [itemName, setItemName] = useState("");
   const [sponsorName, setSponsorName] = useState("");
-  const [sponsorImg, setSponsorImg] = useState("");
-  const [, setFile] = useState<File>();
+  const [file, setFile] = useState<File>();
   const { prizeId } = useParams();
   const navigate = useNavigate();
 
   const handleChange = (event: File) => {
-    setFile(event);
+    if (event) {
+      setFile(event);
+    }
   };
 
-  const addToPrize = async (
-    item: string,
-    sponsor: string,
-    imageUrl: string
-  ) => {
-    // only pass in fields that have been filled out
-    const prizeToAdd: { [k: string]: string | undefined } = {};
-    if (item !== "") {
-      prizeToAdd.itemName = item;
-    }
-    if (sponsor !== "") {
-      prizeToAdd.sponsorName = sponsor;
-    }
-    if (imageUrl !== "") {
-      prizeToAdd.sponsorImage = imageUrl;
+  const addToPrize = async (item: string, sponsor: string) => {
+    if (!file) {
+      alert("Please select a file.");
+      return;
     }
 
-    // post to backend
-    const response = await fetch(`${PORT}/prizes/${prizeId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(prizeToAdd),
-    });
-    const newPrize = await response.json();
+    // create FormData object
+    const formData = new FormData();
+    formData.append("file", file);
 
-    // set updated prizes on the frontend
-    setPrizes((prev) =>
-      prev.map((prize) => (prize._id === newPrize._id ? newPrize : prize))
-    );
+    try {
+      // upload image to s3 bucket
+      const response1 = await fetch(`${PORT}/prizes/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response1.text();
+      const imageURL = data; // get image key from S3 response
+      // only pass in fields that have been filled out
+      const prizeToAdd: { [k: string]: string | undefined } = {};
+      if (item !== "") {
+        prizeToAdd.itemName = item;
+      }
+      if (sponsor !== "") {
+        prizeToAdd.sponsorName = sponsor;
+      }
+      if (imageURL !== "") {
+        prizeToAdd.sponsorImage = imageURL;
+      }
+
+      // post to backend
+      const response = await fetch(`${PORT}/prizes/${prizeId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(prizeToAdd),
+      });
+      const newPrize = await response.json();
+      // set updated prizes on the frontend
+      setPrizes((prev) =>
+        prev.map((prize) => (prize._id === newPrize._id ? newPrize : prize))
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -81,7 +97,7 @@ export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              addToPrize(itemName, sponsorName, sponsorImg).then(() =>
+              addToPrize(itemName, sponsorName).then(() =>
                 navigate("/edit-prizes")
               );
             }}
@@ -102,17 +118,9 @@ export default function EditOnePrize({ setPrizes }: EditPrizeProps) {
               placeholder="Sponsor Name"
               value={sponsorName}
             />
-            <Label htmlFor="sponsorImgURL">Sponsor Image URL</Label>
-            <Input
-              id="SponsorImgURL"
-              type="text"
-              onChange={(e) => setSponsorImg(e.target.value)}
-              placeholder="url"
-              value={sponsorImg}
-            />
             <Label htmlFor="sponsorImg">Sponsor Image</Label>
             <FileUploader
-              multiple
+              multiple={false}
               handleChange={handleChange}
               name="file"
               types={fileTypes}
