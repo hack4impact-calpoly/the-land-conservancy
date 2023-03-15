@@ -64,9 +64,7 @@ router.post("/upload", upload.single("file"), async (req: any, res: any) => {
     return res.status(400).send("No file uploaded.");
   }
 
-  const fileName =
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15);
+  const fileName = `image_${Date.now()}`;
 
   const params = {
     Bucket: bucketName,
