@@ -192,7 +192,7 @@ function App() {
             <Route
               path="/create-event"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <CreateEvent setEvents={setEvents} />
                 </ProtectedRoute>
               }
@@ -200,7 +200,7 @@ function App() {
             <Route
               path="/edit-event/:eventId"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <EditEvent eventData={events} setEvents={setEvents} />
                 </ProtectedRoute>
               }
@@ -208,7 +208,7 @@ function App() {
             <Route
               path="/volunteer-log"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <VolunteerLog
                     allShiftData={allShifts}
                     setAllShifts={setAllShifts}
@@ -220,7 +220,7 @@ function App() {
             <Route
               path="/edit-prizes/:prizeId"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <EditOnePrize setPrizes={setPrizes} />
                 </ProtectedRoute>
               }
@@ -228,7 +228,7 @@ function App() {
             <Route
               path="/edit-prizes"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <EditPrizes prizeData={prizes} />
                 </ProtectedRoute>
               }
