@@ -15,6 +15,7 @@ interface Shift {
   user: string;
   userName: string;
   notes?: string;
+  image?: string;
 }
 
 // user interface for lifting state of user,

@@ -90,6 +90,7 @@ interface LocationState {
   date: string;
   hours: number;
   notes?: string;
+  image?: string;
 }
 
 export default function ThankYou() {
@@ -118,6 +119,7 @@ export default function ThankYou() {
             date={convertDate(data.date)}
             hours={data.hours}
             notes={data.notes || ""}
+            image={data.image || ""}
           />
         ) : (
           <p key="load"> Loading ...</p>
