@@ -47,7 +47,14 @@ export default function ShiftSlot({
           <div>{date}</div>
           <div>{hours} Hours</div>
           <div>{notes}</div>
-          <div>{image}</div>
+          <div>
+            <img
+              width="300"
+              height="300"
+              src={image}
+              alt="related to volunteering"
+            />
+          </div>
         </div>
       </LayoutDiv>
     </StyledEventContainer>

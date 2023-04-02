@@ -442,7 +442,12 @@ export default function LogHours({
           {image !== "" ? (
             <div>
               <h2>Image:</h2>
-              <img width="300" height="300" src={image} alt="sponsor" />
+              <img
+                width="300"
+                height="300"
+                src={image}
+                alt="related to volunteering"
+              />
             </div>
           ) : (
             <div />
