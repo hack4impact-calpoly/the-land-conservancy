@@ -47,14 +47,19 @@ export default function ShiftSlot({
           <div>{date}</div>
           <div>{hours} Hours</div>
           <div>{notes}</div>
-          <div>
-            <img
-              width="300"
-              height="300"
-              src={image}
-              alt="related to volunteering"
-            />
-          </div>
+          {/* display if image is not empty string */}
+          {image !== "" ? (
+            <div>
+              <img
+                width="300"
+                height="300"
+                src={image}
+                alt="related to volunteering"
+              />
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
       </LayoutDiv>
     </StyledEventContainer>
