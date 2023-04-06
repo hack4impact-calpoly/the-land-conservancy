@@ -91,7 +91,7 @@ const options = {
   useTextFile: false,
   useBom: true,
   useKeysAsHeaders: false,
-  headers: ["Event Title", "Location", "Date", "Hours", "Name"],
+  headers: ["Event Title", "Location", "Date", "Hours", "Name", "Notes"],
 };
 
 const csvExporter = new ExportToCsv(options);
@@ -132,12 +132,13 @@ function createCsvRow(
   eventLocation: string,
   eventDate: string,
   hours: number,
-  name: string
+  name: string,
+  notes: string
 ) {
   const date = new Date(eventDate).toLocaleDateString("en-US", {
     timeZone: "UTC",
   });
-  return { eventTitle, eventLocation, date, hours, name };
+  return { eventTitle, eventLocation, date, hours, name, notes };
 }
 const monthOptions = [
   { label: "Filter by month", value: "", key: 0 },
@@ -226,7 +227,8 @@ export default function VolunteerLog({
         // convert shift date from string to Date type so we can print it nicely
         shift.event.start,
         shift.hours,
-        shift.userName
+        shift.userName,
+        shift.notes || ""
       )
     )
     // filter based on user selection of year & month
