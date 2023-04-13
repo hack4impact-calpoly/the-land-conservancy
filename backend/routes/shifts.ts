@@ -1,10 +1,60 @@
 import express from "express";
-
+import dotenv from "dotenv";
+import multer from "multer";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import Shift from "../models/shiftSchema";
 import Event from "../models/eventSchema";
 import User from "../models/userSchema";
 
+dotenv.config();
 const router = express.Router();
+
+// connect to s3 bucket
+const bucketName = process.env.BUCKET_NAME;
+const region = process.env.BUCKET_REGION;
+const accessKeyId = process.env.ACCESS_KEY!;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY!;
+
+const s3Client = new S3Client({
+  region,
+  endpoint: `https://s3.${region}.amazonaws.com`,
+  credentials: {
+    accessKeyId,
+    secretAccessKey,
+  },
+});
+
+// set up multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// eslint-disable-next-line consistent-return
+router.post("/upload", upload.single("file"), async (req: any, res: any) => {
+  const { file } = req;
+  // return error if file not found
+  if (file === null) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  const fileName = `shift_${Date.now()}`;
+
+  const params = {
+    Bucket: bucketName,
+    Body: file.buffer,
+    Key: fileName,
+    ContentType: file.mimetype,
+  };
+  try {
+    // put object into s3 bucket
+    await s3Client.send(new PutObjectCommand(params));
+    // returns key of the image
+    const url = `https://land-conservancy.s3.us-west-1.amazonaws.com/${fileName}`;
+    // return url
+    res.send(url);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 // get all shifts
 router.get("/", async (req: any, res: any) => {
@@ -30,13 +80,14 @@ router.use(express.json());
 
 // posts a new shift to the database
 router.post("/", async (req: any, res: any) => {
-  const { event, hours, user, userName, notes } = req.body;
+  const { event, hours, user, userName, notes, image } = req.body;
   let shift = new Shift({
     event,
     hours,
     user,
     userName,
     notes,
+    image,
   });
 
   try {

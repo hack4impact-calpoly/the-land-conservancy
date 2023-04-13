@@ -107,7 +107,8 @@ function createData(
   hours: number,
   user: string,
   name: string,
-  notes: string
+  notes: string,
+  image: string
 ) {
   const date = new Date(eventDate).toLocaleDateString("en-US", {
     timeZone: "UTC",
@@ -122,6 +123,7 @@ function createData(
     user,
     name,
     notes,
+    image,
   };
 }
 
@@ -206,7 +208,8 @@ export default function VolunteerLog({
         shift.hours,
         shift.user,
         shift.userName,
-        shift.notes || ""
+        shift.notes || "",
+        shift.image || ""
       )
     )
     // filter based on user selection of year & month
@@ -307,6 +310,7 @@ export default function VolunteerLog({
                             oldHours: row.hours,
                             shiftId: row._id,
                             oldNotes: row.notes,
+                            oldImage: row.image,
                           }}
                         >
                           <StyledEdit />

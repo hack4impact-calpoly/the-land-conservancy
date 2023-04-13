@@ -1,8 +1,9 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Container, Autocomplete, TextField, Box } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { FileUploader } from "react-drag-drop-files";
 import EventDesc from "./eventDesc";
 import Header from "../navigation/header";
 import { Input, Label, Submit } from "../styledComponents";
@@ -10,6 +11,8 @@ import { Event, Shift, User } from "../../types";
 import UserContext from "../../userContext";
 
 const PORT = process.env.REACT_APP_API_URL;
+
+const fileTypes = ["JPG", "JPEG", "PNG", "GIF"];
 
 const theme = createTheme({
   components: {
@@ -124,6 +127,7 @@ interface LocationState {
   oldHours: string;
   shiftId: string;
   oldNotes: string;
+  oldImage: string;
 }
 
 function UserSelect({ setVolunteer, allUsers }: AutoCompleteProps) {
@@ -184,6 +188,7 @@ export default function LogHours({
   const [valid, setValid] = React.useState(" ");
   const [submit, setSubmit] = React.useState(" ");
   const [volunteer, setVolunteer] = React.useState({} as User);
+  const [file, setFile] = useState<File>();
 
   const [link, setLink] = React.useState(" ");
   const { eventId } = useParams();
@@ -196,6 +201,7 @@ export default function LogHours({
   let oldHours = null;
   let shiftId: string | null = null;
   let oldNotes: string | null = null;
+  let oldImage: string | null = null;
   if (location.state) {
     const user = allUsers.find(
       (u) => u._id === (location.state as LocationState).user._id
@@ -206,11 +212,16 @@ export default function LogHours({
     oldHours = (location.state as LocationState).oldHours;
     shiftId = (location.state as LocationState).shiftId;
     oldNotes = (location.state as LocationState).oldNotes;
+    oldImage = (location.state as LocationState).oldImage;
+
     console.log(location.state as LocationState);
   }
   const [hours, setHours] = React.useState(oldHours || "");
 
   const [notes, setNotes] = React.useState(oldNotes || "");
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [image, setImage] = React.useState(oldImage || "");
 
   const thisEvent = eventData.find((event) => event._id === eventId);
 
@@ -220,6 +231,7 @@ export default function LogHours({
     date: thisEvent?.start,
     hours,
     notes,
+    image,
   };
 
   const addToUser = async (id: string) => {
@@ -245,6 +257,25 @@ export default function LogHours({
     });
   };
 
+  async function uploadImage() {
+    // upload image to s3 bucket
+    try {
+      const formData = new FormData();
+      formData.append("file", file!);
+      const response1 = await fetch(`${PORT}/prizes/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      // get image key from S3 response
+      const imageData = await response1.text();
+      setImage(imageData);
+      return imageData;
+    } catch (error) {
+      console.log(error);
+    }
+    return "";
+  }
+
   const addShift = async () => {
     const shift = {
       event: eventId,
@@ -252,7 +283,11 @@ export default function LogHours({
       user: submittingUser._id,
       userName: submittingUser.name,
       notes,
+      image: "",
     };
+    if (file) {
+      shift.image = await uploadImage();
+    }
 
     await fetch(`${PORT}/shifts`, {
       method: "POST",
@@ -277,12 +312,19 @@ export default function LogHours({
       .catch((err) => console.log(err));
   };
 
+  useEffect(() => {
+    console.log("Image state updated:", image);
+  }, [image]);
+
   const editShift = async () => {
     const newShiftHours = {
       hours,
       notes,
+      image,
     };
-
+    if (file) {
+      newShiftHours.image = await uploadImage();
+    }
     await fetch(`${PORT}/shifts/${shiftId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -396,7 +438,31 @@ export default function LogHours({
           ) : (
             <div />
           )}
-
+          {/* Display current image if it exists */}
+          {image !== "" ? (
+            <div>
+              <h2>Image:</h2>
+              <img
+                width="300"
+                height="300"
+                src={image}
+                alt="related to volunteering"
+              />
+            </div>
+          ) : (
+            <div />
+          )}
+          <Label htmlFor="sponsorImg">Sponsor Image</Label>
+          <FileUploader
+            multiple={false}
+            handleChange={(event: File) => {
+              if (event) {
+                setFile(event);
+              }
+            }}
+            name="file"
+            types={fileTypes}
+          />
           <Feedback>{valid}</Feedback>
           {thisEvent ? (
             <Submit
