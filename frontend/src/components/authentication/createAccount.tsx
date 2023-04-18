@@ -55,7 +55,14 @@ export default function CreateAccount() {
   // create new user based on inputted credentials, after the form is validated
 
   const signUp = async (newAccount: Account) => {
+    // check if the backend is runing before calling anything else
+    // if the backend is not running, then response will be ERR_CONNECTION_REFUSED
     try {
+      const response = await fetch(`${PORT}/users`);
+      if (!response.ok) {
+        console.log("Backend not running error");
+        throw new Error("Backend is not running.");
+      }
       /* Auth.signUp() returns an ISignUpResult {
         user: CognitoUser;
         userConfirmed: boolean;

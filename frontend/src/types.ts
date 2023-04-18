@@ -14,6 +14,7 @@ interface Shift {
   hours: number;
   user: string;
   userName: string;
+  notes?: string;
 }
 
 // user interface for lifting state of user,
@@ -36,3 +37,13 @@ interface Prize {
 }
 
 export type { Event, Shift, User, Prize };
+
+export type DaysSelected = [
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean
+];

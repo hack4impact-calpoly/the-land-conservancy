@@ -13,6 +13,7 @@ import Events from "./components/pages/events";
 import LogHours from "./components/pages/logHours";
 import ThankYou from "./components/pages/thankYou";
 import CreateEvent from "./components/pages/createEvent";
+import EditEvent from "./components/pages/editEvent";
 import VolunteerLog from "./components/pages/volunteerLog";
 import EditPrizes from "./components/pages/editPrizes";
 import EditOnePrize from "./components/pages/editOnePrize";
@@ -191,15 +192,23 @@ function App() {
             <Route
               path="/create-event"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <CreateEvent setEvents={setEvents} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-event/:eventId"
+              element={
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
+                  <EditEvent eventData={events} setEvents={setEvents} />
                 </ProtectedRoute>
               }
             />
             <Route
               path="/volunteer-log"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <VolunteerLog
                     allShiftData={allShifts}
                     setAllShifts={setAllShifts}
@@ -211,7 +220,7 @@ function App() {
             <Route
               path="/edit-prizes/:prizeId"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <EditOnePrize setPrizes={setPrizes} />
                 </ProtectedRoute>
               }
@@ -219,7 +228,7 @@ function App() {
             <Route
               path="/edit-prizes"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly adminStatus={currentUser?.isAdmin}>
                   <EditPrizes prizeData={prizes} />
                 </ProtectedRoute>
               }

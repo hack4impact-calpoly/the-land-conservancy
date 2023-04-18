@@ -91,7 +91,7 @@ const options = {
   useTextFile: false,
   useBom: true,
   useKeysAsHeaders: false,
-  headers: ["Event Title", "Location", "Date", "Hours", "Name"],
+  headers: ["Event Title", "Location", "Date", "Hours", "Name", "Notes"],
 };
 
 const csvExporter = new ExportToCsv(options);
@@ -106,12 +106,23 @@ function createData(
   eventDate: string,
   hours: number,
   user: string,
-  name: string
+  name: string,
+  notes: string
 ) {
   const date = new Date(eventDate).toLocaleDateString("en-US", {
     timeZone: "UTC",
   });
-  return { _id, eventId, eventTitle, eventLocation, date, hours, user, name };
+  return {
+    _id,
+    eventId,
+    eventTitle,
+    eventLocation,
+    date,
+    hours,
+    user,
+    name,
+    notes,
+  };
 }
 
 // creates a row of data for the csv file
@@ -121,12 +132,13 @@ function createCsvRow(
   eventLocation: string,
   eventDate: string,
   hours: number,
-  name: string
+  name: string,
+  notes: string
 ) {
   const date = new Date(eventDate).toLocaleDateString("en-US", {
     timeZone: "UTC",
   });
-  return { eventTitle, eventLocation, date, hours, name };
+  return { eventTitle, eventLocation, date, hours, name, notes };
 }
 const monthOptions = [
   { label: "Filter by month", value: "", key: 0 },
@@ -193,7 +205,8 @@ export default function VolunteerLog({
         shift.event.start,
         shift.hours,
         shift.user,
-        shift.userName
+        shift.userName,
+        shift.notes || ""
       )
     )
     // filter based on user selection of year & month
@@ -214,7 +227,8 @@ export default function VolunteerLog({
         // convert shift date from string to Date type so we can print it nicely
         shift.event.start,
         shift.hours,
-        shift.userName
+        shift.userName,
+        shift.notes || ""
       )
     )
     // filter based on user selection of year & month
@@ -292,6 +306,7 @@ export default function VolunteerLog({
                             user: { _id: row.user },
                             oldHours: row.hours,
                             shiftId: row._id,
+                            oldNotes: row.notes,
                           }}
                         >
                           <StyledEdit />

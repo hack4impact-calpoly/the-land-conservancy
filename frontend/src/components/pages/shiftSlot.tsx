@@ -28,9 +28,15 @@ type ShiftSlotProps = {
   title: string;
   date: string;
   hours: number;
+  notes: string;
 };
 
-export default function ShiftSlot({ title, date, hours }: ShiftSlotProps) {
+export default function ShiftSlot({
+  title,
+  date,
+  hours,
+  notes,
+}: ShiftSlotProps) {
   return (
     <StyledEventContainer>
       <LayoutDiv>
@@ -38,6 +44,7 @@ export default function ShiftSlot({ title, date, hours }: ShiftSlotProps) {
           <StyledTitle>{title}</StyledTitle>
           <div>{date}</div>
           <div>{hours} Hours</div>
+          <div>{notes}</div>
         </div>
       </LayoutDiv>
     </StyledEventContainer>

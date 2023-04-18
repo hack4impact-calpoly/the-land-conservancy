@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { BiEdit } from "react-icons/bi";
 import EventCard from "./eventCard";
 import DeleteModal from "./deleteModal";
 import Header from "../navigation/header";
 import { Event, Shift } from "../../types";
 import UserContext from "../../userContext";
+import SearchBar from "./SearchBar";
 
 const StyledContainer = styled(Container)`
   border-radius: 7px;
@@ -17,6 +19,10 @@ const StyledContainer = styled(Container)`
   align-items: left;
   justify-content: left;
   text-decoration: none;
+`;
+
+const StyledCont = styled(Container)`
+  justify-content: right;
 `;
 
 const StyledLink = styled(Link)`
@@ -30,6 +36,16 @@ const StyledDelete = styled(RiDeleteBin6Line)`
   &:hover {
     color: white;
   }
+`;
+
+const StyledEdit = styled(BiEdit)`
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  &:hover {
+    color: white;
+  }
+  margin-right: 10px;
 `;
 
 const convertDate = (dateString: string) => {
@@ -83,6 +99,7 @@ export default function Events({
   return (
     <Header headerText="Events" navbar>
       <StyledContainer maxWidth="md">
+        <SearchBar setAllEvents={setAllEvents} />
         {eventData ? (
           eventData
             .filter((event) => {
@@ -112,12 +129,20 @@ export default function Events({
                     date={convertDate(event.start)}
                     key={event._id}
                   >
-                    <StyledDelete
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setDeleteStates(event._id);
-                      }}
-                    />
+                    <StyledCont>
+                      <StyledLink
+                        to={`/edit-event/${event._id}`}
+                        key={event._id}
+                      >
+                        <StyledEdit />
+                      </StyledLink>
+                      <StyledDelete
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setDeleteStates(event._id);
+                        }}
+                      />
+                    </StyledCont>
                   </EventCard>
                 </StyledLink>
               ) : (

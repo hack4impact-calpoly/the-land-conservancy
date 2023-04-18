@@ -1,0 +1,294 @@
+import React, { useState } from "react";
+import styled from "styled-components";
+import { eachWeekOfInterval, getDay } from "date-fns";
+import { useParams } from "react-router-dom";
+import Header from "../navigation/header";
+import Container from "./formComponents";
+import { Form, Input, Submit, Label, GreenLink } from "../styledComponents";
+
+const PORT = process.env.REACT_APP_API_URL;
+
+const Flex = styled.div.attrs((props: { dir: string }) => props)`
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+  flex-direction: ${({ dir }) => dir};
+`;
+
+const To = styled.p`
+  padding: 0 10px 0 10px;
+`;
+
+const Select = styled.select`
+  display: block;
+  box-sizing: border-box;
+  border: 1px solid #c4c4c4;
+  border-radius: 10px;
+  height: 33px;
+  padding-left: 10px;
+
+  font-family: Poppins;
+  font-size: 20px;
+  text-align: left;
+
+  margin-top: 5px;
+  margin-bottom: 20px;
+
+  width: 100%;
+`;
+
+const Notes = styled.textarea`
+  font-size: 20px;
+  border-radius: 10px;
+  resize: none;
+  font-family: Poppins;
+  border: 1px solid #c4c4c4;
+  padding-left: 10px;
+  margin: 5px 0px 20px 0px;
+  width: 98%;
+`;
+
+interface Event {
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  location: string;
+  notes: string;
+  shifts: string[];
+}
+
+type EditEventProps = {
+  eventData: Event[];
+  setEvents: (val: (prev: Event[]) => Event[]) => void;
+};
+
+export default function EditEvent({ eventData, setEvents }: EditEventProps) {
+  const { eventId } = useParams();
+  const thisEvent = eventData.find((event) => event._id === eventId);
+  const autofillDate = (thisEvent ? thisEvent.start : "")
+    .split("T", 1)
+    .toString();
+  const autofillStart = (thisEvent ? thisEvent.start : "").slice(11, 16); // slice start time to hours:minutes
+  const autofillEnd = (thisEvent ? thisEvent.end : "").slice(11, 16); // slice end time to hours:minutes
+  const [title, setTitle] = useState(thisEvent ? thisEvent.title : "");
+  const [date, setDate] = useState(autofillDate);
+  const [startTime, setSTime] = useState(autofillStart);
+  const [endTime, setETime] = useState(autofillEnd);
+  const [repeat, setRepeat] = useState("false");
+  const [endAfter, setEnd] = useState("");
+  const [location, setLocation] = useState(thisEvent ? thisEvent.location : "");
+  const [notes, setNotes] = useState(thisEvent ? thisEvent.notes : "");
+  const [submit, setSubmit] = useState("");
+  const [link, setLink] = useState("");
+  const [shifts] = useState(thisEvent ? thisEvent.shifts : "");
+
+  const clearForm = () => {
+    setTitle("");
+    setDate("");
+    setSTime("");
+    setETime("");
+    setRepeat("false");
+    setEnd("");
+    setLocation("");
+    setNotes("");
+  };
+
+  const postEvent = async (
+    curDate: string,
+    startH: string,
+    startM: string,
+    endH: string,
+    endM: string
+  ) => {
+    const startTimeDate = new Date(curDate);
+    const [sYear, sMonth, sDay] = [
+      startTimeDate.getUTCFullYear(),
+      startTimeDate.getUTCMonth(),
+      startTimeDate.getUTCDate(),
+    ];
+    const convertedStart = new Date(
+      Date.UTC(sYear, sMonth, sDay, +startH, +startM)
+    );
+
+    const endTimeDate = new Date(curDate);
+    const [eYear, eMonth, eDay] = [
+      endTimeDate.getUTCFullYear(),
+      endTimeDate.getUTCMonth(),
+      endTimeDate.getUTCDate(),
+    ];
+    const convertedEnd = new Date(Date.UTC(eYear, eMonth, eDay, +endH, +endM));
+
+    const newEvent = {
+      _id: eventId,
+      title,
+      start: convertedStart,
+      end: convertedEnd,
+      location,
+      notes,
+      shifts,
+    };
+
+    clearForm(); // clear form first to prevent multiple clicks => multiple submits
+    fetch(`${PORT}/events/${eventId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newEvent),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // update event in events in App.tsx
+        setEvents((prev) => [
+          ...prev.filter((event) => event._id !== eventId),
+          data,
+        ]);
+      })
+      .then(() => {
+        setSubmit("Your event has been updated. ");
+        setLink("Back to events");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setSubmit("Error editting event");
+      });
+  };
+
+  const submitEvent = async () => {
+    const [startH, startM] = startTime.split(":");
+    const [endH, endM] = endTime.split(":");
+
+    if (repeat === "false") {
+      postEvent(date, startH, startM, endH, endM);
+    } else {
+      // need times to make sure date is correct
+      const startDate = new Date(date.concat(" ", startTime));
+      const endDate = new Date(endAfter.concat(" ", endTime));
+      try {
+        // get range of dates between the start and end dates
+        const dates = eachWeekOfInterval(
+          {
+            start: startDate,
+            end: endDate,
+          },
+          { weekStartsOn: getDay(startDate) }
+        );
+        dates.forEach((curDate) => {
+          postEvent(curDate.toUTCString(), startH, startM, endH, endM);
+        });
+      } catch (RangeError) {
+        setSubmit(
+          "Invalid date range, make sure starting date is before end date"
+        );
+      }
+    }
+  };
+  return (
+    <Header headerText="Edit Event" back="/events">
+      <Container>
+        <div>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitEvent();
+            }}
+          >
+            <Input
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Event Title"
+              value={title}
+              required
+            />
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              type="date"
+              onChange={(e) => setDate(e.target.value)}
+              placeholder="Date"
+              value={date}
+              required
+            />
+
+            <Label htmlFor="st">Time</Label>
+            <Flex dir="row">
+              <Input
+                id="st"
+                type="time"
+                onChange={(e) => setSTime(e.target.value)}
+                placeholder="Start Time"
+                value={startTime}
+                required
+              />
+              <To>to</To>
+              <Input
+                type="time"
+                onChange={(e) => setETime(e.target.value)}
+                placeholder="End Time"
+                value={endTime}
+                required
+              />
+            </Flex>
+
+            <Flex dir="row">
+              <Flex dir="column">
+                <Label htmlFor="repeat-select">Weekly Repeat</Label>
+                <Select
+                  name="repeat"
+                  id="repeat-select"
+                  onChange={(e) => setRepeat(e.target.value)}
+                  value={repeat}
+                  required
+                >
+                  <option value="false">Does not repeat</option>
+                  <option value="true">Repeats</option>
+                </Select>
+              </Flex>
+              <Flex dir="column">
+                <Label htmlFor="end-repeat">Ends After</Label>
+                <Input
+                  id="end-repeat"
+                  type="date"
+                  onChange={(e) => setEnd(e.target.value)}
+                  placeholder="ends after"
+                  value={endAfter}
+                  required
+                  disabled={repeat === "false"}
+                />
+              </Flex>
+            </Flex>
+
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              type="text"
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Location"
+              value={location}
+              required
+            />
+            <Label htmlFor="notes">Additional Notes</Label>
+            <Notes
+              id="notes"
+              rows={5}
+              cols={50}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Notes"
+              value={notes}
+              required
+            />
+            <Submit type="submit" value="Update" />
+            <p>
+              <b>
+                {submit}
+                <GreenLink to="/events">{link}</GreenLink>
+              </b>
+            </p>
+          </Form>
+        </div>
+        <div> </div>
+      </Container>
+    </Header>
+  );
+}
